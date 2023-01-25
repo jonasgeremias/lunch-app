@@ -1,13 +1,35 @@
+@font-face {
+  font-family: 'Flama-Bold';
+  src: local('Flama'), url('./assets/fonts/Flama-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Flama-Regular';
+  src: local('Flama'), url('./assets/fonts/Flama.otf') format('opentype');
+  font-weight: normal;
+}
+html {
+   min-height: 650px;
+  height: 100vh;
+  width: 100vw;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Flama-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* height: 100%;
+  width: 100%; */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+* {
+  margin:0
 }
