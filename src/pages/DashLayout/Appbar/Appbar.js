@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, cloneElement } from 'react';
+import { useState, useEffect, cloneElement } from 'react';
 import { useLocation } from "react-router-dom"
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -16,7 +16,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger'
 import { ORIGIN_ROUTES } from 'constants/routes'
 import { DRAWER_WIDTH } from 'constants/general'
 import DrawerItems from './DrawerItems';
-import { AuthContext } from 'hooks/AuthContext';
+import { useAuthContext } from 'hooks/AuthContext';
 import { ExitToAppRounded, Menu, Close } from '@mui/icons-material'
 
 
@@ -75,16 +75,13 @@ export default function Appbar({ routes, children }) {
    const [open, setOpen] = useState(false);
    const location = useLocation()
    const [currentRoute, setCurrentRoute] = useState();
-   const { logOut } = useContext(AuthContext);
-
+   const { logOut } = useAuthContext();
+   
    const handleClickLogout = () => {
-      console.log('handleClickLogout')
       logOut()
    }
 
    useEffect(() => {
-      console.log()
-
       let current = routes.find(route => (ORIGIN_ROUTES + '/' + route.path === location.pathname))
 
       if (!current) {

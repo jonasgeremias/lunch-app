@@ -34,7 +34,6 @@ const SignInForm = ({ login }) => {
    }
 
    const handleLogin = () => {
-      console.log('Login')
       const { email, email_error, password, password_error } = sigInForm;
       const {isValid} = validateInput.sign(email, password)
 

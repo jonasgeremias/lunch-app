@@ -4,7 +4,7 @@ import useStyles from './useStyles'
 
 import Hidden from '@mui/material/Hidden'
 import Typography from '@mui/material/Typography'
-import { AuthContext } from 'hooks/AuthContext'
+import { useAuthContext } from 'hooks/AuthContext'
 import { Navigate } from 'react-router-dom'
 
 import logo from "assets/images/logo512.png"
@@ -15,8 +15,8 @@ import { ORIGIN_ROUTES } from 'constants/routes'
 import { useGlobalStyles } from 'styles'
 
 const SignIn = () => {
-   const authContext = useContext(AuthContext);
-   const { user, logIn } = authContext;
+   const { user, logIn } = useAuthContext();
+   
    const classes = useStyles()
    const gclasses = useGlobalStyles()
 

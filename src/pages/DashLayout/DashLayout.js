@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate, Outlet } from "react-router-dom";
 import { ROUTES } from 'constants/routes'
-import { AuthContext } from 'hooks/AuthContext';
+import { useAuthContext } from 'hooks/AuthContext';
 import Appbar from './Appbar/Appbar';
 
 const Dashboard = () => {
-   const { user, userData } = useContext(AuthContext);
+   const { user, userData } = useAuthContext();
    if (!user) {
       return (
          <>

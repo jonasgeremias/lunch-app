@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState, useContext } from 'react';
-import { AuthContext } from 'hooks/AuthContext';
+import { useAuthContext } from 'hooks/AuthContext';
 // import firebase from "../utils";
 import {loadAppData} from 'utils/firebase/app'
 export const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
    const [app, setApp] = useState(null);
-   const user = useContext(AuthContext);
+   const { user } = useAuthContext();
 
    useEffect(() => {
       const getAppdata = async (setApp) => setApp(await loadAppData(user))
@@ -18,5 +18,15 @@ export const AppProvider = ({ children }) => {
          {children}
       </AppContext.Provider>
    );
+};
+
+export const useAppContext = () => {
+   const context = useContext(AppContext);
+
+   if (!context) {
+      throw new Error('useAppContext must be used within an AppProvider');
+   }
+
+   return context;
 };
 

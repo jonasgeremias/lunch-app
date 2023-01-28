@@ -5,15 +5,21 @@ import AppRoutes from '../Routes/Routes';
 import { AppProvider } from 'hooks/AppContext';
 import { AuthProvider } from 'hooks/AuthContext';
 import { SnackBarProvider } from 'components/atoms/Snackbar/Snackbar';
+import { CompanieProvider } from 'hooks/CompanieContext';
+import { OrgProvider } from 'hooks/OrgContext';
 
 function App() {
    return (
       <SnackBarProvider>
-         <AuthProvider>
-            <AppProvider>
-               <AppRoutes />
-            </AppProvider >
-         </AuthProvider>
+         <OrgProvider>
+            <CompanieProvider>
+               <AuthProvider>
+                  <AppProvider>
+                     <AppRoutes />
+                  </AppProvider >
+               </AuthProvider>
+            </CompanieProvider>
+         </OrgProvider>
       </SnackBarProvider>
    )
 }

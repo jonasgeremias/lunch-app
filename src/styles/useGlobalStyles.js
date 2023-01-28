@@ -1,10 +1,19 @@
 import { makeStyles } from '@mui/styles';
-import { textAlign } from '@mui/system';
+// import { textAlign } from '@mui/system';
 
 // import {DRAWER_WIDTH} from 'constants/general'
 
 export default makeStyles(theme => ({
-  
+  lunchStatusCard: {
+   alignItems: 'center',
+   borderRadius: 10,
+   margin: theme.spacing(2, 2),
+   padding: theme.spacing(4),
+   [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(1, 1),
+      padding: theme.spacing(2),
+    },
+  },
   forgotArea: {
     overflow: 'hidden',
     display: 'flex',
@@ -64,17 +73,21 @@ export default makeStyles(theme => ({
       color: "#fff" + ' !important'
     }
   },
-  iconSearch: {
-    backgroundColor: '#037ffc',
-    color: "#FFF",
-    // padding: '6px 16px',
-    margin: '8px',
-    boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%)',
-    '&:hover': {
-      backgroundColor: '#3874d6',
-      boxShadow: '0px 5px 5px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%)'
-    },
+  textCenter: {
+   alignItems: 'center'
   },
+  
+//   iconSearch: {
+//     backgroundColor: '#037ffc',
+//     color: "#FFF",
+//     // padding: '6px 16px',
+//     margin: '8px',
+//     boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%)',
+//     '&:hover': {
+//       backgroundColor: '#3874d6',
+//       boxShadow: '0px 5px 5px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%)'
+//     },
+//   },
   cursorPointer: { cursor: 'pointer' },
   relative: { position: 'relative' },
   bold: { fontWeight: 'bold' },
@@ -119,7 +132,6 @@ export default makeStyles(theme => ({
   marginHorizontal8: { marginLeft: 8, marginRight: 8 },
   marginHorizontal10p: { marginLeft: '10%', marginRight: '10%' },
   marginHorizontal20p: { marginLeft: '20%', marginRight: '20%' },
-
   paddingTop10: { paddingTop: 10 },
   paddingBottom10: { paddingBottom: 10 },
   paddingBottom20: { paddingBottom: 20 },
@@ -184,7 +196,6 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-
   flexColumnAlignCenterJustifyCenter: {
     display: 'flex',
     flexDirection: 'column',
@@ -198,15 +209,12 @@ export default makeStyles(theme => ({
   justifyCenter: {
     justifyContent: 'center'
   },
-  textNoOverflow: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
-  },
+//   textNoOverflow: {
+//     overflow: 'hidden',
+//     whiteSpace: 'nowrap',
+//     textOverflow: 'ellipsis'
+//   },
   signInTab: {
-    // position: 'relative',
-    // display:'flex',
-    // flexDirection: 'column',
     overflowY: 'scroll',
     overflowX: 'hidden',
     padding: theme.spacing(10, 4, 10, 4),
@@ -228,36 +236,36 @@ export default makeStyles(theme => ({
   //     paddingBottom: theme.spacing(9.8),
   //   },
   // },
-  tabWithSpacing: {
-    margin: theme.spacing(3, 30),
-    borderRadius: 12,
-    padding: 30,
-    [theme.breakpoints.down('lg')]: {
-      margin: theme.spacing(3, 10),
-    },
-    [theme.breakpoints.down('md')]: {
-      margin: theme.spacing(3, 2),
-      padding: 20
-    }
-  },
-  deviceTab: {
-    margin: theme.spacing(3, 30),
-    [theme.breakpoints.down('lg')]: {
-      margin: theme.spacing(3, 10),
-    },
-    [theme.breakpoints.down('md')]: {
-      margin: theme.spacing(3, 2),
-    },
-    [theme.breakpoints.down('xs')]: {
-      margin: 15
-    }
-  },
-  mapArea: {
-    height: 240,
-    [theme.breakpoints.up('xl')]: {
-      height: 430,
-    }
-  },
+//   tabWithSpacing: {
+//     margin: theme.spacing(3, 30),
+//     borderRadius: 12,
+//     padding: 30,
+//     [theme.breakpoints.down('lg')]: {
+//       margin: theme.spacing(3, 10),
+//     },
+//     [theme.breakpoints.down('md')]: {
+//       margin: theme.spacing(3, 2),
+//       padding: 20
+//     }
+//   },
+//   deviceTab: {
+//     margin: theme.spacing(3, 30),
+//     [theme.breakpoints.down('lg')]: {
+//       margin: theme.spacing(3, 10),
+//     },
+//     [theme.breakpoints.down('md')]: {
+//       margin: theme.spacing(3, 2),
+//     },
+//     [theme.breakpoints.down('xs')]: {
+//       margin: 15
+//     }
+//   },
+//   mapArea: {
+//     height: 240,
+//     [theme.breakpoints.up('xl')]: {
+//       height: 430,
+//     }
+//   },
   FAB: {
     zIndex: theme.zIndex.drawer + 1,
     position: 'fixed !important',
@@ -305,45 +313,45 @@ export default makeStyles(theme => ({
     margin: theme.spacing(2.9, 0, 1.8),
     fontFamily: 'Flama-Bold'
   },
-  editableTextLabel: {
-    marginBottom: 10,
-    opacity: .8
-  },
-  tabIndicator: {
-    height: '7%',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  inactiveDeviceDot: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#ddd'
-  },
-  card: {
-    textAlign: 'center',
-    transition: "all 0.25s",
-    "&:hover": {
-      transform: "scale(1.07)",
-      color: theme.palette.secondary.main
-    }
-  },
-  tableUser: {
-    minWidth: 600,
-  },
-  tableUserVisuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-  avatar: {
-    marginLeft: '0.5em',
-    backgroundColor: theme.palette.primary.main + ' !important'
-  }
+//   editableTextLabel: {
+//     marginBottom: 10,
+//     opacity: .8
+//   },
+//   tabIndicator: {
+//     height: '7%',
+//     borderTopLeftRadius: 20,
+//     borderTopRightRadius: 20,
+//   },
+//   inactiveDeviceDot: {
+//     width: 20,
+//     height: 20,
+//     borderRadius: 10,
+//     backgroundColor: '#ddd'
+//   },
+//   card: {
+//     textAlign: 'center',
+//     transition: "all 0.25s",
+//     "&:hover": {
+//       transform: "scale(1.07)",
+//       color: theme.palette.secondary.main
+//     }
+//   },
+//   tableUser: {
+//     minWidth: 600,
+//   },
+//   tableUserVisuallyHidden: {
+//     border: 0,
+//     clip: 'rect(0 0 0 0)',
+//     height: 1,
+//     margin: -1,
+//     overflow: 'hidden',
+//     padding: 0,
+//     position: 'absolute',
+//     top: 20,
+//     width: 1,
+//   },
+//   avatar: {
+//     marginLeft: '0.5em',
+//     backgroundColor: theme.palette.primary.main + ' !important'
+//   }
 }))

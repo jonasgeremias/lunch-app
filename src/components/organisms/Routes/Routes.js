@@ -1,18 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SignIn, DashLayout, NotFound, ForgotPassword } from '../../../pages'
 import SplashScreen from 'components/atoms/SplashScreen/SplashScreen'
-import { AppContext } from 'hooks/AppContext';
-import { AuthContext } from 'hooks/AuthContext';
-// import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
+import { useAppContext } from 'hooks/AppContext';
+import { useAuthContext } from 'hooks/AuthContext';
 
 import { ORIGIN_ROUTES, ROUTES } from 'constants/routes'
 import SplashLoading from 'components/molecules/SplashLoading/SplashLoading';
 
 function AppRoutes() {
    const [splash, setSplash] = useState(true);
-   const { app } = useContext(AppContext);
-   const { user, userData } = useContext(AuthContext);
+   const { app } = useAppContext();
+   const { user, userData } = useAuthContext();
 
    useEffect(() => {
       setTimeout(() => {

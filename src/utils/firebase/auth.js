@@ -1,3 +1,4 @@
+import { USER_TYPES } from 'constants/general';
 import { formatValue } from "utils";
 import Firebase from "./firebase";
 
@@ -25,8 +26,7 @@ export function sendResetEmail(email) {
       return { error: true, message: 'Não esqueça de preencher o e-mail' }
    } else {
       return Firebase.auth().sendPasswordResetEmail(email)
-         .then((data) => {
-            console.log('sendResetEmail', data)
+         .then(() => {
             return { error: false, message: 'Mensagem enviada, verifique seu e-mail e a caixa de spam!' }
          })
          .catch(error => {
@@ -56,5 +56,16 @@ export function loadUserData(uid) {
       })
    }
    else return { error: true, userData: null, message: 'Usuário inválido!' }
-
 }
+
+export const checkUserAccount = (user, userData) => {
+   if (userData?.userType == USER_TYPES.admin.id) return { error: false, message: `Seja bem vindo Administrador!` }
+   if (userData?.status !== 'active') return { error: true, message: `Sua conta está desativada, contate o administrador da empresa.` }
+   if (!userData?.userType) return { error: true, message: `Dados do usuário não existem, contate o admininstrador da empresa.` }
+   if (!userData?.orgId) return { error: true, message: `Organização não encontrada, contate o admininstrador da empresa.` }
+   if (!userData?.companieId) return { error: true, message: `Empresa não encontrada, contate o admininstrador da empresa.` }
+   if (!userData?.approved) return { error: true, message: `Sua conta ainda não foi aprovada, contate o administrador.` }
+   if (user?.displayName) return { error: false, message: `Seja bem vindo ${user?.displayName}!` }
+   return { error: false, message: `Seja bem vindo!` }
+}
+
