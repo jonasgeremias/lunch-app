@@ -1,29 +1,22 @@
 import { formatValue } from "utils";
 import Firebase from "./firebase";
 
-export const isSignedIn = (setUser) => Firebase.auth().onAuthStateChanged(setUser);
-
 export function signIn(email, password) {
    return Firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
-      // if (!!showSnackBar) showSnackBar('Logado com sucesso', 'success')
-      // console.log('userCredential', userCredential)
       return { error: false, user: userCredential.user, message: 'Logado com sucesso' }
    }).catch((error) => {
-      const { message, id } = formatValue.signError(error)
-      // if (!!showSnackBar) showSnackBar(message, 'error')
+      const { message } = formatValue.signError(error)
       return { error: true, user: null, message }
    });
 }
 
 export function signOut() {
-   console.log('logout')
    return Firebase.auth().signOut()
       .then(() => {
          return { error: false, message: 'Deslogado com sucesso' }
       }).catch(error => {
          console.warn(error)
          return { error: true, message: 'Ocorreu um erro ao se deslogar' }
-         // dispatch(errorHandler(error, 'Ocorreu um erro ao se deslogar', 'components/organisms/App/actions', 'logout'))
       })
 }
 
@@ -48,14 +41,14 @@ export function loadUserData(uid) {
    if (uid) {
       return Firebase.firestore().collection('users').doc(uid).get().then(async (doc) => {
          if (doc.exists) {
-            const now = Firebase.firestore.FieldValue.serverTimestamp();
+            const now = new Date(); //Firebase.firestore.serverTimestamp(); // @pending 
             const data = doc.data();
             data.updatedAt = now;
-            await doc.ref.update({ updatedAt: now}).catch(error => { console.log(error) })
-            return {error: false, message: 'Usuário Encontrado', userData: data};
+            await doc.ref.update({ updatedAt: now }).catch(error => { console.log(error) })
+            return { error: false, message: 'Usuário Encontrado', userData: data };
          }
          else {
-            return {error: true, message: 'Os dados da sua conta não existem', userData: null }
+            return { error: true, message: 'Os dados da sua conta não existem', userData: null }
          }
       }).catch((error) => {
          const { message } = formatValue.signError(error)

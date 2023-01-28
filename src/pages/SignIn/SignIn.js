@@ -17,9 +17,6 @@ import { useGlobalStyles } from 'styles'
 const SignIn = () => {
    const authContext = useContext(AuthContext);
    const { user, logIn } = authContext;
-
-   console.log(authContext)
-   
    const classes = useStyles()
    const gclasses = useGlobalStyles()
 
