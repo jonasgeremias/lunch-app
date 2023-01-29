@@ -44,3 +44,8 @@ const firebase = {
 }
 
 export default firebase;
+
+
+export const getTimestamp = () => {
+   return firebase.fieldValue.serverTimestamp();
+  }

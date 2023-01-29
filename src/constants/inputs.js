@@ -34,15 +34,175 @@ export const DEF_PROPS_LOGIN = {
    }
 }
 
+
+/**Basic input props */
+export const DEF_PROPS = {
+   id: {
+      size: 'small',
+      variant: 'outlined',
+      autoComplete: "off",
+      fullWidth: true,
+      disabled: true
+   },
+   name: {
+      size: 'small',
+      variant: 'outlined',
+      fullWidth: true,
+      autoComplete: "off",
+      inputProps: { maxLength: LENGTH.name.max, type: 'text' }
+   },
+   text: {
+      fullWidth: true,
+      autoComplete: "off",
+      size: 'small',
+      // variant: 'outlined',
+      inputProps: { maxLength: '300', type: 'text' }
+   },
+   menu: {
+      fullWidth: true,
+      autoComplete: "off",
+      size: 'small'
+   },
+   // datePicker: {
+   //    variant: 'dialog',
+   //    autoOk: true,
+   //    inputFormat: DATE_FORMAT.input,
+   //    renderinput: {
+   //       size: 'small',
+   //       fullWidth: true,
+   //    },
+   //    disableFuture: true,
+   //    clearable: true,
+   //    invalidLabel: '',
+   //    invalidDateMessage: '',
+   //    cancelLabel: 'Cancelar',
+   //    clearLabel: 'Limpar data',
+   //    fullWidth: true
+   // },
+   description: {
+      multiline: true,
+      fullWidth: true,
+      label: "Descrição",
+      inputProps: { maxLength: '1000', type: 'text' }
+   },
+   unit: {
+      fullWidth: true,
+      variant: 'outlined',
+      label: "Unidade",
+      inputProps: { maxLength: '10', type: 'text' }
+   },
+   email: {
+      required: true,
+      size: 'small',
+      variant: 'outlined',
+      fullWidth: true,
+      label: "Email",
+      autoComplete: "off",
+      inputProps: { maxLength: LENGTH.email.max, type: 'email' }
+   },
+   password: {
+      label: "Senha",
+      margin: "normal",
+      required: true,
+      fullWidth: true,
+      autoComplete: "current-password",
+      inputProps: { maxLength: LENGTH.password.max, type: 'password' }
+   },
+   phone: {
+      autoComplete: 'tel-national',
+      type: 'tel',
+      size: 'small',
+      variant: 'outlined',
+      fullWidth: true,
+      label: "Telefone",
+      inputProps: { type: 'tel' }
+   },
+   cnpj: {
+      autoComplete: 'off',
+      required: true,
+      fullWidth: true,
+      size: 'small',
+      variant: 'outlined',
+      label: "CNPJ",
+      inputProps: { type: 'text' }
+   },
+   cpf: {
+      required: true,
+      fullWidth: true,
+      label: "CPF",
+      inputProps: { type: 'text' }
+   },
+   // address: {
+   //    label: 'Endereço',
+   //    fullWidth: true,
+   //    inputProps: { maxLength: LENGTH.address.max, type: 'text' },
+   //    autoComplete: 'street-address'
+   // },
+   // postalCode: {
+   //    autoComplete: 'postal-code',
+   //    inputProps: { type: 'text' }
+   // },
+   // rg: {
+   //    inputProps: { maxLength: LENGTH.rg.max, type: 'text' }
+   // },
+   // money: {
+   //    thousandsSeparatorSymbol: '.',
+   //    allowDecimal: true,
+   //    decimalSymbol: ',',
+   //    decimalLimit: 2,
+   //    integerLimit: 6,
+   // }
+   // website: {
+   //    autoComplete: 'url',
+   //    fullWidth: true,
+   //    label: "Website",
+   //    inputProps: { maxLength: '100', type: 'text' }
+   // },
+   // creditCard: {
+   //    number: {
+   //       fullWidth: true,
+   //       size: 'small',
+   //       autoComplete: 'cc-number',
+   //       variant: 'outlined',
+   //       label: "Número",
+   //       name: 'number',
+   //       inputProps: { type: 'text' }
+   //    },
+   //    name: {
+   //       fullWidth: true,
+   //       size: 'small',
+   //       autoComplete: "cc-name",
+   //       variant: 'outlined',
+   //       name: 'name',
+   //       label: "Nome do titular",
+   //       inputProps: { maxLength: LENGTH.name.max, type: 'text' }
+   //    },
+   //    expiry: {
+   //       fullWidth: true,
+   //       size: 'small',
+   //       autoComplete: "cc-exp",
+   //       variant: 'outlined',
+   //       name: 'expiry',
+   //       label: "Expiração",
+   //       inputProps: { type: 'text' }
+   //    },
+   //    cvc: {
+   //       fullWidth: true,
+   //       size: 'small',
+   //       name: 'cvc',
+   //       variant: 'outlined',
+   //       label: "CVC",
+   //       inputProps: { type: 'text' }
+   //    }
+   // }
+}
+
+
+
 export const REGEX = {
    email: '^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,4})$',
    name: '^([a-zA-Z\\u00C0-\\u00FF ]){2,80}$',
    phone: '^(([(]([0-9]{2})[)])|([0-9]{2}))[ ]?[0-9]?[ ]?[0-9]{4}(s|[-])?[0-9]{4}$',
-   // device: {
-   //     variables: {
-   //         keyValueId: '/[^a-z0-9]/gi'
-   //     }
-   // }
 }
 
 export const MASK = {

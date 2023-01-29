@@ -4,6 +4,7 @@ import { Firebase } from 'utils';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
 import { useOrgContext } from './OrgContext';
 import { useCompanieContext } from './CompanieContext';
+import { USER_TYPES } from 'constants/general';
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -27,45 +28,49 @@ export const AuthProvider = ({ children }) => {
       } // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
+   const exit = async (message) => {
+      await signOut()
+      await getOrg(null)
+      await getCompanie(null)
+      setUser(null)
+      setUserData(null)
+      showSnackBar(message, 'error')
+      return;
+   }
 
    const logIn = async (email, password) => {
       const { error, message, user } = await signIn(email, password);
-
-      if (error) {
-         await signOut()
-         setUser(null)
-         setUserData(null)
-         showSnackBar(message, 'error')
-         return;
-      }
-
-      await getUserData(user);
+      if (error) await exit(message);
+      else await getUserData(user);
    }
 
    const getUserData = async (user) => {
       const { error, message, userData } = await loadUserData(user.uid)
       if (error) {
-         await signOut()
-         setUser(null)
-         setUserData(null)
-         showSnackBar(message, 'error')
+         await exit(message);
          return;
       }
 
       // Checando se esta bloqueada nos dados de users
       const snackRet = checkUserAccount(user, userData)
+      if (snackRet.error) await exit(snackRet.message)
+
+      // Lendo os dados da organização e empresa
+      if (userData?.userType != USER_TYPES.admin.id) {
+         const org = await getOrg(userData?.orgId)
+         const comp = await getCompanie(userData?.companieId)
+         if (!org) {
+            await exit(`Organização não encontrada, contate o administrador da empresa.`);
+            return;
+         }
+         if (!comp) {
+            await exit(`Empresa não encontrada, contate o administrador da empresa.`);
+            return;
+         }
+      }
 
       setUser(user)
       setUserData(userData)
-      if (snackRet.error) {
-         await signOut()
-      }
-      else {
-         getOrg(userData?.orgId)
-         getCompanie(userData?.companieId)
-      }
-      
-
       showSnackBar(snackRet.message, snackRet.error ? 'error' : 'success')
    }
 

@@ -7,7 +7,7 @@ import AddEditDialog from './AddEditDialog/AddEditDialog'
 
 const Companies = () => {
    const gClasses = useGlobalStyles()
-   const [isAddEditing, setIsAddEditing] = useState(false)
+   const [isAddEditing, setIsAddEditing] = useState(true)
    const [companie, setCompanie] = useState({})
    
    useEffect(() => {
@@ -37,7 +37,6 @@ const Companies = () => {
    return (
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
          <ShowFeedback animation='development' fullScreen title='Em desenvolvimento' subtitle='Módulo em construção!' />
-         
          <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit}/>
          <FAB onClick={handleAdd} />
       </div>

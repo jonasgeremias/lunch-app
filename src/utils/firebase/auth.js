@@ -1,6 +1,6 @@
 import { USER_TYPES } from 'constants/general';
 import { formatValue } from "utils";
-import Firebase from "./firebase";
+import Firebase, { getTimestamp } from "./firebase";
 
 export function signIn(email, password) {
    return Firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
@@ -41,9 +41,9 @@ export function loadUserData(uid) {
    if (uid) {
       return Firebase.firestore().collection('users').doc(uid).get().then(async (doc) => {
          if (doc.exists) {
-            const now = new Date(); //Firebase.firestore.serverTimestamp(); // @pending 
             const data = doc.data();
-            data.updatedAt = now;
+            const now = getTimestamp()
+            data.updatedAt = now
             await doc.ref.update({ updatedAt: now }).catch(error => { console.log(error) })
             return { error: false, message: 'Usuário Encontrado', userData: data };
          }
@@ -61,9 +61,7 @@ export function loadUserData(uid) {
 export const checkUserAccount = (user, userData) => {
    if (userData?.userType == USER_TYPES.admin.id) return { error: false, message: `Seja bem vindo Administrador!` }
    if (userData?.status !== 'active') return { error: true, message: `Sua conta está desativada, contate o administrador da empresa.` }
-   if (!userData?.userType) return { error: true, message: `Dados do usuário não existem, contate o admininstrador da empresa.` }
-   if (!userData?.orgId) return { error: true, message: `Organização não encontrada, contate o admininstrador da empresa.` }
-   if (!userData?.companieId) return { error: true, message: `Empresa não encontrada, contate o admininstrador da empresa.` }
+   if (!userData?.userType) return { error: true, message: `Dados do usuário não existem, contate o administrador da empresa.` }
    if (!userData?.approved) return { error: true, message: `Sua conta ainda não foi aprovada, contate o administrador.` }
    if (user?.displayName) return { error: false, message: `Seja bem vindo ${user?.displayName}!` }
    return { error: false, message: `Seja bem vindo!` }

@@ -19,8 +19,7 @@ const DialogContainer = ({ title, onClose, onAccept, acceptLabel, showCancel, op
 
     return (
         <Dialog PaperProps={{ className: gClasses.border8 }} onClose={ onClose } open={ open }
-            fullWidth maxWidth={ maxWidth } scroll='body'
-        >
+            fullWidth maxWidth={ maxWidth } scroll='body' >
             <div className={ classes.background }>
                 <div className={ clsx(gClasses.flexAlignCenterJustifyBetween, gClasses.fullWidth, gClasses.marginBottom16, !title && classes.float) }>
                     <Typography variant='h5' className={ gClasses.bold }>{ title }</Typography>

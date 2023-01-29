@@ -9,7 +9,6 @@ export const OrgProvider = ({ children }) => {
    const getOrg = async (id) => {
       const organization = await getOrgData(id)
       setOrg(organization)
-      console.log('getOrg', organization)
       return organization;
    };
 

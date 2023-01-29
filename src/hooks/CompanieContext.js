@@ -8,7 +8,6 @@ export const CompanieProvider = ({ children }) => {
    const getCompanie = async (id) => {
       const comp = await getCompanieData(id)
       setCompanie(comp)
-      console.log('getCompanie', comp)
       return comp;
    };
 

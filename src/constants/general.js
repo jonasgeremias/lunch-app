@@ -11,13 +11,23 @@ export const LOTTIE_OPTIONS = animation => ({
 
 
 export const USER_TYPES = {
-   client: { name: 'Cliente', id: 'client'},
-   organization: { name: 'Adm. Organização', id: 'organization'},
-   admin: { name: 'Administrador', id: 'admin'},
-   restaurant: { name: 'Restaurante', id: 'restaurant'},
-   financier: { name: 'financeiro', id: 'financier'}
+   client: { name: 'Cliente', id: 'client' },
+   organization: { name: 'Adm. Organização', id: 'organization' },
+   admin: { name: 'Administrador', id: 'admin' },
+   restaurant: { name: 'Restaurante', id: 'restaurant' },
+   financier: { name: 'financeiro', id: 'financier' }
 }
 
+
+export const STATUS_OPTIONS_ARRAY = ["active", "inactive"]
+export const STATUS_OPTIONS = {
+   inactive: { id: 'inactive', name: 'Inativo' },
+   active: { id: 'active', name: 'Ativo' }
+}
+
+
+
+// @audit apenas para consulta ------------------------------------------------
 // @@ Para montar o banco de dados
 const USER_DATA = {
    uid: '',
@@ -52,7 +62,7 @@ const RESTAURANT_DATA = {
    name: 'Restaurante do João',
    phone: '',
    email: '',
-   contactName :'',
+   contactName: '',
    linkLogo: 'link',
    createdAt: '',
    updatedAt: '',
@@ -61,9 +71,9 @@ const RESTAURANT_DATA = {
    orgId: '',
    lunchTypes: {
       no: { name: 'não', id: 'no', description: 'não pedir almoço', price: 0 },
-      buffet: { name: 'Buffet', id: 'buffet',  description: 'Almoço no buffet da empresa', price: 12.00  },
-      marmita :  { name: 'Marmita', id: 'marmita',  description: 'Marmita simples', price: 12.00  },
-      marmita2 :  { name: 'Marmita carne e salada', id: 'marmita2',  description: 'Marmita de carne e salada', price: 12.00  }
+      buffet: { name: 'Buffet', id: 'buffet', description: 'Almoço no buffet da empresa', price: 12.00 },
+      marmita: { name: 'Marmita', id: 'marmita', description: 'Marmita simples', price: 12.00 },
+      marmita2: { name: 'Marmita carne e salada', id: 'marmita2', description: 'Marmita de carne e salada', price: 12.00 }
    }
 }
 
@@ -71,15 +81,16 @@ const COMPANY_DATA = {
    companieId: '',
    name: 'Restaurante do João',
    phone: '',
+   cnpj: '',
    linkLogo: 'link',
    createdAt: '',
    updatedAt: '',
    approved: true,
-   orgId: '',
+   orgId: ''
 }
 
 const ORG_DATA = {
    orgId: '',
-   name: 'Organização 1',
+   name: 'Organização 1'
 }
 
