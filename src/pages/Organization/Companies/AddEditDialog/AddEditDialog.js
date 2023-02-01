@@ -49,36 +49,27 @@ const updateValues = (companieData) => {
       contactName: contactName || '',
       phone: phone || ''
    }
-   console.log(initialData)
+   // console.log('updateValues', initialData)
    return initialData
 }
 
 
 const AddEditDialog = ({ companieData, visible, onClose }) => {
    const [loading, setLoading] = useState(false)
+   const [adding, setAdding] = useState(false)
    const gClasses = useGlobalStyles()
-   const adding = !!companieData;
    const {showSnackBar} = useSnackBar()
    
    // Para add no form
    const {org} = useOrgContext()
    const {user} = useAuthContext()
 
-   useEffect(() => {
-      if (visible) {
-         if (adding) formik.handleReset()
-         else formik.values = updateValues(companieData)
-      }
-      console.log('visible', visible)
-   }, [visible])
-
-
    const formik = useFormik({
       initialValues: initialValues,
       validationSchema: validationSchema,
       onReset: () => {
          formik.values.companieId = Firebase.firestore().collection('companies').doc().id;
-         console.log('values', formik.values)
+         // console.log('values', formik.values)
       },
       onSubmit: async (values) => {
          setLoading(true)
@@ -90,6 +81,26 @@ const AddEditDialog = ({ companieData, visible, onClose }) => {
          if (!error) onClose()
       },
    });
+      
+   useEffect(() => {
+      
+      console.log('useefect', visible, companieData)
+      
+      if (visible) {
+         if (Object.keys(companieData).length === 0) {
+            setAdding(true)
+            formik.handleReset()
+         }
+         else {
+            setAdding(false)
+            formik.values = updateValues(companieData)
+         }
+      }      
+      // console.log('visible', visible, companieData)
+   }, [visible])
+
+
+
    
    // const handleSave = (e) => {
    //    e.preventDefault();

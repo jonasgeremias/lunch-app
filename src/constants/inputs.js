@@ -1,3 +1,4 @@
+import { DATE_FORMAT } from "./general"
 
 export const LENGTH = {
    name: { min: 2, max: 100 },
@@ -63,22 +64,22 @@ export const DEF_PROPS = {
       autoComplete: "off",
       size: 'small'
    },
-   // datePicker: {
-   //    variant: 'dialog',
-   //    autoOk: true,
-   //    inputFormat: DATE_FORMAT.input,
-   //    renderinput: {
-   //       size: 'small',
-   //       fullWidth: true,
-   //    },
-   //    disableFuture: true,
-   //    clearable: true,
-   //    invalidLabel: '',
-   //    invalidDateMessage: '',
-   //    cancelLabel: 'Cancelar',
-   //    clearLabel: 'Limpar data',
-   //    fullWidth: true
-   // },
+   datePicker: {
+      variant: 'dialog',
+      autoOk: true,
+      inputFormat: DATE_FORMAT.input,
+      renderinput: {
+         size: 'small',
+         fullWidth: true,
+      },
+      disableFuture: true,
+      clearable: true,
+      invalidLabel: '',
+      invalidDateMessage: '',
+      cancelLabel: 'Cancelar',
+      clearLabel: 'Limpar data',
+      fullWidth: true
+   },
    description: {
       multiline: true,
       fullWidth: true,

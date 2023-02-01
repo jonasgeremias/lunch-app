@@ -1,5 +1,7 @@
 export const DRAWER_WIDTH = 200;
 
+export const ROWS_PER_PAGE_TABLE = 5
+
 export const LOTTIE_OPTIONS = animation => ({
    loop: true,
    autoplay: true,
@@ -25,6 +27,14 @@ export const STATUS_OPTIONS = {
    active: { id: 'active', name: 'Ativo' }
 }
 
+/**Common used date formats in dayjs */
+export const DATE_FORMAT = {
+   large: 'DD [de] MMMM [de] YYYY [às] HH:mm',
+   medium: 'DD MMM YY - HH:mm',
+   small: 'DD MMM YY',
+   input: 'DD/MM/YYYY'
+ }
+ 
 
 
 // @audit apenas para consulta ------------------------------------------------
