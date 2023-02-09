@@ -17,13 +17,19 @@ export async function setCompanieData(data, adding, user, org) {
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
 
-   if (adding) data.createdAt = getTimestamp()
-   data.updatedAt = getTimestamp()
-   data.orgId = org?.orgId
-   data.companieCreatedByUserId = user?.uid
+   const item = {
+      ...data,
+      updatedAt : getTimestamp(),
+      orgId : org?.orgId,
+      companieCreatedByUserId : user?.uid
+   }
+   
+   if (adding) item.createdAt = item.updatedAt
 
-   const ret = await Firebase.firestore().collection('companies').doc(data.companieId).set(data, { merge: true }).then(() => {
-      return { error: false, message: 'Salvo com sucesso!' }
+   
+   console.log('setCompanieData, item', item)
+   const ret = await Firebase.firestore().collection('companies').doc(data.companieId).set(item, { merge: true }).then(() => {
+      return { error: false, message: 'Salvo com sucesso!', data: item }
    }).catch(error => {
       return { error: true, message: `Erro ao salvar os dados! (${error.id})`, data: null };
    })
@@ -80,11 +86,11 @@ export async function loadCompaniesInDB(table, userData, loadPage = null) {
          // console.log('snaps', snap.docs.map(doc => doc.data()))
          return {
             ...table,
-            pageData: snap.docs.map(doc => doc.data()),
+            // pageData: snap.docs.map(doc => doc.data()),
             allData: [...(loadPage ? allData : []), ...snap.docs.map(doc => doc.data())],
-            loadingMore: false,
-            lastDoc: snap.docs[snap.size - 1],
-            hasNextPage: snap.size >= ROWS_PER_PAGE_TABLE
+            // loadingMore: false,
+            // lastDoc: snap.docs[snap.size - 1],
+            // hasNextPage: snap.size >= ROWS_PER_PAGE_TABLE
          }
       })
       .catch(error => {

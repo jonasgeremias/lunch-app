@@ -2,26 +2,27 @@ import * as Yup from "yup";
 import { DATE_FORMAT, STATUS_OPTIONS, STATUS_OPTIONS_ARRAY } from 'constants/general'
 import { REGEX } from 'constants/inputs'
 import dayjs from "dayjs";
+import React from "react";
 
-export const initialValuesFilters = {
-   startDate: '',
-   endDate: '',
-   companieName: '',
-   phone: '',
-   cnpj: '',
-   status: 'active',
-   email: ''
-};
+// export const initialValuesFilters = {
+//    startDate: '',
+//    endDate: '',
+//    companieName: '',
+//    phone: '',
+//    cnpj: '',
+//    status: 'active',
+//    email: ''
+// };
 
-export const validationSchemaFilters = Yup.object().shape({
-   startDate: Yup.string().nullable(),
-   endDate: Yup.string().nullable(),
-   cnpj: Yup.string().nullable(),
-   companieName: Yup.string().nullable(),
-   status: Yup.mixed().oneOf(STATUS_OPTIONS_ARRAY).defined().nullable(),
-   email: Yup.string().email("E-mail inválido").nullable(),
-   phone: Yup.string().matches(REGEX.phone).nullable()
-});
+// export const validationSchemaFilters = Yup.object().shape({
+//    startDate: Yup.string().nullable(),
+//    endDate: Yup.string().nullable(),
+//    cnpj: Yup.string().nullable(),
+//    companieName: Yup.string().nullable(),
+//    status: Yup.mixed().oneOf(STATUS_OPTIONS_ARRAY).defined().nullable(),
+//    email: Yup.string().email("E-mail inválido").nullable(),
+//    phone: Yup.string().matches(REGEX.phone).nullable()
+// });
 
 
 /******************************************************************************
@@ -29,14 +30,14 @@ export const validationSchemaFilters = Yup.object().shape({
  *****************************************************************************/
 export const initialStateTable = {
    allData: [],
-   pageData: null,
-   page: 0,
-   lastDoc: null,
-   loadingMore: false,
-   hasNextPage: true,
-   order: 'asc',
-   orderBy: 'createdAt',
-   filters: []
+   // pageData: null,
+   // page: 0,
+   // lastDoc: null,
+   // loadingMore: false,
+   // hasNextPage: true,
+   // order: 'asc',
+   // orderBy: 'createdAt',
+   // filters: []
 }
 
 
@@ -66,10 +67,14 @@ export const COMPANIE_TABLE = [
 ]
 
 
-export const createDataCompanieTable = (table) => {
 
+export const createDataCompanieTable = (table) => {
    return table.map((row) => {
-      console.log(row)
+      console.log('row', row.createdAt, row.updatedAt)
+      
+      const created = new Date(row?.createdAt?.seconds * 1000 + row?.createdAt?.nanoseconds/1000000)
+      const updated = new Date(row?.updatedAt?.seconds * 1000 + row?.updatedAt?.nanoseconds/1000000)
+      
       return {
          id: row?.companieId,
          companieId: row?.companieId,
@@ -77,22 +82,24 @@ export const createDataCompanieTable = (table) => {
          email: row?.email,
          phone: row?.phone,
          cnpj: row?.cnpj,
+         contactName: row.contactName,
          // linkLogo: () => <img src={row?.linkLogo} style={{ heigth: '10px', width: '50px' }} />,
-         createdAt: dayjs(Date(row?.createdAt)).format(DATE_FORMAT.medium),
-         updatedAt: dayjs(Date(row?.updatedAt)).format(DATE_FORMAT.medium),
+         createdAt: dayjs(created).format(DATE_FORMAT.small),
+         updatedAt: dayjs(updated).format(DATE_FORMAT.small), 
          status: STATUS_OPTIONS[row?.status].name || ''
       }
    })
 }
 
 export const COMPANIE_TABLE_COLUMNS = [
-   { width: 150, sortable: false, editable: false, field: 'id', headerName: 'ID' },
-   { width: 150, sortable: false, editable: false, field: 'companieName', headerName: 'Nome' },
-   { width: 150, sortable: false, editable: false, field: 'email', headerName: 'E-mail' },
+   { width: 250, sortable: false, editable: false, field: 'id', headerName: 'ID' },
+   { width: 150, sortable: false, editable: false, field: 'status', headerName: 'Status' },
+   { width: 250, sortable: false, editable: false, field: 'companieName', headerName: 'Nome' },
+   { width: 250, sortable: false, editable: false, field: 'email', headerName: 'E-mail' },
    { width: 150, sortable: false, editable: false, field: 'phone', headerName: 'Telefone' },
    { width: 150, sortable: false, editable: false, field: 'cnpj', headerName: 'CNPJ' },
+   { width: 200, sortable: false, editable: false, field: 'contactName', headerName: 'Nome do contato' },
    // { width: 150, sortable: false, editable: false, field: 'linkLogo', headerName: 'linkLogo' },
    { width: 150, sortable: false, editable: false, field: 'createdAt', headerName: 'Criado em' },
-   { width: 150, sortable: false, editable: false, field: 'updatedAt', headerName: 'Atualizado em' },
-   { width: 150, sortable: false, editable: false, field: 'status', headerName: 'Status' }
+   { width: 150, sortable: false, editable: false, field: 'updatedAt', headerName: 'Atualizado em' }
 ]

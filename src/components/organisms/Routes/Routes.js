@@ -7,19 +7,31 @@ import { useAuthContext } from 'hooks/AuthContext';
 
 import { ORIGIN_ROUTES, ROUTES } from 'constants/routes'
 import SplashLoading from 'components/molecules/SplashLoading/SplashLoading';
+import ShowFeedback from 'components/atoms/ShowFeedback/ShowFeedback';
+import { DATABASE_VERSION } from 'constants/general';
 
 function AppRoutes() {
    const [splash, setSplash] = useState(true);
    const { app } = useAppContext();
    const { user, userData } = useAuthContext();
-
+     
    useEffect(() => {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
          setSplash(false)
-      }, 1500)
+      }, 2000)
    }, [user])
+   
+   if (!splash && app) {
+      if (!Boolean(app.act) && process.env.NODE_ENV === 'production') {
+         return <ShowFeedback title='O sistema foi desativado temporariamente' animation='offline' subtitle='Estamos fazendo alguns ajustes e em breve estaremos de volta' hideDrawer fullScreen />
+       } else if (app.version > DATABASE_VERSION) {
+         return <ShowFeedback title='Você está usando uma versão antiga do sistema' animation='error' subtitle='Atualize a página pressionando F5' hideDrawer fullScreen />
+       }
+       else if (app?.error) 
+       return <ShowFeedback title='Ops... Ocorreu um erro!' animation='error' subtitle={app?.message} fullScreen hideDrawer showLogout/>
+   }
 
-   if (splash || (!app && !user && !userData)) return <SplashScreen />
+   if (splash) return <SplashScreen />
 
    const routes = ROUTES[userData?.userType] || []
 

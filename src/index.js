@@ -8,6 +8,14 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { App } from './components/organisms';
 
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import 'dayjs/locale/pt-br'
+
+// Applies UTC and pt-br language to the entire application dates
+dayjs.locale('pt-br')
+dayjs.extend(utc)
+
 const Main = () => {
   const [theme, setTheme] = useState("light")
   const themeUpdateHandler = (val) => {

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { useGlobalStyles } from 'styles'
-import FAB from 'components/atoms/FAB/FAB'
+// import FAB from 'components/atoms/FAB/FAB'
 import AddEditDialog from './AddEditDialog/AddEditDialog'
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle'
 import { Button, Paper } from '@mui/material'
 import { useBreakPoint } from 'hooks/useBreakPoint'
-import PaginationTable from './PaginationTable/PaginationTable'
-import Filters from './Filters/Filters'
-import { useFormik } from 'formik';
+// import PaginationTable from './PaginationTable/PaginationTable'
+// import Filters from './Filters/Filters'
+// import { useFormik } from 'formik';
 import { COMPANIE_TABLE_COLUMNS, createDataCompanieTable, initialStateTable, initialValuesFilters, validationSchemaFilters } from './getInputs'
 import { useAuthContext } from 'hooks/AuthContext'
 import { loadCompaniesInDB } from 'utils/firebase/companies'
 
 import { DataGrid } from '@mui/x-data-grid';
+import AddIcon from '@mui/icons-material/Add'
 
 const Companies = () => {
    const gClasses = useGlobalStyles()
@@ -29,14 +30,18 @@ const Companies = () => {
       setShowTable(createDataCompanieTable(table.allData))
    }, [table])
 
-   const formikFilters = useFormik({
-      initialValues: initialValuesFilters,
-      validationSchema: validationSchemaFilters,
-      onSubmit: async (values) => {
-         //   alert(JSON.stringify(values, null, 2));
-         setTable(await loadCompaniesInDB(table, userData))
-      },
-   });
+   useEffect(() => {
+      loadData() // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+
+   // const formikFilters = useFormik({
+   //    initialValues: initialValuesFilters,
+   //    validationSchema: validationSchemaFilters,
+   //    onSubmit: async (values) => {
+   //       //   alert(JSON.stringify(values, null, 2));
+   //       setTable(await loadCompaniesInDB(table, userData))
+   //    },
+   // });
 
    const onClickItem = (item) => {
       const comp = table.allData.filter(row => row.companieId == item.id)
@@ -57,36 +62,51 @@ const Companies = () => {
    const loadData = async () => {
       setTable(await loadCompaniesInDB(table, userData))
    }
+   
+   
+   const updateCompanieData = (item) => {
+      
+      console.log('updateCompanieData', item)
+      const dataset = table.allData;
+      
+      const obj = dataset.find(row => row.companieId === item.companieId);
+      if (!obj) {
+         dataset.push(item)
+      }
 
+      const temp_table = dataset.map(row => {
+         if (row.companieId != item.companieId) return row;
+         return item
+      })
+      setTable({...table, allData : temp_table})
+   }
 
    return (
       <>
          <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
             <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
                <div className={clsx(gClasses.flexJustifySpaceBetween, !webScreen && gClasses.flexAlignCenter)}>
-                  <TabSubtitle description={webScreen ? `Aqui você pode filtrar e consultar as empresas da organização.` : ''}
+                  <TabSubtitle description={webScreen ? `Aqui você pode consultar as empresas da organização.` : ''}
                      descriptionClassName={gClasses.marginBottom30}>
                      Consulta de Empresas
                   </TabSubtitle >
-                  <Button color='primary' onClick={handleAdd} variant='outlined' size='small' >
-                     Adicionar
+                  <Button color='primary' onClick={handleAdd} variant='outlined' size='large' >
+                     <AddIcon /> Adicionar
                   </Button>
                </div>
 
-               <Filters formikFilters={formikFilters} />
+               {/* <Filters formikFilters={formikFilters} /> */}
 
-               <div style={{ display: 'flex', width: '100%', height: "80vh" }}>
-                  <div style={{ flexGrow: 1 }}>
-                     <DataGrid
-                        rows={showTable}
-                        columns={COMPANIE_TABLE_COLUMNS}
-                        autoHeight
-                        // rowsPerPageOptions={[ROWS_PER_PAGE_TABLE]}
-                        onRowDoubleClick={onClickItem}
-                     // checkboxSelection={true}
-                     // disableSelectionOnClick={true}
-                     />
-                  </div>
+               <div className={gClasses.dataGrid} >
+                  <DataGrid
+                     rows={showTable}
+                     columns={COMPANIE_TABLE_COLUMNS}
+                     autoHeight11111
+                     // rowsPerPageOptions={[ROWS_PER_PAGE_TABLE]}
+                     onRowDoubleClick={onClickItem}
+                  // checkboxSelection={true}
+                  // disableSelectionOnClick={true}
+                  />
                </div>
 
 
@@ -97,7 +117,7 @@ const Companies = () => {
                   loadData={loadData} /> */}
             </Paper >
 
-            <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit} />
+            <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit} updateCompanieData={updateCompanieData}/>
             {/* <FAB onClick={handleAdd} /> */}
          </div >
 

@@ -54,54 +54,57 @@ const updateValues = (companieData) => {
 }
 
 
-const AddEditDialog = ({ companieData, visible, onClose }) => {
+const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) => {
    const [loading, setLoading] = useState(false)
    const [adding, setAdding] = useState(false)
-   const gClasses = useGlobalStyles()
-   const {showSnackBar} = useSnackBar()
-   
-   // Para add no form
-   const {org} = useOrgContext()
-   const {user} = useAuthContext()
+   // const gClasses = useGlobalStyles()
+   const { showSnackBar } = useSnackBar()
 
-   const formik = useFormik({
+   // Para add no form
+   const { org } = useOrgContext()
+   const { user } = useAuthContext()
+
+   let formik = useFormik({
       initialValues: initialValues,
       validationSchema: validationSchema,
       onReset: () => {
          formik.values.companieId = Firebase.firestore().collection('companies').doc().id;
          // console.log('values', formik.values)
       },
+
       onSubmit: async (values) => {
          setLoading(true)
-         console.log(JSON.stringify(values, null, 2));
-         const  {error, message} = await setCompanieData(values, adding, user, org)
+         // console.log(JSON.stringify(values, null, 2));
          
+         const dataset = {...companieData, ...values}
+         
+         console.log('dataset', dataset)
+         const { error, message, data} = await setCompanieData(dataset, adding, user, org)
          setLoading(false)
-         showSnackBar(message, error? 'error' :  'success');
-         if (!error) onClose()
+         showSnackBar(message, error ? 'error' : 'success');
+         if (!error) {
+            updateCompanieData(data)
+         }
+         onClose()
       },
    });
-      
+
    useEffect(() => {
-      
-      console.log('useefect', visible, companieData)
-      
-      if (visible) {
+      if (!!visible) {
          if (Object.keys(companieData).length === 0) {
             setAdding(true)
             formik.handleReset()
          }
          else {
             setAdding(false)
-            formik.values = updateValues(companieData)
+            formik.setValues(updateValues(companieData))
          }
-      }      
-      // console.log('visible', visible, companieData)
+      } else formik.handleReset()
    }, [visible])
 
 
 
-   
+
    // const handleSave = (e) => {
    //    e.preventDefault();
    //    console.log(formik.errors)

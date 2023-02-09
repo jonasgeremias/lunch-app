@@ -1,3 +1,5 @@
+export const DATABASE_VERSION = 1;
+
 export const DRAWER_WIDTH = 200;
 
 export const ROWS_PER_PAGE_TABLE = 5

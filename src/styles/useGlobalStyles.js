@@ -4,7 +4,14 @@ import { makeStyles } from '@mui/styles';
 // import {DRAWER_WIDTH} from 'constants/general'
 
 export default makeStyles(theme => ({
-  lunchStatusCard: {
+   dataGrid: {
+      display: 'flex', 
+      width: 'auto',
+      height: "80vh",
+      margin: theme.spacing(2, 2),
+      padding: theme.spacing(4),
+  },
+   lunchStatusCard: {
    alignItems: 'center',
    borderRadius: 10,
    margin: theme.spacing(2, 2),
@@ -19,7 +26,6 @@ export default makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     borderRadius: 10,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(10, 4, 10, 4),
