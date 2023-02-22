@@ -73,10 +73,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Appbar({ routes, children }) {
    const theme = useTheme();
    const [open, setOpen] = useState(false);
+   const [timeoutCLose, setTimeoutClose] = useState(false);
+
    const location = useLocation()
    const [currentRoute, setCurrentRoute] = useState();
    const { logOut } = useAuthContext();
-   
+
    const handleClickLogout = () => {
       logOut()
    }
@@ -90,6 +92,20 @@ export default function Appbar({ routes, children }) {
 
       setCurrentRoute(current)
    }, [location])
+
+   // Recarrega o timeout se open, caso contrario zera.
+   const timeoutHandle = (now = false) => {
+      clearTimeout(timeoutCLose)
+      if (open) {
+         if (now) setTimeoutClose(setTimeout(() => setOpen(false), 1000))
+         else setTimeoutClose(setTimeout(() => setOpen(false), 7500))
+      }
+   }
+
+   // Se o status do menu mudar, verifica se tem o tempo de fechamento automático.
+   useEffect(() => {
+      timeoutHandle();
+   }, [open])
 
    const handleDrawer = (status) => {
       setOpen(status);
@@ -138,7 +154,7 @@ export default function Appbar({ routes, children }) {
                </IconButton>
             </DrawerHeader>
 
-            <DrawerItems routes={routes} />
+            <DrawerItems routes={routes} timeoutHandle={timeoutHandle}/>
          </Drawer>
 
          <DrawerHeader />

@@ -6,7 +6,7 @@ import { Link, useLocation, matchPath } from "react-router-dom"
 import { ORIGIN_ROUTES } from 'constants/routes'
 import useStyles from './useStyles'
 
-const DrawerItems = ({ routes }) => {
+const DrawerItems = ({ routes , timeoutHandle}) => {
    const gClasses = useGlobalStyles()
    const location = useLocation()
    const classes = useStyles()
@@ -16,7 +16,7 @@ const DrawerItems = ({ routes }) => {
          {routes.map(route => {
             const match = matchPath({ path: ORIGIN_ROUTES + '/' + route.path, exact: true }, location.pathname)
             return (
-               <Link to={ORIGIN_ROUTES + '/' + route.path} key={route.path} className={classes.drawerItem}>
+               <Link to={ORIGIN_ROUTES + '/' + route.path} key={route.path} className={classes.drawerItem} onClick={() => timeoutHandle(true)}>
                   <StyledListItem selected={match !== null} button={true}>
                      <ListItemIcon>
                         {route.icon}

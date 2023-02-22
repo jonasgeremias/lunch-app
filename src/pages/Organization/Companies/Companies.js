@@ -13,16 +13,19 @@ import { COMPANIE_TABLE_COLUMNS, createDataCompanieTable, initialStateTable, ini
 import { useAuthContext } from 'hooks/AuthContext'
 import { loadCompaniesInDB } from 'utils/firebase/companies'
 
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Companies = () => {
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
    const [isAddEditing, setIsAddEditing] = useState(false)
+   const [loading, setLoading] = useState(true)
    const [companie, setCompanie] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
+   const [selectedRowsData, setSelectedRowsData] = useState([])
    const { userData } = useAuthContext();
 
    // Atualiza a tabela em tela
@@ -61,67 +64,84 @@ const Companies = () => {
 
    const loadData = async () => {
       setTable(await loadCompaniesInDB(table, userData))
+      setLoading(false)
    }
-   
-   
+
+
    const updateCompanieData = (item) => {
-      
       console.log('updateCompanieData', item)
       const dataset = table.allData;
-      
       const obj = dataset.find(row => row.companieId === item.companieId);
       if (!obj) {
          dataset.push(item)
       }
-
       const temp_table = dataset.map(row => {
          if (row.companieId != item.companieId) return row;
          return item
       })
-      setTable({...table, allData : temp_table})
+      setTable({ ...table, allData: temp_table })
    }
 
+   const onRowsSelectionHandler = (ids) => {
+      // const selectedRowsData = ids.map((id) => showTable.find((row) => row.id === id));
+      console.log('ids', ids)
+      setSelectedRowsData(ids)
+   };
+
    return (
-      <>
-         <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
-            <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-               <div className={clsx(gClasses.flexJustifySpaceBetween, !webScreen && gClasses.flexAlignCenter)}>
-                  <TabSubtitle description={webScreen ? `Aqui você pode consultar as empresas da organização.` : ''}
-                     descriptionClassName={gClasses.marginBottom30}>
-                     Consulta de Empresas
-                  </TabSubtitle >
-                  <Button color='primary' onClick={handleAdd} variant='outlined' size='large' >
-                     <AddIcon /> Adicionar
-                  </Button>
-               </div>
-
-               {/* <Filters formikFilters={formikFilters} /> */}
-
-               <div className={gClasses.dataGrid} >
-                  <DataGrid
-                     rows={showTable}
-                     columns={COMPANIE_TABLE_COLUMNS}
-                     autoHeight11111
-                     // rowsPerPageOptions={[ROWS_PER_PAGE_TABLE]}
-                     onRowDoubleClick={onClickItem}
-                  // checkboxSelection={true}
-                  // disableSelectionOnClick={true}
-                  />
-               </div>
+      <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
+         <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+            <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
+               <TabSubtitle description={webScreen ? `Aqui você pode consultar as empresas da organização.` : ''}
+                  descriptionClassName={gClasses.marginBottom30}>
+                  Consulta de Empresas
+               </TabSubtitle >
+               <Button color='primary' onClick={handleAdd} variant='outlined' >
+                  <AddIcon /> Adicionar
+               </Button>
+            </div>
 
 
-               {/* <PaginationTable
+            {/* <Filters formikFilters={formikFilters} /> */}
+            
+            {/* <Paper variant="outlined" className={gClasses.datagridOptions}>
+               {selectedRowsData && selectedRowsData.length > 0 ?
+                  <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button> : null
+               }
+            </Paper> */}
+            
+            <div className={gClasses.dataGrid} >
+               <DataGrid
+                  loading={loading}
+                  rows={showTable}
+                  columns={COMPANIE_TABLE_COLUMNS}
+                  autoHeight
+                  // rowsPerPageOptions={[ROWS_PER_PAGE_TABLE]}
+                  // onRowDoubleClick={onClickItem}
+                  checkboxSelection={false}
+                  disableSelectionOnClick={true}
+                  components={{
+                     Toolbar: GridToolbar
+                  }}
+
+                  // onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+
+               // isRowSelectable={(i) => console.log('select', i)}
+               />
+            </div>
+
+
+            {/* <PaginationTable
                   dataTable={table}
                   setDatatable={setTable}
                   onClickEdit={onClickItem}
                   loadData={loadData} /> */}
-            </Paper >
+         </Paper >
 
-            <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit} updateCompanieData={updateCompanieData}/>
-            {/* <FAB onClick={handleAdd} /> */}
-         </div >
+         <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit} updateCompanieData={updateCompanieData} />
+         {/* <FAB onClick={handleAdd} /> */}
+      </div >
 
-      </>
 
 
 
