@@ -14,9 +14,9 @@ const DrawerItems = ({ routes , timeoutHandle}) => {
    return (
       <>
          {routes.map(route => {
-            const match = matchPath({ path: ORIGIN_ROUTES + '/' + route.path, exact: true }, location.pathname)
+            const match = matchPath({ path: '/' + ORIGIN_ROUTES + '/' + route.path }, location.pathname)
             return (
-               <Link to={ORIGIN_ROUTES + '/' + route.path} key={route.path} className={classes.drawerItem} onClick={() => timeoutHandle(true)}>
+               <Link to={'/' + ORIGIN_ROUTES + '/' + route.path} key={route.path} className={classes.drawerItem} onClick={() => timeoutHandle(true)}>
                   <StyledListItem selected={match !== null} button={true}>
                      <ListItemIcon>
                         {route.icon}

@@ -1,24 +1,24 @@
 import { useState, useEffect, cloneElement } from 'react';
-import { useLocation } from "react-router-dom"
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
+// import CssBaseline from '@mui/material/CssBaseline'
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import logo from 'assets/images/logo512.png'
+// import logo from 'assets/images/logo512.png'
 import useScrollTrigger from '@mui/material/useScrollTrigger'
-import { ORIGIN_ROUTES } from 'constants/routes'
+// import { ORIGIN_ROUTES } from 'constants/routes'
 import { DRAWER_WIDTH } from 'constants/general'
 import DrawerItems from './DrawerItems';
 import { useAuthContext } from 'hooks/AuthContext';
-import { ExitToAppRounded, Menu, Close } from '@mui/icons-material'
+import { ExitToAppRounded } from '@mui/icons-material'
 
+import BreadCrumbs from 'components/atoms/BreadCrumbs/BreadCrumbs';
 
 const ElevationScroll = ({ children, darkTheme }) => {
    const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 })
@@ -74,30 +74,18 @@ export default function Appbar({ routes, children }) {
    const theme = useTheme();
    const [open, setOpen] = useState(false);
    const [timeoutCLose, setTimeoutClose] = useState(false);
-
-   const location = useLocation()
-   const [currentRoute, setCurrentRoute] = useState();
    const { logOut } = useAuthContext();
 
    const handleClickLogout = () => {
       logOut()
    }
 
-   useEffect(() => {
-      let current = routes.find(route => (ORIGIN_ROUTES + '/' + route.path === location.pathname))
-
-      if (!current) {
-         current = routes.find(route => (ORIGIN_ROUTES + route.path === location.pathname))
-      }
-
-      setCurrentRoute(current)
-   }, [location])
 
    // Recarrega o timeout se open, caso contrario zera.
    const timeoutHandle = (now = false) => {
       clearTimeout(timeoutCLose)
       if (open) {
-         if (now) setTimeoutClose(setTimeout(() => setOpen(false), 1000))
+         if (now) setTimeoutClose(setTimeout(() => setOpen(false), 3000))
          else setTimeoutClose(setTimeout(() => setOpen(false), 7500))
       }
    }
@@ -125,9 +113,9 @@ export default function Appbar({ routes, children }) {
                   >
                      <MenuIcon />
                   </IconButton>
-                  <Typography variant="h6" noWrap component="div">
-                     {currentRoute?.name || 'Erro'}
-                  </Typography>
+
+                  <BreadCrumbs routes={routes} />
+
                   <div style={{ flexGrow: 1 }} />
                   <IconButton onClick={handleClickLogout}>
                      <ExitToAppRounded color='action' />
@@ -154,7 +142,7 @@ export default function Appbar({ routes, children }) {
                </IconButton>
             </DrawerHeader>
 
-            <DrawerItems routes={routes} timeoutHandle={timeoutHandle}/>
+            <DrawerItems routes={routes} timeoutHandle={timeoutHandle} />
          </Drawer>
 
          <DrawerHeader />

@@ -9,8 +9,10 @@ const OrganizationHome = lazy(() => import('pages/Organization/Home/Home'))
 const OrganizationRestaurant = lazy(() => import('pages/Organization/Restaurant/Restaurant'))
 const OrganizationHistory = lazy(() => import('pages/Organization/History/History'))
 const OrganizationCompanies = lazy(() => import('pages/Organization/Companies/Companies'))
+const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Companies/Detail/Detail'))
 
-export const ORIGIN_ROUTES = '/dashboard'
+export const ORIGIN_ROUTES = 'dashboard'
+export const COMPANIE_PATH = 'companies'
 
 export const ROUTES = {
    client: [{
@@ -50,10 +52,19 @@ export const ROUTES = {
       element: <OrganizationHistory />
    },
    {
-      path: "companies",
+      path: COMPANIE_PATH,
       name: 'Empresas',
       icon: <Business />,
-      element: <OrganizationCompanies />
-   }
+      element: <OrganizationCompanies />,
+      sections: [
+         {
+            path: COMPANIE_PATH + "/:id",
+            name: 'Empresas',
+            icon: <Business />,
+            element: <OrganizationCompaniesDetail />
+         }
+      ]
+   },
+
 ]
 }

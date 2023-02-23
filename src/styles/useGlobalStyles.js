@@ -4,6 +4,13 @@ import { makeStyles } from '@mui/styles';
 // import {DRAWER_WIDTH} from 'constants/general'
 
 export default makeStyles(theme => ({
+   breadcrumblink: {
+     textDecoration: 'none',
+     color: theme.palette.text.primary,
+     '&:hover': {
+      color: theme.palette.primary.main
+   },
+   },
    dataGrid: {
       display: 'flex',
       width: 'auto',

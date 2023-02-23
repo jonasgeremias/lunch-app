@@ -14,21 +14,21 @@ function AppRoutes() {
    const [splash, setSplash] = useState(true);
    const { app } = useAppContext();
    const { user, userData } = useAuthContext();
-     
+
    useEffect(() => {
       const timer = setTimeout(() => {
          setSplash(false)
       }, 2000)
    }, [user])
-   
+
    if (!splash && app) {
       if (!Boolean(app.act) && process.env.NODE_ENV === 'production') {
          return <ShowFeedback title='O sistema foi desativado temporariamente' animation='offline' subtitle='Estamos fazendo alguns ajustes e em breve estaremos de volta' hideDrawer fullScreen />
-       } else if (app.version > DATABASE_VERSION) {
+      } else if (app.version > DATABASE_VERSION) {
          return <ShowFeedback title='Você está usando uma versão antiga do sistema' animation='error' subtitle='Atualize a página pressionando F5' hideDrawer fullScreen />
-       }
-       else if (app?.error) 
-       return <ShowFeedback title='Ops... Ocorreu um erro!' animation='error' subtitle={app?.message} fullScreen hideDrawer showLogout/>
+      }
+      else if (app?.error)
+         return <ShowFeedback title='Ops... Ocorreu um erro!' animation='error' subtitle={app?.message} fullScreen hideDrawer showLogout />
    }
 
    if (splash) return <SplashScreen />
@@ -39,18 +39,28 @@ function AppRoutes() {
       <BrowserRouter>
          <React.Suspense fallback={<SplashLoading />}>
             <Routes>
-               <Route exact path='/' element={<Navigate to={ORIGIN_ROUTES} replace />} />
+               <Route exact path='/' element={<Navigate to={'/' + ORIGIN_ROUTES} replace />} />
                <Route exact path='/signin' element={<SignIn />} />
                <Route exact path='/forgotpassword' element={<ForgotPassword />} />
-               <Route exact path={ORIGIN_ROUTES} element={<DashLayout />} >
-                  {routes.map((route) => <Route key={route.path} exact path={route.path} element={route.element} errorElement={<h1>{route.path}</h1>} />)}
-
+               <Route exact path={'/' + ORIGIN_ROUTES} element={<DashLayout />} >
+                  {
+                     routes.map((route) => {
+                        const items = [];
+                        items.push(<Route key={route.path} exact path={route.path} element={route.element} errorElement={< h1 > {route.path}</h1>} />)
+                        items.push(
+                           route.sections && route.sections.map((section) =>
+                              <Route key={section.path} exact path={section.path} element={section.element} errorElement={<h1>{section.path}</h1>} />
+                           )
+                        )
+                        return items;
+                     })
+                  }
                   <Route exact path='*' element={<NotFound />} />
                </Route>
-               <Route exact path='*' element={<Navigate to={ORIGIN_ROUTES} replace />} />
+               <Route exact path='*' element={<Navigate to={'/' + ORIGIN_ROUTES} replace />} />
             </Routes>
          </React.Suspense>
-      </BrowserRouter>
+      </BrowserRouter >
    )
 }
 

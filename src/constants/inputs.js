@@ -21,7 +21,7 @@ export const DEF_PROPS_LOGIN = {
       required: true,
       fullWidth: true,
       label: "Email",
-      autoFocus: true,
+      // autoFocus: true,
       autoComplete: "email",
       inputProps: { maxLength: LENGTH.email.max, type: 'email' }
    },

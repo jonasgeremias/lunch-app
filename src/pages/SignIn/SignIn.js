@@ -20,7 +20,7 @@ const SignIn = () => {
    const classes = useStyles()
    const gclasses = useGlobalStyles()
 
-   if (!!user) return <Navigate to={ORIGIN_ROUTES} />
+   if (!!user) return <Navigate to={'/' + ORIGIN_ROUTES} />
    return (
       <div className={gclasses.root}>
          <Paper className={gclasses.paper} elevation={1}>

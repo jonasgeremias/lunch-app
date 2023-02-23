@@ -97,13 +97,13 @@ export const createDataCompanieTable = (table) => {
 }
 
 export const COMPANIE_TABLE_COLUMNS = [
-   {
-      width: 75, field: 'options', headerName: 'Opções',
-      renderCell: (cellValues) => <MyOption cellValues />
+   // {
+   //    width: 75, field: 'options', headerName: 'Opções',
+   //    renderCell: (cellValues) => <MyOption cellValues />
 
-   },
+   // },
    { width: 250, sortable: false, editable: false, field: 'companieName', headerName: 'Nome' },
-   // { width: 150, sortable: false, editable: false, field: 'status', headerName: 'Status' },
+   { width: 100, sortable: false, editable: false, field: 'status', headerName: 'Status' },
    { width: 250, sortable: false, editable: false, field: 'id', headerName: 'ID' },
    { width: 250, sortable: false, editable: false, field: 'email', headerName: 'E-mail' },
    // { width: 150, sortable: false, editable: false, field: 'phone', headerName: 'Telefone' },
@@ -117,53 +117,53 @@ export const COMPANIE_TABLE_COLUMNS = [
 
 
 
-const MyOption = ({ cellValues }) => {
+// const MyOption = ({ cellValues }) => {
 
-   const [open, setOpen] = React.useState(false)
-   const handleClick = (event) => {
-      setOpen(event.currentTarget);
-   };
-   const handleClose = (event) => {
-      setOpen(null);
-   };
-   return (
-      <>
-         <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? 'long-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-         >
-            <MoreVertIcon />
-         </IconButton>
+//    const [open, setOpen] = React.useState(false)
+//    const handleClick = (event) => {
+//       setOpen(event.currentTarget);
+//    };
+//    const handleClose = (event) => {
+//       setOpen(null);
+//    };
+//    return (
+//       <>
+//          <IconButton
+//             aria-label="more"
+//             id="long-button"
+//             aria-controls={open ? 'long-menu' : undefined}
+//             aria-expanded={open ? 'true' : undefined}
+//             aria-haspopup="true"
+//             onClick={handleClick}
+//          >
+//             <MoreVertIcon />
+//          </IconButton>
 
-         <Menu
-            id="long-menu"
-            MenuListProps={{
-               'aria-labelledby': 'long-button',
-            }}
-            anchorEl={open}
-            open={open} onClose={handleClose} PaperProps={{
-               style: {
-                  maxHeight: 48 * 4.5,
-                  width: '20ch',
-               },
-            }}>
+//          <Menu
+//             id="long-menu"
+//             MenuListProps={{
+//                'aria-labelledby': 'long-button',
+//             }}
+//             anchorEl={open}
+//             open={open} onClose={handleClose} PaperProps={{
+//                style: {
+//                   maxHeight: 48 * 4.5,
+//                   width: '20ch',
+//                },
+//             }}>
               
                   
-            <MenuItem aria-label="edit" color='primary' onClick={(e) => console.log(e, cellValues)}>
-               <EditIcon /> 
-               <Typography variant="inherit">Editar</Typography>
-            </MenuItem>
+//             <MenuItem aria-label="edit" color='primary' onClick={(e) => console.log(e, cellValues)}>
+//                <EditIcon /> 
+//                <Typography variant="inherit">Editar</Typography>
+//             </MenuItem>
 
-            <MenuItem aria-label="delete" color='error' onClick={(e) => console.log('cellValues', cellValues, e)}>
-               <DeleteIcon /> 
-               <Typography variant="inherit">Apagar</Typography>
-            </MenuItem>
+//             <MenuItem aria-label="delete" color='error' onClick={(e) => console.log('cellValues', cellValues, e)}>
+//                <DeleteIcon /> 
+//                <Typography variant="inherit">Apagar</Typography>
+//             </MenuItem>
 
-         </Menu>
-      </>
-   )
-}
+//          </Menu>
+//       </>
+//    )
+// }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import clsx from 'clsx'
 import { useGlobalStyles } from 'styles'
 // import FAB from 'components/atoms/FAB/FAB'
@@ -16,8 +17,10 @@ import { loadCompaniesInDB } from 'utils/firebase/companies'
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete';
+import { COMPANIE_PATH, ORIGIN_ROUTES } from 'constants/routes';
 
 const Companies = () => {
+   const navigate = useNavigate();
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
    const [isAddEditing, setIsAddEditing] = useState(false)
@@ -47,9 +50,11 @@ const Companies = () => {
    // });
 
    const onClickItem = (item) => {
-      const comp = table.allData.filter(row => row.companieId == item.id)
-      setCompanie(comp[0] || {})
-      setIsAddEditing(true)
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${item.id}`);
+      
+      // const comp = table.allData.filter(row => row.companieId == item.id)
+      // setCompanie(comp[0] || {})
+      // setIsAddEditing(true)
    }
 
    const handleAdd = e => {
@@ -67,20 +72,19 @@ const Companies = () => {
       setLoading(false)
    }
 
-
-   const updateCompanieData = (item) => {
-      console.log('updateCompanieData', item)
-      const dataset = table.allData;
-      const obj = dataset.find(row => row.companieId === item.companieId);
-      if (!obj) {
-         dataset.push(item)
-      }
-      const temp_table = dataset.map(row => {
-         if (row.companieId != item.companieId) return row;
-         return item
-      })
-      setTable({ ...table, allData: temp_table })
-   }
+   // const updateCompanieData = (item) => {
+   //    console.log('updateCompanieData', item)
+   //    const dataset = table.allData;
+   //    const obj = dataset.find(row => row.companieId === item.companieId);
+   //    if (!obj) {
+   //       dataset.push(item)
+   //    }
+   //    const temp_table = dataset.map(row => {
+   //       if (row.companieId != item.companieId) return row;
+   //       return item
+   //    })
+   //    setTable({ ...table, allData: temp_table })
+   // }
 
    const onRowsSelectionHandler = (ids) => {
       // const selectedRowsData = ids.map((id) => showTable.find((row) => row.id === id));
@@ -103,13 +107,13 @@ const Companies = () => {
 
 
             {/* <Filters formikFilters={formikFilters} /> */}
-            
+
             {/* <Paper variant="outlined" className={gClasses.datagridOptions}>
                {selectedRowsData && selectedRowsData.length > 0 ?
                   <Button variant="outlined" startIcon={<DeleteIcon />}> Delete </Button> : null
                }
             </Paper> */}
-            
+
             <div className={gClasses.dataGrid} >
                <DataGrid
                   loading={loading}
@@ -117,14 +121,14 @@ const Companies = () => {
                   columns={COMPANIE_TABLE_COLUMNS}
                   autoHeight
                   // rowsPerPageOptions={[ROWS_PER_PAGE_TABLE]}
-                  // onRowDoubleClick={onClickItem}
+                  onRowDoubleClick={onClickItem}
                   checkboxSelection={false}
                   disableSelectionOnClick={true}
                   components={{
                      Toolbar: GridToolbar
                   }}
 
-                  // onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+               // onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
 
                // isRowSelectable={(i) => console.log('select', i)}
                />
@@ -138,13 +142,12 @@ const Companies = () => {
                   loadData={loadData} /> */}
          </Paper >
 
-         <AddEditDialog visible={isAddEditing} companieData={companie} onClose={handleCloseAddEdit} updateCompanieData={updateCompanieData} />
-         {/* <FAB onClick={handleAdd} /> */}
+         <AddEditDialog visible={isAddEditing}
+            companieData={companie}
+            onClose={handleCloseAddEdit}
+            // updateCompanieData={updateCompanieData}
+            />
       </div >
-
-
-
-
    )
 }
 
