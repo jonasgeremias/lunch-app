@@ -59,6 +59,27 @@ export default makeStyles(theme => ({
       alignItems: 'center',
       margin: 0,
    },
+   container: {
+      padding: 12 , 
+      marginTop: 8, 
+      marginBottom: 8, 
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      borderRadius: 10,
+      [theme.breakpoints.down('md')]: {
+         width: '100%',
+         borderRadius: 0,
+         // flexDirection: 'column',
+      },      
+   },
+   listScroll: {
+      maxHeight: 300, 
+      overflow: 'auto',
+      padding: 2, 
+      marginTop: 8, 
+      marginBottom: 8, 
+   },
    paper: {
       overflow: 'hidden',
       height: '70%',

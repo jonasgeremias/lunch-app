@@ -74,11 +74,9 @@ export const COMPANIE_TABLE = [
 
 export const createDataCompanieTable = (table) => {
    return table.map((row) => {
-      // console.log('row', row.createdAt, row.updatedAt)
-
       const created = new Date(row?.createdAt?.seconds * 1000 + row?.createdAt?.nanoseconds / 1000000)
       const updated = new Date(row?.updatedAt?.seconds * 1000 + row?.updatedAt?.nanoseconds / 1000000)
-
+      
       return {
          id: row?.companieId,
          companieId: row?.companieId,

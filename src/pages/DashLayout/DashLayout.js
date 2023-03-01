@@ -6,13 +6,9 @@ import Appbar from './Appbar/Appbar';
 
 const Dashboard = () => {
    const { user, userData } = useAuthContext();
+      
    if (!user) {
-      return (
-         <>
-            <Navigate to="/signin" />
-            {/* <Outlet /> */}
-         </>
-      )
+      return <Navigate to="/signin" />
    }
 
    const routes = ROUTES[userData?.userType] || []

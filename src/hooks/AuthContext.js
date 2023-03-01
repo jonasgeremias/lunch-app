@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }) => {
 
       // Checando se esta bloqueada nos dados de users
       const snackRet = checkUserAccount(user, userData)
-      if (snackRet.error) await exit(snackRet.message)
+
 
       // Lendo os dados da organização e empresa
-      if (userData?.userType != USER_TYPES.admin.id) {
+      if (!snackRet.error && (userData?.userType != USER_TYPES.admin.id)) {
          const org = await getOrg(userData?.orgId)
          const comp = await getCompanie(userData?.companieId)
          if (!org) {
@@ -68,7 +68,9 @@ export const AuthProvider = ({ children }) => {
             return;
          }
       }
-
+      
+      if (snackRet.error) return await exit(snackRet.message)
+      
       setUser(user)
       setUserData(userData)
       showSnackBar(snackRet.message, snackRet.error ? 'error' : 'success')
