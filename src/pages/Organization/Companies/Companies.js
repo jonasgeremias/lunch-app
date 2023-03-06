@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import clsx from 'clsx'
 import { useGlobalStyles } from 'styles'
-import AddEditDialog from './AddEditDialog/AddEditDialog'
+// import AddEditDialog from './AddEditDialog/AddEditDialog'
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle'
 import { Button, Paper, Grid, List } from '@mui/material'
 import { useBreakPoint } from 'hooks/useBreakPoint'
@@ -13,15 +13,14 @@ import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-// import { COMPANIE_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import LoadingButton from '@mui/lab/LoadingButton';
 import ConfirmDeleteDialog from 'components/molecules/ConfirmDeleteDialog/ConfirmDeleteDialog';
 
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
+import { COMPANIE_ADD, COMPANIE_PATH, ORIGIN_ROUTES } from 'constants/routes';
 
 const DeleteItemsList = ({ item }) => {
    return (
@@ -36,7 +35,7 @@ const DeleteItemsList = ({ item }) => {
 }
 
 const Companies = () => {
-   // const navigate = useNavigate();
+   const navigate = useNavigate();
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
    const [isAddEditing, setIsAddEditing] = useState(false)
@@ -49,33 +48,19 @@ const Companies = () => {
    const [selectedRowsData, setSelectedRowsData] = useState([])
    const { userData } = useAuthContext();
    const { showSnackBar } = useSnackBar();
-   
+
    useEffect(() => {
       loadData() // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
-   
+
    // Atualiza a tabela em tela
    useEffect(() => {
       setShowTable(createDataCompanieTable(table.allData))
    }, [table])
 
-
-
-   // const formikFilters = useFormik({
-   //    initialValues: initialValuesFilters,
-   //    validationSchema: validationSchemaFilters,
-   //    onSubmit: async (values) => {
-   //       //   alert(JSON.stringify(values, null, 2));
-   //       setTable(await loadCompaniesInDB(table, userData))
-   //    },
-   // });
-
-   // const onClickItem = (item) => {
-   //    // navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${item.id}`);
-   //    const comp = table.allData.filter(row => row.companieId == item.id)
-   //    setCompanie(comp[0] || {})
-   //    setIsAddEditing(true)
-   // }
+   const onClickItem = (item) => {
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${item.id}`);
+   }
 
    const handleDeleteClick = (e) => {
       if (!selectedRowsData?.length) return;
@@ -84,50 +69,48 @@ const Companies = () => {
    }
 
    const handleEditClick = e => {
-      if (selectedRowsData?.length != 1) return;
+      if (selectedRowsData?.length !== 1) return;
       const id = selectedRowsData[0];
-      console.log('handleEditClick', id)
-      const comp = table.allData.filter(row => row.companieId == id)
-      console.log('comp', comp)
-      setCompanie(comp[0] || {})
-      setIsAddEditing(true)
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${id}`);
+      // console.log('handleEditClick', id)
+      // const comp = table.allData.filter(row => row.companieId == id)
+      // console.log('comp', comp)
+      // setCompanie(comp[0] || {})
+      // setIsAddEditing(true)
    }
 
    const handleAdd = e => {
-      setCompanie({})
-      setIsAddEditing(true)
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${COMPANIE_ADD}`);
+      //setCompanie({})
+      //setIsAddEditing(true)
    }
 
-   const handleCloseAddEdit = () => {
-      setCompanie({})
-      setIsAddEditing(false)
-   }
+   // const handleCloseAddEdit = () => {
+   //    setCompanie({})
+   //    setIsAddEditing(false)
+   // }
 
    const loadData = async () => {
       setTable(await loadCompaniesInDB(table, userData))
       setDataGridLoading(false)
    }
 
-   const updateCompanieData = (item) => {
-      console.log('updateCompanieData', item)
-      const dataset = table.allData;
-      const obj = dataset.find(row => row.companieId === item.companieId);
-      if (!obj) {
-         console.log('Add new companie')
-         dataset.push(item)
-      }
-
-      const temp_table = dataset.map(row => {
-         if (row.companieId != item.companieId) return row;
-         return item
-      })
-
-      setTable({ ...table, allData: temp_table })
-   }
+   // const updateCompanieData = (item) => {
+   //    console.log('updateCompanieData', item)
+   //    const dataset = table.allData;
+   //    const obj = dataset.find(row => row.companieId === item.companieId);
+   //    if (!obj) {
+   //       console.log('Add new companie')
+   //       dataset.push(item)
+   //    }
+   //    const temp_table = dataset.map(row => {
+   //       if (row.companieId != item.companieId) return row;
+   //       return item
+   //    })
+   //    setTable({ ...table, allData: temp_table })
+   // }
 
    const onRowsSelectionHandler = (ids) => {
-      // const selectedRowsData = ids.map((id) => showTable.find((row) => row.id === id));
-      console.log('ids', ids)
       setSelectedRowsData(ids)
    };
 
@@ -136,21 +119,29 @@ const Companies = () => {
    }
 
    const handleConfirmDelete = async (e) => {
-      //  selectedRowsData
       setDeleteLoading(true)
       const ret = await inactiveCompaniesInDB(selectedRowsData, userData)
-      
+      console.log('handleConfirmDelete', ret)
       setDeleteLoading(false)
       setDeleteDialog(false)
-      // @pending desmarcar os itens selecionados
       updateCompanieOnDelete(selectedRowsData)
-      // setSelectedRowsData([])
-      showSnackBar(ret.message, ret.erro? 'error': 'success')
+      showSnackBar(ret.message, ret.erro ? 'error' : 'success')
    }
 
-   // @pending remover os itens da tabela
-   const updateCompanieOnDelete = (listItems) => {
+   const updateCompanieOnDelete = async (listItems) => {
+      const temp_table = await table.allData.filter(row => {
+         const ret = listItems.find(item => {
+            return (row.companieId === item)
+         })
+         return (row.companieId != ret)
+      })
 
+      const update = { ...table, allData: temp_table }
+      console.log('listItems', table, listItems, update)
+
+      setTimeout(() => {
+         setTable(update)
+      }, 500);
    }
 
    return (
@@ -193,11 +184,12 @@ const Companies = () => {
             </Paper>
 
             <DataGrid
+               rowReordering
                loading={dataGridLoading}
                rows={showTable}
                columns={COMPANIE_TABLE_COLUMNS}
                autoHeight
-               // onRowDoubleClick={onClickItem}
+               onRowDoubleClick={onClickItem}
                checkboxSelection={true}
                disableSelectionOnClick={true}
                components={{
@@ -207,12 +199,12 @@ const Companies = () => {
             />
          </Paper>
 
-         <AddEditDialog
+         {/* <AddEditDialog
             visible={Boolean(isAddEditing)}
             companieData={companie}
             onClose={handleCloseAddEdit}
             updateCompanieData={updateCompanieData}
-         />
+         /> */}
 
          <ConfirmDeleteDialog
             variantTitle='h4'

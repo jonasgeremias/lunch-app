@@ -38,6 +38,14 @@ export const DEF_PROPS_LOGIN = {
 
 /**Basic input props */
 export const DEF_PROPS = {
+   date: {
+      size: "small",
+      label: "Data",
+      type: "date",
+      variant: 'outlined',
+      autoComplete: "off",
+      fullWidth: true,
+   },
    id: {
       size: 'small',
       variant: 'outlined',
@@ -72,7 +80,7 @@ export const DEF_PROPS = {
          size: 'small',
          fullWidth: true,
       },
-      disableFuture: true,
+      // disableFuture: true,
       clearable: true,
       invalidLabel: '',
       invalidDateMessage: '',
@@ -81,6 +89,7 @@ export const DEF_PROPS = {
       fullWidth: true
    },
    description: {
+      size: 'small',
       multiline: true,
       fullWidth: true,
       label: "Descrição",

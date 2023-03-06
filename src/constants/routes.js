@@ -13,6 +13,7 @@ const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Compan
 
 export const ORIGIN_ROUTES = 'dashboard'
 export const COMPANIE_PATH = 'companies'
+export const COMPANIE_ADD = 'add'
 
 export const ROUTES = {
    client: [{
@@ -58,10 +59,16 @@ export const ROUTES = {
       element: <OrganizationCompanies />,
       sections: [
          {
+            path: COMPANIE_PATH + "/add",
+            name: 'Empresas',
+            icon: <Business />,
+            element: <OrganizationCompaniesDetail add={true}/>
+         },
+         {
             path: COMPANIE_PATH + "/:id",
             name: 'Empresas',
             icon: <Business />,
-            element: <OrganizationCompaniesDetail />
+            element: <OrganizationCompaniesDetail add={false}/>
          }
       ]
    },

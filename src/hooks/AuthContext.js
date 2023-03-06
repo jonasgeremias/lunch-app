@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
             await exit(`Organização não encontrada, contate o administrador da empresa.`);
             return;
          }
-         if (!comp) {
+         if (!comp && userData?.userType == USER_TYPES.client.id) {
             await exit(`Empresa não encontrada, contate o administrador da empresa.`);
             return;
          }

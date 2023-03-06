@@ -10,11 +10,18 @@ const DrawerItems = ({ routes , timeoutHandle}) => {
    const gClasses = useGlobalStyles()
    const location = useLocation()
    const classes = useStyles()
-
+   
+   const pathnames = location.pathname.split('/').filter(x => x);
+   
    return (
       <>
          {routes.map(route => {
-            const match = matchPath({ path: '/' + ORIGIN_ROUTES + '/' + route.path }, location.pathname)
+            
+            let match = matchPath({ path: '/' + ORIGIN_ROUTES + '/' + route.path }, location.pathname)
+            if (match == null) {
+               if (route.path == pathnames[1]) match = true;
+            }
+         
             return (
                <Link to={'/' + ORIGIN_ROUTES + '/' + route.path} key={route.path} className={classes.drawerItem} onClick={() => timeoutHandle(true)}>
                   <StyledListItem selected={match !== null} button={true}>
