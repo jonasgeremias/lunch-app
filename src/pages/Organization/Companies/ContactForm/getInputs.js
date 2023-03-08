@@ -20,7 +20,16 @@ export const initialValues = {
    // status: 'active',
    email: '',
    contactName: '',
-   phone: ''
+   phone: '',
+   schedule: {
+Monday : false,
+Tuesday : false,
+Wednesday : false,
+Thursday : false,
+Friday : false,
+Saturday : false,
+Sunday : false
+   }
 };
 
 export const updateInitialValues = (companieData) => {

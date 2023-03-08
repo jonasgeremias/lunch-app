@@ -15,7 +15,7 @@ import { COMPANIE_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import { Firebase } from 'utils';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import Settings from './WorkInfo';
+import WorkScheduleForm from './WorkInfo';
 
 const Detail = ({ add }) => {
    let { id } = useParams();
@@ -24,7 +24,22 @@ const Detail = ({ add }) => {
    const { showSnackBar } = useSnackBar()
    const [item, setItem] = useState(initialValues)
    let navigate = useNavigate();
-
+   
+   const setSchedule = (id, status) => {
+      const schedule = {...item.schedule, [id]: status }
+      setItem({...item, schedule: schedule})
+   }
+   
+   // const [schedule, setSchedule] = useState({
+   //    Monday: true,
+   //    Tuesday: true,
+   //    Wednesday: true,
+   //    Thursday: true,
+   //    Friday: true,
+   //    Saturday: false,
+   //    Sunday: false
+   // });
+   
    // Se não achou no banco, volta para Empresas
    useEffect(() => {
       if (!add) {
@@ -38,7 +53,7 @@ const Detail = ({ add }) => {
          })
       }
       else {
-         const id = Firebase.firestore().collection('companies').doc().id;
+         const id = Firebase.firestore().collection(COMPANIE_PATH).doc().id;
          setItem({ ...item, companieId: id })
       }
    }, [])
@@ -65,10 +80,8 @@ const Detail = ({ add }) => {
                </TabSubtitle >
             </div>
             <ContactInfo item={item} setItem={setItem} />
-            {/* <WorkInfo item={item} setItem={setItem}/> */}
+            <WorkScheduleForm schedule={item.schedule} setSchedule={setSchedule}/>
             
-            
-            <Settings/>
          </Paper >
       </div >
    );

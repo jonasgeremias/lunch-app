@@ -9,6 +9,7 @@ import { useOrgContext } from "hooks/OrgContext"
 import { useAuthContext } from "hooks/AuthContext"
 import ContactForm from "../ContactForm/ContactForm"
 import { initialValues, updateInitialValues, validationSchema } from "../ContactForm/getInputs";
+import { COMPANIE_PATH } from "constants/routes";
 
 const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) => {
    const [loading, setLoading] = useState(false)
@@ -23,7 +24,7 @@ const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) =
       initialValues: initialValues,
       validationSchema: validationSchema,
       onReset: () => {
-         formik.values.companieId = Firebase.firestore().collection('companies').doc().id;
+         formik.values.companieId = Firebase.firestore().collection(COMPANIE_PATH).doc().id;
       },
 
       onSubmit: async (values) => {

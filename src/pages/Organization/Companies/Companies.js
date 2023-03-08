@@ -38,11 +38,11 @@ const Companies = () => {
    const navigate = useNavigate();
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
-   const [isAddEditing, setIsAddEditing] = useState(false)
    const [dataGridLoading, setDataGridLoading] = useState(true)
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [deleteDialog, setDeleteDialog] = useState(false)
-   const [companie, setCompanie] = useState({})
+   // const [isAddEditing, setIsAddEditing] = useState(false)
+   // const [companie, setCompanie] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
    const [selectedRowsData, setSelectedRowsData] = useState([])
