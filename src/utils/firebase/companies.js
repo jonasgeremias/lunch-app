@@ -131,17 +131,57 @@ export async function inactiveCompaniesInDB(selectedRowsData, userData) {
    });
 }
 
-export const updateExceptionsDatesinDB = async (docId, data) => {
-   try {
-      if (data?.ExceptionsDates) {
-         const query = Firebase.firestore().collection(COMPANIE_PATH).doc(docId)
-         const newExceptionsDates = Firebase.firestore.FieldValue.arrayUnion(...data.ExceptionsDates);
-         await query.update({ ExceptionsDates: newExceptionsDates });
-         return { error: false, message: 'Atualizado com sucesso!', data: data }
+// export const updateExceptionsDatesinDB = async (docId, data) => {
+//    try {
+//       if (data?.ExceptionsDates) {
+//          const query = Firebase.firestore().collection(COMPANIE_PATH).doc(docId)
+//          const newExceptionsDates = Firebase.firestore.FieldValue.arrayUnion(...data.ExceptionsDates);
+//          await query.update({ ExceptionsDates: newExceptionsDates });
+//          return { error: false, message: 'Atualizado com sucesso!', data: data }
+//       }
+//    } catch (error) {
+//       return { error: true, message: 'Erro ao atualizar, tente novamente!', data: data }
+//    }
+// };
+
+export const updateFieldValueInDoc = async (docId, field, value) => {
+   const docRef = Firebase.firestore().collection(COMPANIE_PATH).doc(docId)
+
+   return docRef.get().then((docSnapshot) => {
+      if (docSnapshot.exists) {
+         return docRef.update({ [`${field}`]: value });
+      } else {
+         return { error: true, message: `Documento não encontrado (${docId})` }
       }
-   } catch (error) {
-      return { error: true, message: 'Erro ao atualizar, tente novamente!', data: data }
-   }
+   })
+      .then(() => {
+         return { error: false, message: `Documento atualizado` }
+      })
+      .catch((error) => {
+         console.log('updateFieldValueInDoc', error)
+         return { error: true, message: `Erro ao atualizar o campo ${field}` }
+      });
 };
 
 
+/*
+{
+    "companieCreatedByUserId": "oA00cgM0Asffh8g8myKLNtMoVTg2",
+    "createdAt": {
+        "seconds": 1678032824,
+        "nanoseconds": 782000000
+    },
+    "updatedAt": {
+        "seconds": 1678054769,
+        "nanoseconds": 258000000
+    },
+    "companieId": "73WD7AEHixwX1zp5xdB8",
+    "cnpj": "123456798",
+    "contactName": "Jonas",
+    "email": "jonas@gmail.com",
+    "companieName": "Jonas12345",
+    "phone": "998899988",
+    "status": "active",
+    "orgId": "akZZkOcESZlQm7SHuo8G"
+}
+ */

@@ -7,7 +7,7 @@ import { Button, Grid, Paper, Typography } from '@mui/material'
 import clsx from 'clsx'
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
 import { useEffect } from 'react';
-import { getCompanieData } from 'utils/firebase/companies';
+import { getCompanieData, updateFieldValueInDoc } from 'utils/firebase/companies';
 import { ContactInfo } from './ContactInfo';
 import { initialValues } from '../ContactForm/getInputs';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { Firebase } from 'utils';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import WorkScheduleForm from './WorkInfo';
+import DatesExceptionsForm from './DatesExceptionsForm';
 
 const Detail = ({ add }) => {
    let { id } = useParams();
@@ -25,20 +26,23 @@ const Detail = ({ add }) => {
    const [item, setItem] = useState(initialValues)
    let navigate = useNavigate();
    
-   const setSchedule = (id, status) => {
-      const schedule = {...item.schedule, [id]: status }
-      setItem({...item, schedule: schedule})
+   const setSchedule = (field, status) => {
+      const newSchedule = {...item.schedule, [field]: status }
+      updateFieldValueInDoc(id, 'schedule', newSchedule).then((doc) => {
+         setItem({...item, schedule: newSchedule})
+      }).catch((e => {console.error(e); showSnackBar('Erro ao salvar', 'error')}))
    }
    
-   // const [schedule, setSchedule] = useState({
-   //    Monday: true,
-   //    Tuesday: true,
-   //    Wednesday: true,
-   //    Thursday: true,
-   //    Friday: true,
-   //    Saturday: false,
-   //    Sunday: false
-   // });
+   const setDatesExceptions = (list) => {
+      console.log('setDatesExceptions', list)
+      const newDatesExceptions = {...item.datesExceptions, ...list}
+      console.log('newDatesExceptions', newDatesExceptions)
+      updateFieldValueInDoc(id, 'datesExceptions', newDatesExceptions).then((doc) => {
+         setItem({...item, datesExceptions: newDatesExceptions})
+         
+         console.log('item', item)
+      }).catch((e => {console.error(e); showSnackBar('Erro ao salvar', 'error')}))
+   }
    
    // Se não achou no banco, volta para Empresas
    useEffect(() => {
@@ -47,7 +51,8 @@ const Detail = ({ add }) => {
             if (item == null) {
                navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}`);
             }
-            setItem(item)
+            setItem({...item})
+            console.log('item', item)
          }).catch(() => {
             navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}`);
          })
@@ -81,7 +86,7 @@ const Detail = ({ add }) => {
             </div>
             <ContactInfo item={item} setItem={setItem} />
             <WorkScheduleForm schedule={item.schedule} setSchedule={setSchedule}/>
-            
+            <DatesExceptionsForm list={item.datesExceptions} setList={setDatesExceptions}/>
          </Paper >
       </div >
    );

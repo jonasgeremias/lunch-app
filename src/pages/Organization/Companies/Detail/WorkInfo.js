@@ -1,9 +1,8 @@
-import React from "react";
-import {  Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { Grid, Typography } from "@mui/material";
 import { Checkbox, FormControlLabel, Paper } from '@mui/material';
 import { useGlobalStyles } from 'styles';
 import clsx from 'clsx'
-import ExceptionsDatesForm from './ExceptionsDatesForm';
 
 const DAYS_OF_WEEK = [
    { id: 'Monday', name: 'Segunda' },
@@ -15,13 +14,16 @@ const DAYS_OF_WEEK = [
    { id: 'Sunday', name: 'Domingo' }
 ];
 
-const WorkScheduleForm = ({schedule, setSchedule}) => {
+const WorkScheduleForm = ({ schedule, setSchedule }) => {
    const gClasses = useGlobalStyles()
-   
-   const handleScheduleChange = (id, value) => {
-      setSchedule({ ...schedule, [id]: value });
-   };
-   
+
+   useEffect(() => {
+      if (!schedule)
+         console.log('WorkScheduleForm', schedule)
+
+   }, [schedule])
+
+
    return (
       <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
          <Typography variant="h6" gutterBottom>
@@ -29,24 +31,32 @@ const WorkScheduleForm = ({schedule, setSchedule}) => {
          </Typography>
 
          <Grid container item spacing={2}>
-            {DAYS_OF_WEEK.map((day) => (
-               <Grid item key={day.id}>
-                  <FormControlLabel
-                     control={
-                        <Checkbox
-                           checked={schedule[day.id]}
-                           onChange={(e) => handleScheduleChange(day.id, e.target.checked)}
-                           name={day.id}
-                           color="primary"
-                        />
-                     }
-                     label={day.name}
-                  />
+            {DAYS_OF_WEEK.map((day) => {
+               let checked = false;
+               if (typeof schedule === 'object' && `${day.id}` in schedule) {
+                  checked = schedule[day.id];
+               }
 
-               </Grid>
-            ))}
+               return (
+                  <Grid item key={day.id}>
+                     <FormControlLabel
+                        control={
+                           <Checkbox
+                              checked={checked}
+                              onChange={(e) => setSchedule(day.id, e.target.checked)}
+                              name={day.id}
+                              color="primary"
+                           />
+                        }
+                        label={day.name}
+                     />
+
+                  </Grid>
+               )
+            }
+            )
+            }
          </Grid>
-         <ExceptionsDatesForm/>
       </Paper>
    );
 };

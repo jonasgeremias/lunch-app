@@ -22,14 +22,15 @@ export const initialValues = {
    contactName: '',
    phone: '',
    schedule: {
-Monday : false,
-Tuesday : false,
-Wednesday : false,
-Thursday : false,
-Friday : false,
-Saturday : false,
-Sunday : false
-   }
+      Monday : false,
+      Tuesday : false,
+      Wednesday : false,
+      Thursday : false,
+      Friday : false,
+      Saturday : false,
+      Sunday : false
+   },
+   datesExceptions: []
 };
 
 export const updateInitialValues = (companieData) => {
