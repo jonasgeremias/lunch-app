@@ -2,25 +2,12 @@ import { Grid, TextField, Paper, Typography } from "@mui/material";
 import { DEF_PROPS } from "constants/inputs";
 import { useGlobalStyles } from "styles";
 import clsx from 'clsx'
-import colors from 'styles/colors'
+import { compareDifferentInput } from "utils/compareDifferentInput";
 
-const itemEdit = {
-   sx: {
-      color: colors.primary,
-      fontWeight: '500',
-   }
-}
 
 const ContactForm = ({ formik, initialItem }) => {
    const gClasses = useGlobalStyles()
-   // const webScreen = useBreakPoint('up', 'xs')
       
-   const getEditInput = (id) => {
-      if (initialItem == null) return {}
-      if (!initialItem[id]) return {}
-      return formik.values[id] == initialItem[id] ? {} : itemEdit
-   }
-   
    return (
       <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
          <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
@@ -33,10 +20,10 @@ const ContactForm = ({ formik, initialItem }) => {
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.id}
                   label='ID da empresa'
-                  name='companieId'
-                  value={formik.values.companieId}
-                  error={formik.touched["companieId"] && Boolean(formik.errors["companieId"])}
-                  helperText={formik.touched["companieId"] && formik.errors["companieId"]}
+                  name='companyId'
+                  value={formik.values.companyId}
+                  error={formik.touched["companyId"] && Boolean(formik.errors["companyId"])}
+                  helperText={formik.touched["companyId"] && formik.errors["companyId"]}
                />
             </Grid>
 
@@ -52,18 +39,18 @@ const ContactForm = ({ formik, initialItem }) => {
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.name}
-                  inputProps={getEditInput('companieName')}
+                  inputProps={compareDifferentInput(initialItem, formik.values,'companyName')}
                   label='Nome da empresa'
-                  name='companieName'
-                  value={formik.values.companieName}
-                  error={formik.touched["companieName"] && Boolean(formik.errors["companieName"])}
-                  helperText={(formik.touched["companieName"] && formik.errors["companieName"])}
+                  name='companyName'
+                  value={formik.values.companyName}
+                  error={formik.touched["companyName"] && Boolean(formik.errors["companyName"])}
+                  helperText={(formik.touched["companyName"] && formik.errors["companyName"])}
                   onChange={formik.handleChange} />
             </Grid>
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.cnpj}
-                  inputProps={getEditInput('cnpj')}
+                  inputProps={compareDifferentInput(initialItem, formik.values,'cnpj')}
                   label='cnpj'
                   name='cnpj'
                   value={formik.values.cnpj}
@@ -74,7 +61,7 @@ const ContactForm = ({ formik, initialItem }) => {
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.name}
-                  inputProps={getEditInput('contactName')}
+                  inputProps={compareDifferentInput(initialItem, formik.values,'contactName')}
                   label='Nome do responsável'
                   name='contactName'
                   value={formik.values.contactName}
@@ -85,7 +72,7 @@ const ContactForm = ({ formik, initialItem }) => {
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.email}
-               inputProps={getEditInput('email')}
+               inputProps={compareDifferentInput(initialItem, formik.values,'email')}
                   label='E-mail'
                   name='email'
                   value={formik.values.email}
@@ -96,7 +83,7 @@ const ContactForm = ({ formik, initialItem }) => {
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.phone}
-                  inputProps={getEditInput('phone')}
+                  inputProps={compareDifferentInput(initialItem, formik.values,'phone')}
                   label='Telefone'
                   name='phone'
                   value={formik.values.phone}

@@ -23,13 +23,13 @@ const WorkScheduleForm = ({ schedule, setSchedule }) => {
 
    }, [schedule])
 
-
    return (
       <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+
          <Typography variant="h6" gutterBottom>
             Dias úteis da Semana
          </Typography>
-
+   
          <Grid container item spacing={2}>
             {DAYS_OF_WEEK.map((day) => {
                let checked = false;

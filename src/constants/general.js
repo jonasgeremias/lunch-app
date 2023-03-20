@@ -50,7 +50,7 @@ const USER_DATA = {
    approved: false,
    orgId: '',
    lunchDefault: 'buffet',
-   companieId: ''
+   companyId: ''
 }
 
 // @@ Para montar o banco de dados
@@ -90,7 +90,7 @@ const RESTAURANT_DATA = {
 }
 
 const COMPANY_DATA = {
-   companieId: '',
+   companyId: '',
    name: 'Restaurante do João',
    phone: '',
    cnpj: '',

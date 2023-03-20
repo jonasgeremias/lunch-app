@@ -1,19 +1,20 @@
 import { lazy } from 'react'
-import { Assessment, Home, Restaurant, Business } from '@mui/icons-material'
+import { Assessment, Home, Restaurant, Business, DateRange } from '@mui/icons-material'
 
 const ClientHome = lazy(() => import('pages/Client/Home/Home'))
 const ClientRestaurantProfile = lazy(() => import('pages/Client/RestaurantProfile/RestaurantProfile'))
 const ClientHistory = lazy(() => import('pages/Client/History/History'))
 
 const OrganizationHome = lazy(() => import('pages/Organization/Home/Home'))
-const OrganizationRestaurant = lazy(() => import('pages/Organization/Restaurant/Restaurant'))
 const OrganizationHistory = lazy(() => import('pages/Organization/History/History'))
 const OrganizationCompanies = lazy(() => import('pages/Organization/Companies/Companies'))
 const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Companies/Detail/Detail'))
+const OrgWorkingSettings = lazy(() => import('pages/Organization/OrgWorkingSettings/OrgWorkingSettings'))
 
 export const ORIGIN_ROUTES = 'dashboard'
-export const COMPANIE_PATH = 'companies'
-export const COMPANIE_ADD = 'add'
+export const COMPANIES_PATH = 'companies'
+export const ORGANIZATION_PATH = 'organization'
+export const COMPANY_ADD = 'add'
 
 export const ROUTES = {
    client: [{
@@ -41,37 +42,36 @@ export const ROUTES = {
       element: <OrganizationHome />
    },
    {
-      path: "restaurant",
-      name: 'Restaurantes',
-      icon: <Restaurant />,
-      element: <OrganizationRestaurant />
-   },
-   {
-      path: "history",
-      name: 'Histórico',
-      icon: <Assessment />,
-      element: <OrganizationHistory />
-   },
-   {
-      path: COMPANIE_PATH,
+      path: COMPANIES_PATH,
       name: 'Empresas',
       icon: <Business />,
       element: <OrganizationCompanies />,
       sections: [
          {
-            path: COMPANIE_PATH + "/add",
+            path: COMPANIES_PATH + "/add",
             name: 'Empresas',
             icon: <Business />,
             element: <OrganizationCompaniesDetail add={true}/>
          },
          {
-            path: COMPANIE_PATH + "/:id",
+            path: COMPANIES_PATH + "/:id",
             name: 'Empresas',
             icon: <Business />,
             element: <OrganizationCompaniesDetail add={false}/>
          }
       ]
    },
-
+   {
+      path: "workdates",
+      name: 'Datas da Org.',
+      icon: <DateRange />,
+      element: <OrgWorkingSettings />
+   },
+   {
+      path: "history",
+      name: 'Histórico',
+      icon: <Assessment />,
+      element: <OrganizationHistory />
+   }
 ]
 }

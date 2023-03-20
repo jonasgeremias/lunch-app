@@ -3,7 +3,7 @@ import { getCompanieData } from 'utils/firebase/companies'
 export const CompanieContext = createContext({});
 
 export const CompanieProvider = ({ children }) => {
-   const [companie, setCompanie] = useState(null);
+   const [company, setCompanie] = useState(null);
 
    const getCompanie = async (id) => {
       const comp = await getCompanieData(id)
@@ -12,7 +12,7 @@ export const CompanieProvider = ({ children }) => {
    };
 
    return (
-      <CompanieContext.Provider value={{ companie, getCompanie }}>
+      <CompanieContext.Provider value={{ company, getCompanie }}>
          {children}
       </CompanieContext.Provider>
    );

@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       // Lendo os dados da organização e empresa
       if (!snackRet.error && (userData?.userType != USER_TYPES.admin.id)) {
          const org = await getOrg(userData?.orgId)
-         const comp = await getCompanie(userData?.companieId)
+         const comp = await getCompanie(userData?.companyId)
          if (!org) {
             await exit(`Organização não encontrada, contate o administrador da empresa.`);
             return;

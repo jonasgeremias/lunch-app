@@ -7,11 +7,11 @@ import { setCompanieData } from "utils/firebase/companies"
 import { useSnackBar } from "components/atoms/Snackbar/Snackbar"
 import { useOrgContext } from "hooks/OrgContext"
 import { useAuthContext } from "hooks/AuthContext"
-import ContactForm from "../ContactForm/ContactForm"
-import { initialValues, updateInitialValues, validationSchema } from "../ContactForm/getInputs";
-import { COMPANIE_PATH } from "constants/routes";
+import ContactForm from "../Detail/ContactForm"
+import { initialValues, updateInitialValues, validationSchema } from "../Detail/CompanieTab/getInputs";
+import { COMPANIES_PATH } from "constants/routes";
 
-const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) => {
+const AddEditDialog = ({ companyData, visible, onClose, updateCompanieData }) => {
    const [loading, setLoading] = useState(false)
    const [adding, setAdding] = useState(false)
    const { showSnackBar } = useSnackBar()
@@ -24,12 +24,12 @@ const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) =
       initialValues: initialValues,
       validationSchema: validationSchema,
       onReset: () => {
-         formik.values.companieId = Firebase.firestore().collection(COMPANIE_PATH).doc().id;
+         formik.values.companyId = Firebase.firestore().collection(COMPANIES_PATH).doc().id;
       },
 
       onSubmit: async (values) => {
          setLoading(true)
-         const dataset = { ...companieData, ...values }
+         const dataset = { ...companyData, ...values }
          const { error, message, data } = await setCompanieData(dataset, adding, user, org)
          setLoading(false)
          showSnackBar(message, error ? 'error' : 'success');
@@ -42,13 +42,13 @@ const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) =
 
    useEffect(() => {
       if (!!visible) {
-         if (Object.keys(companieData).length === 0) {
+         if (Object.keys(companyData).length === 0) {
             setAdding(true)
             formik.handleReset()
          }
          else {
             setAdding(false)
-            formik.setValues(updateInitialValues(companieData))
+            formik.setValues(updateInitialValues(companyData))
          }
       } else formik.handleReset()
    }, [visible])
@@ -58,7 +58,7 @@ const AddEditDialog = ({ companieData, visible, onClose, updateCompanieData }) =
          open={Boolean(visible)} maxWidth='lg' showCancel={onClose} onAccept={formik.handleSubmit} acceptLabel="Salvar">
          <Grid container>
             <Grid item xs={12}>
-               <ContactForm formik={formik} initialItem={companieData}/>
+               <ContactForm formik={formik} initialItem={companyData}/>
             </Grid>
          </Grid>
       </DialogContainer>

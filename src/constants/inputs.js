@@ -38,13 +38,37 @@ export const DEF_PROPS_LOGIN = {
 
 /**Basic input props */
 export const DEF_PROPS = {
+   price: {
+      size: 'small',
+      variant: 'outlined',
+      fullWidth: true,
+      autoComplete: "off",
+      label: 'Preço'
+   },
    date: {
       size: "small",
       label: "Data",
       type: "date",
       variant: 'outlined',
       autoComplete: "off",
+      fullWidth: true
+   },
+   year: {
+      size: "small",
+      label: "Ano",
+      type: "number",
+      variant: 'outlined',
+      autoComplete: "off",
+      fullWidth: true
+   },
+   time: {
+      size: "small",
+      label: "Hora",
+      type: "time",
+      variant: 'outlined',
+      autoComplete: "off",
       fullWidth: true,
+      inputProps: { pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$' }
    },
    id: {
       size: 'small',
@@ -54,6 +78,7 @@ export const DEF_PROPS = {
       disabled: true
    },
    name: {
+      label: 'Nome',
       size: 'small',
       variant: 'outlined',
       fullWidth: true,

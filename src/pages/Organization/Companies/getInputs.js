@@ -22,9 +22,9 @@ export const createDataCompanieTable = (table) => {
       const updated = new Date(row?.updatedAt?.seconds * 1000 + row?.updatedAt?.nanoseconds / 1000000)
       // console.log('createDataCompanieTable', row, row?.updatedAt)
       return {
-         id: row?.companieId,
-         companieId: row?.companieId,
-         companieName: row?.companieName,
+         id: row?.companyId,
+         companyId: row?.companyId,
+         companyName: row?.companyName,
          email: row?.email,
          phone: row?.phone,
          cnpj: row?.cnpj,
@@ -33,7 +33,7 @@ export const createDataCompanieTable = (table) => {
          createdAt: dayjs(created).format(DATE_FORMAT.small),
          updatedAt: dayjs(updated).format(DATE_FORMAT.small),
          // status: STATUS_OPTIONS[row?.status].name || '',
-         // options : row?.companieId
+         // options : row?.companyId
       }
    })
 }
@@ -43,7 +43,7 @@ export const COMPANIE_TABLE_COLUMNS = [
    //    width: 75, field: 'options', headerName: 'Opções',
    //    renderCell: (cellValues) => <MyOption cellValues />
    // },
-   { width: 250, sortable: true, editable: false, field: 'companieName', headerName: 'Nome' },
+   { width: 250, sortable: true, editable: false, field: 'companyName', headerName: 'Nome' },
    // { width: 100, sortable: false, editable: false, field: 'status', headerName: 'Status' },
    { width: 250, sortable: false, editable: false, field: 'id', headerName: 'ID' },
    { width: 250, sortable: true, editable: false, field: 'email', headerName: 'E-mail' },

@@ -20,7 +20,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
-import { COMPANIE_ADD, COMPANIE_PATH, ORIGIN_ROUTES } from 'constants/routes';
+import { COMPANY_ADD, COMPANIES_PATH, ORIGIN_ROUTES } from 'constants/routes';
 
 const DeleteItemsList = ({ item }) => {
    return (
@@ -28,7 +28,7 @@ const DeleteItemsList = ({ item }) => {
          <ListItemButton>
             <ListItemText
                primaryTypographyProps={{ sx: { fontWeight: 'bold' } }}
-               secondary={`${item.companieId}`} primary={`${item.companieName}`} />
+               secondary={`${item.companyId}`} primary={`${item.companyName}`} />
          </ListItemButton>
       </ListItem>
    );
@@ -42,7 +42,7 @@ const Companies = () => {
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [deleteDialog, setDeleteDialog] = useState(false)
    // const [isAddEditing, setIsAddEditing] = useState(false)
-   // const [companie, setCompanie] = useState({})
+   // const [company, setCompanie] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
    const [selectedRowsData, setSelectedRowsData] = useState([])
@@ -59,7 +59,7 @@ const Companies = () => {
    }, [table])
 
    const onClickItem = (item) => {
-      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${item.id}`);
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}/${item.id}`);
    }
 
    const handleDeleteClick = (e) => {
@@ -71,16 +71,16 @@ const Companies = () => {
    const handleEditClick = e => {
       if (selectedRowsData?.length !== 1) return;
       const id = selectedRowsData[0];
-      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${id}`);
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}/${id}`);
       // console.log('handleEditClick', id)
-      // const comp = table.allData.filter(row => row.companieId == id)
+      // const comp = table.allData.filter(row => row.companyId == id)
       // console.log('comp', comp)
       // setCompanie(comp[0] || {})
       // setIsAddEditing(true)
    }
 
    const handleAdd = e => {
-      navigate(`/${ORIGIN_ROUTES}/${COMPANIE_PATH}/${COMPANIE_ADD}`);
+      navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}/${COMPANY_ADD}`);
       //setCompanie({})
       //setIsAddEditing(true)
    }
@@ -98,13 +98,13 @@ const Companies = () => {
    // const updateCompanieData = (item) => {
    //    console.log('updateCompanieData', item)
    //    const dataset = table.allData;
-   //    const obj = dataset.find(row => row.companieId === item.companieId);
+   //    const obj = dataset.find(row => row.companyId === item.companyId);
    //    if (!obj) {
-   //       console.log('Add new companie')
+   //       console.log('Add new company')
    //       dataset.push(item)
    //    }
    //    const temp_table = dataset.map(row => {
-   //       if (row.companieId != item.companieId) return row;
+   //       if (row.companyId != item.companyId) return row;
    //       return item
    //    })
    //    setTable({ ...table, allData: temp_table })
@@ -131,9 +131,9 @@ const Companies = () => {
    const updateCompanieOnDelete = async (listItems) => {
       const temp_table = await table.allData.filter(row => {
          const ret = listItems.find(item => {
-            return (row.companieId === item)
+            return (row.companyId === item)
          })
-         return (row.companieId != ret)
+         return (row.companyId != ret)
       })
 
       const update = { ...table, allData: temp_table }
@@ -201,7 +201,7 @@ const Companies = () => {
 
          {/* <AddEditDialog
             visible={Boolean(isAddEditing)}
-            companieData={companie}
+            companyData={company}
             onClose={handleCloseAddEdit}
             updateCompanieData={updateCompanieData}
          /> */}
@@ -216,7 +216,7 @@ const Companies = () => {
             <Paper className={gClasses.listScroll}>
                {selectedRowsData?.length > 0 ? <List>
                   {selectedRowsData.map((id) => {
-                     const item = table.allData.filter(row => row.companieId == id)
+                     const item = table.allData.filter(row => row.companyId == id)
                      return <DeleteItemsList key={id} item={item[0]} />
                   })}
                </List> : null}
