@@ -85,7 +85,7 @@ export default function Appbar({ routes, children }) {
    const timeoutHandle = (now = false) => {
       clearTimeout(timeoutCLose)
       if (open) {
-         if (now) setTimeoutClose(setTimeout(() => setOpen(false), 3000))
+         if (now) setTimeoutClose(setTimeout(() => setOpen(false), 750))
          else setTimeoutClose(setTimeout(() => setOpen(false), 7500))
       }
    }

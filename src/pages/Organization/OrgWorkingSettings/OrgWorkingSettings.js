@@ -6,11 +6,11 @@ import WorkScheduleForm from './WorkScheduleForm';
 import DatesExceptionsForm from './DatesExceptionsForm';
 import { useFormik } from 'formik';
 import { initialValues, updateInitialValues, validationSchema } from './getInputs';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useOrgContext } from 'hooks/OrgContext';
 import { useAuthContext } from 'hooks/AuthContext';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
-import { ORIGIN_ROUTES } from 'constants/routes';
+// import { ORIGIN_ROUTES } from 'constants/routes';
 import { Button, CircularProgress, Grid, Paper } from '@mui/material';
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle';
 import { LoadingButton } from '@mui/lab';
@@ -21,7 +21,7 @@ import { objectIsEqual } from 'utils/compareDifferentInput';
 
 const OrgWorkingSettings = () => {
    const gClasses = useGlobalStyles()
-   let navigate = useNavigate();
+   // let navigate = useNavigate();
    const { org } = useOrgContext()
    const { user } = useAuthContext()
    const { showSnackBar } = useSnackBar()
@@ -105,7 +105,7 @@ const OrgWorkingSettings = () => {
    
    return (
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
-         <Paper elevation={0} variant="outlined" className={clsx(gClasses.container)}>
+         <Paper elevation={0} variant="outlined" className={clsx(gClasses.containerPaper)}>
             <Grid container justifyContent="space-between" className={gClasses.marginVertical8}>
 
                <Grid item className={gClasses.marginVertical8} textAlign="left">

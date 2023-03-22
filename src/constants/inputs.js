@@ -77,6 +77,14 @@ export const DEF_PROPS = {
       fullWidth: true,
       disabled: true
    },
+   code: {
+      size: 'small',
+      variant: 'outlined',
+      autoComplete: "off",
+      fullWidth: true,
+      label: 'Código',
+      type:'number'
+   },
    name: {
       label: 'Nome',
       size: 'small',
@@ -135,6 +143,23 @@ export const DEF_PROPS = {
       autoComplete: "off",
       inputProps: { maxLength: LENGTH.email.max, type: 'email' }
    },
+   emailEdit: {
+      required: true,
+      size: 'small',
+      variant: 'outlined',
+      fullWidth: true,
+      label: "Email",
+      autoComplete: "off",
+      inputProps: { maxLength: LENGTH.email.max, type: 'email' }
+   },
+   passwordEdit: {
+      label: "Senha",
+      size: 'small',
+      required: true,
+      fullWidth: true,
+      autoComplete: "new-password",
+      inputProps: { maxLength: LENGTH.password.max, type: 'password' }
+   },
    password: {
       label: "Senha",
       margin: "normal",
@@ -164,6 +189,7 @@ export const DEF_PROPS = {
    cpf: {
       required: true,
       fullWidth: true,
+      size: 'small',
       label: "CPF",
       inputProps: { type: 'text' }
    },

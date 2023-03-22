@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Assessment, Home, Restaurant, Business, DateRange } from '@mui/icons-material'
+import { Assessment, Home, Restaurant, Business, DateRange,AccountBox } from '@mui/icons-material'
 
 const ClientHome = lazy(() => import('pages/Client/Home/Home'))
 const ClientRestaurantProfile = lazy(() => import('pages/Client/RestaurantProfile/RestaurantProfile'))
@@ -10,9 +10,11 @@ const OrganizationHistory = lazy(() => import('pages/Organization/History/Histor
 const OrganizationCompanies = lazy(() => import('pages/Organization/Companies/Companies'))
 const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Companies/Detail/Detail'))
 const OrgWorkingSettings = lazy(() => import('pages/Organization/OrgWorkingSettings/OrgWorkingSettings'))
+const OrganizationUsers = lazy(() => import('pages/Organization/Users/Users'))
 
 export const ORIGIN_ROUTES = 'dashboard'
 export const COMPANIES_PATH = 'companies'
+export const USERS_PATH = 'users'
 export const ORGANIZATION_PATH = 'organization'
 export const COMPANY_ADD = 'add'
 
@@ -60,6 +62,12 @@ export const ROUTES = {
             element: <OrganizationCompaniesDetail add={false}/>
          }
       ]
+   },
+   {
+      path: "users",
+      name: 'Usuários',
+      icon: <AccountBox />,
+      element: <OrganizationUsers />
    },
    {
       path: "workdates",

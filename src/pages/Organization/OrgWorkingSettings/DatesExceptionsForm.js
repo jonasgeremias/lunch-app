@@ -80,22 +80,18 @@ const DatesExceptionsForm = ({ list, setList }) => {
       setEditIndex(index);
    };
 
-   const getBrasilHolidays = () => {
-      const holidaysInYear = getHolidays(year);
-
-      setList(holidaysInYear)
-
-      // console.log(holidaysInYear)
-   }
+   // const getBrasilHolidays = () => {
+   //    const holidaysInYear = getHolidays(year);
+   //    setList(holidaysInYear)
+   // }
+   
    const handleConfirmDeleteHolidays = () => {
       setList([], true)
       setDeleteDialog(false)
    }
 
    return (
-      <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-
-
+      <Paper variant="outlined" className={gClasses.containerPaper}>
          <Paper elevation={0} variant="outlined" className={clsx(gClasses.container)}>
             <Grid container justifyContent="space-between" className={gClasses.marginVertical8}>
 
@@ -113,7 +109,7 @@ const DatesExceptionsForm = ({ list, setList }) => {
                   >
                      Apagar todos os feriados/dias uteis
                   </Button>
-                  <LoadingButton
+                  {/* <LoadingButton
                      disabled={Boolean(loading) || Object.keys(list).length !== 0}
                      color="primary"
                      onClick={(e) => getBrasilHolidays()}
@@ -122,7 +118,7 @@ const DatesExceptionsForm = ({ list, setList }) => {
                      startIcon={loading ? <CircularProgress color='inherit' size={20} /> : null}
                   >
                      {`Buscar Feriados deste ano (${year})`}
-                  </LoadingButton>
+                  </LoadingButton> */}
 
                </Grid>
             </Grid>

@@ -9,7 +9,7 @@ const ContactForm = ({ formik, initialItem }) => {
    const gClasses = useGlobalStyles()
       
    return (
-      <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+      <>
          <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
             <Typography variant='h6' color='textSecondary' className={gClasses.marginBottom10}>
                Informações de Contato
@@ -92,7 +92,7 @@ const ContactForm = ({ formik, initialItem }) => {
                   onChange={formik.handleChange} />
             </Grid>
          </Grid>
-      </Paper >
+      </>
    )
 }
 

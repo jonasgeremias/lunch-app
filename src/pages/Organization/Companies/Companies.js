@@ -146,7 +146,7 @@ const Companies = () => {
 
    return (
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
-         <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+         <Paper variant="outlined" className={gClasses.containerPaper}>
             <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
                <TabSubtitle description={webScreen ? `Aqui você pode consultar as empresas da organização.` : ''}
                   descriptionClassName={gClasses.marginBottom30}>

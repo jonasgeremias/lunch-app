@@ -59,6 +59,10 @@ export default makeStyles(theme => ({
       alignItems: 'center',
       margin: 0,
    },
+   containerPaper: {
+      padding: 12,
+      margin: 8
+   },
    container: {
       padding: 12 , 
       marginTop: 8, 

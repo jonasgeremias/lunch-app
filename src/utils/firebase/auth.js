@@ -1,4 +1,5 @@
 import { USER_TYPES } from 'constants/general';
+import { USERS_PATH } from 'constants/routes';
 import { formatValue } from "utils";
 import Firebase, { getTimestamp } from "./firebase";
 
@@ -39,7 +40,7 @@ export function sendResetEmail(email) {
 
 export function loadUserData(uid) {
    if (uid) {
-      return Firebase.firestore().collection('users').doc(uid).get().then(async (doc) => {
+      return Firebase.firestore().collection(USERS_PATH).doc(uid).get().then(async (doc) => {
          if (doc.exists) {
             const data = doc.data();
             const now = getTimestamp()

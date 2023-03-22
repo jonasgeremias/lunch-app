@@ -24,7 +24,7 @@ const WorkScheduleForm = ({ schedule, setSchedule }) => {
    }, [schedule])
 
    return (
-      <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+      <Paper variant="outlined" className={gClasses.containerPaper}>
 
          <Typography variant="h6" gutterBottom>
             Dias úteis da Semana
