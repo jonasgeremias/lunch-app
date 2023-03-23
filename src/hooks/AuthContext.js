@@ -3,7 +3,7 @@ import { signIn, signOut, loadUserData, checkUserAccount } from "../utils/fireba
 import { Firebase } from 'utils';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
 import { useOrgContext } from './OrgContext';
-import { useCompanieContext } from './CompanieContext';
+import { useCompanyContext } from './CompanyContext';
 import { USER_TYPES } from 'constants/general';
 export const AuthContext = createContext({});
 
@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
    const [userData, setUserData] = useState(null);
    const { showSnackBar } = useSnackBar();
    const { getOrg } = useOrgContext()
-   const { getCompanie } = useCompanieContext()
+   const { getCompany } = useCompanyContext()
 
    useEffect(() => {
       const authListener = Firebase.auth().onAuthStateChanged(async (userCredential) => {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
    const exit = async (message) => {
       await signOut()
       await getOrg(null)
-      await getCompanie(null)
+      await getCompany(null)
       setUser(null)
       setUserData(null)
       showSnackBar(message, 'error')
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       // Lendo os dados da organização e empresa
       if (!snackRet.error && (userData?.userType != USER_TYPES.admin.id)) {
          const org = await getOrg(userData?.orgId)
-         const comp = await getCompanie(userData?.companyId)
+         const comp = await getCompany(userData?.companyId)
          if (!org) {
             await exit(`Organização não encontrada, contate o administrador da empresa.`);
             return;

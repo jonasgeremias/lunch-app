@@ -3,7 +3,7 @@ import { ROWS_PER_PAGE_TABLE, USER_TYPES } from "constants/general";
 import { COMPANIES_PATH } from "constants/routes";
 import Firebase, { getTimestamp } from "./firebase";
 
-export async function getCompanieData(id) {
+export async function getCompanyData(id) {
    if (!id) return null;
    return await Firebase.firestore().collection(COMPANIES_PATH).doc(id).get().then(doc => {
       if (!doc.exists) return null
@@ -13,7 +13,7 @@ export async function getCompanieData(id) {
    })
 }
 
-export async function setCompanieData(data, adding, user, org) {
+export async function setCompanyData(data, adding, user, org) {
    if (!data?.companyId) return { error: true, message: 'ID inválido' };
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
@@ -106,6 +106,7 @@ export async function loadCompaniesInDB(table, userData, loadPage = null) {
          const data = [...(loadPage ? allData : []), ...snap.docs.map(doc => doc.data())]
          return {
             ...table,
+            error: false,
             // pageData: snap.docs.map(doc => doc.data()),
             allData: data
             // loadingMore: false,
@@ -115,7 +116,7 @@ export async function loadCompaniesInDB(table, userData, loadPage = null) {
       })
       .catch(error => {
          // errorHandler(error, 'Ocorreu um erro ao carregar os dados das empresas', 'Companie', 'loadCompanieInDB')
-         return { ...table, pageData: [], allData: loadPage ? allData : [], loadingMore: false, lastDoc: null, hasNextPage: false }
+         return { ...table, pageData: [], allData: loadPage ? allData : [], loadingMore: false, lastDoc: null, hasNextPage: false, error: true}
       })
 }
 

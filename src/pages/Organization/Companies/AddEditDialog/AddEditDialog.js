@@ -3,7 +3,7 @@ import DialogContainer from 'components/molecules/DialogContainer/DialogContaine
 import {  Grid } from "@mui/material"
 import { Firebase } from "utils"
 import { useFormik } from 'formik';
-import { setCompanieData } from "utils/firebase/companies"
+import { setCompanyData } from "utils/firebase/companies"
 import { useSnackBar } from "components/atoms/Snackbar/Snackbar"
 import { useOrgContext } from "hooks/OrgContext"
 import { useAuthContext } from "hooks/AuthContext"
@@ -30,7 +30,7 @@ const AddEditDialog = ({ companyData, visible, onClose, updateCompanieData }) =>
       onSubmit: async (values) => {
          setLoading(true)
          const dataset = { ...companyData, ...values }
-         const { error, message, data } = await setCompanieData(dataset, adding, user, org)
+         const { error, message, data } = await setCompanyData(dataset, adding, user, org)
          setLoading(false)
          showSnackBar(message, error ? 'error' : 'success');
          if (!error) {

@@ -7,6 +7,15 @@ import Firebase, { getTimestamp } from "./firebase";
 // create or edit a user
 // delete a user is not possible
 
+export async function getUserData(id) {
+   if (!id) return null;
+   return await Firebase.firestore().collection(USERS_PATH).doc(id).get().then(doc => {
+      if (!doc.exists) return null
+      else return doc.data()
+   }).catch(error => {
+      return null
+   })
+}
 
 function getFilters(order = 'des', orderBy = 'createdAt', filters, lastDoc, limit = ROWS_PER_PAGE_TABLE) {
    let query = Firebase.firestore().collection(USERS_PATH)
@@ -41,6 +50,7 @@ export async function loadUsersInDB(table, userData, loadPage = null) {
          const data = [...(loadPage ? allData : []), ...snap.docs.map(doc => doc.data())]
          return {
             ...table,
+            error: false,
             // pageData: snap.docs.map(doc => doc.data()),
             allData: data
             // loadingMore: false,
@@ -50,11 +60,11 @@ export async function loadUsersInDB(table, userData, loadPage = null) {
       })
       .catch(error => {
          // errorHandler(error, 'Ocorreu um erro ao carregar os dados das empresas', 'Companie', 'loadCompanieInDB')
-         return { ...table, pageData: [], allData: loadPage ? allData : [], loadingMore: false, lastDoc: null, hasNextPage: false }
+         return { ...table, pageData: [], allData: loadPage ? allData : [], loadingMore: false, lastDoc: null, hasNextPage: false, error: true}
       })
 }
 
-export async function inactiveUserInDB(selectedRowsData, userData) {
+export async function inactiveUsersInDB(selectedRowsData, userData) {
    if (!selectedRowsData || selectedRowsData.length < 1) return { error: true, message: 'Selecione um item!' }
    let ret = await selectedRowsData.map(async (docId) => {
       const query = Firebase.firestore().collection(USERS_PATH).doc(docId)

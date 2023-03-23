@@ -82,7 +82,7 @@ export const DEF_PROPS = {
       variant: 'outlined',
       autoComplete: "off",
       fullWidth: true,
-      label: 'Código',
+      label: 'Código Matrícula',
       type:'number'
    },
    name: {

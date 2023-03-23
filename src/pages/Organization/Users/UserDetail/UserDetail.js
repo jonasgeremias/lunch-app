@@ -1,37 +1,39 @@
 import { useBreakPoint } from 'hooks/useBreakPoint';
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useGlobalStyles } from 'styles';
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle'
 import { Button, CircularProgress, Grid, Paper, Typography } from '@mui/material'
 import clsx from 'clsx'
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
-import { useEffect } from 'react';
-import { getCompanyData, setCompanyData } from 'utils/firebase/companies';
+import { getUserData, loadUsersInDB, setUserData } from 'utils/firebase/users';
 import { useNavigate } from 'react-router-dom';
-import { COMPANIES_PATH, ORIGIN_ROUTES } from 'constants/routes';
+import { USERS_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import { Firebase } from 'utils';
 import { initialValues, updateInitialValues, validationSchema } from './getInputs'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { useOrgContext } from 'hooks/OrgContext';
-import { useAuthContext } from 'hooks/AuthContext';
+import { AuthContext, useAuthContext } from 'hooks/AuthContext';
 import { useFormik } from 'formik';
 import { LoadingButton } from '@mui/lab';
-import ContactForm from './ContactForm';
-import { objectIsEqual } from 'utils/compareDifferentInput';
 
-const CompanieTab = ({ add }) => {
+import { objectIsEqual } from 'utils/compareDifferentInput';
+// import UserForm from './UserForm';
+import { loadCompaniesInDB } from 'utils/firebase/companies';
+import UserForm from './UserForm';
+
+const UserDetail = ({ add }) => {
    let { id } = useParams();
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
    const { showSnackBar } = useSnackBar()
    const [item, setItem] = useState(initialValues)
    const [differentData, setDifferentData] = useState(false)
-
+   const [companies, setCompanies] = useState({})
    let navigate = useNavigate();
-
-   const [loading, setLoading] = useState(false)
+   const { userData } = useContext(AuthContext)
+   const [loading, setLoading] = useState(true)
    const { org } = useOrgContext()
    const { user } = useAuthContext()
 
@@ -46,62 +48,82 @@ const CompanieTab = ({ add }) => {
          setLoading(true)
          const dataset = { ...item, ...values }
          console.log('onSubmit', dataset)
-         const { error, message, data, newDoc } = await setCompanyData(dataset, add, user, org)
+         showSnackBar('Gravando', 'success')
+         // const { error, message, data, newDoc } = await setUserData(dataset, add, user, org)
+         // setLoading(false)
+         // showSnackBar(message, error ? 'error' : 'success');
+         // if (!error) {
+         //    setItem(data)
+         // }
+         // if (newDoc) navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${dataset.companyId}`, { replace: true });
          setLoading(false)
-         showSnackBar(message, error ? 'error' : 'success');
-         if (!error) {
-            setItem(data)
-         }
-
-         if (newDoc) navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}/${dataset.companyId}`, { replace: true });
       },
    });
 
    useEffect(() => {
       formik.setValues(updateInitialValues(item))
-   }, [item])
+   }, [item, companies])
 
    useEffect(() => {
+      console.log('item', item, formik.values)
       setDifferentData(!objectIsEqual(item, formik.values))
    }, [formik.values])
-   
+
+   const loadData = async () => {
+
+      setLoading(true)
+      if (!add) {
+         console.log('id', id, add)
+         await getUserData(id).then((item) => {
+            if (item == null) {
+               console.log('item', item)
+               navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}`);
+            }
+            setItem({ ...item })
+         }).catch((e) => {
+            console.log('e', e)
+            navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}`);
+         })
+
+         setCompanies(await loadCompaniesInDB(companies, userData))
+
+      }
+      else {
+         const id = Firebase.firestore().collection(USERS_PATH).doc().id;
+         setItem({ ...item, uid: id })
+         setCompanies(await loadCompaniesInDB(companies, userData))
+
+         console.log('opa novo user', companies, item)
+
+      }
+      setLoading(false)
+   }
 
    // Se não achou no banco, volta para Empresas
    useEffect(() => {
-      setLoading(true)
-      if (!add) {
-         getCompanyData(id).then((item) => {
-            if (item == null) {
-               navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}`);
-            }
-            setItem({ ...item })
-         }).catch(() => {
-            navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}`);
-         })
-      }
-      else {
-         const id = Firebase.firestore().collection(COMPANIES_PATH).doc().id;
-         setItem({ ...item, companyId: id })
-      }
-      setLoading(false)
+      loadData()
    }, [])
 
    const handleClickBack = () => {
-      navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}`);
+      navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}`);
    }
 
    return (
-      <>
+      <Paper elevation={0} variant="outlined" className={gClasses.containerPaper}>
          <Paper elevation={0} variant="outlined" className={clsx(gClasses.container)}>
             <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
                <TabSubtitle
                   colorDescription={differentData ? 'error' : null}
                   description={webScreen ? differentData ? 'Dados alterados! Click em salvar!' : `Aqui você pode editar as informações sobre a empresa.` : ''}
                   descriptionClassName={clsx(gClasses.marginBottom30, gClasses.padding12)}>
-                  {add ? "Adicionar Empresa" : "Editar Empresa"}
+                  {add ? "Adicionar Usuário" : "Editar Usuário"}
                </TabSubtitle >
             </div>
-
+            
+            <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+               <UserForm formik={formik} initialItem={item} companies={companies.allData} loading={loading} />
+            </Paper >
+            
             <Grid container justifyContent="space-between">
 
                <Grid justifyContent="flex-start" className={gClasses.marginVertical8}>
@@ -128,11 +150,8 @@ const CompanieTab = ({ add }) => {
             </Grid>
          </Paper>
 
-         <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-            <ContactForm formik={formik} initialItem={item} />
-         </Paper >
-      </>
+      </Paper>
    );
 }
 
-export default CompanieTab;
+export default UserDetail;

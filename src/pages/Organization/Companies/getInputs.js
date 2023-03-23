@@ -16,11 +16,11 @@ export const initialStateTable = {
    // orderBy: 'createdAt',
    // filters: []
 }
-export const createDataCompanieTable = (table) => {
+export const createDataCompaniesTable = (table) => {
    return table.map((row) => {
       const created = new Date(row?.createdAt?.seconds * 1000 + row?.createdAt?.nanoseconds / 1000000)
       const updated = new Date(row?.updatedAt?.seconds * 1000 + row?.updatedAt?.nanoseconds / 1000000)
-      // console.log('createDataCompanieTable', row, row?.updatedAt)
+      // console.log('createDataCompaniesTable', row, row?.updatedAt)
       return {
          id: row?.companyId,
          companyId: row?.companyId,
@@ -38,7 +38,7 @@ export const createDataCompanieTable = (table) => {
    })
 }
 
-export const COMPANIE_TABLE_COLUMNS = [
+export const COMPANIES_TABLE_COLUMNS = [
    // {
    //    width: 75, field: 'options', headerName: 'Opções',
    //    renderCell: (cellValues) => <MyOption cellValues />

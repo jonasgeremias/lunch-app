@@ -13,20 +13,20 @@ export const LOTTIE_OPTIONS = animation => ({
    animationData: animation,
 })
 
+export const USER_TYPES_ARRAY = ['client', 'organization', 'admin', 'restaurant', 'financier']
 
 export const USER_TYPES = {
    client: { name: 'Cliente', id: 'client' },
-   organization: { name: 'Adm. Organização', id: 'organization' },
-   admin: { name: 'Administrador', id: 'admin' },
    restaurant: { name: 'Restaurante', id: 'restaurant' },
-   financier: { name: 'financeiro', id: 'financier' }
+   financier: { name: 'financeiro', id: 'financier' },
+   organization: { name: 'Adm. Organização', id: 'organization' },
+   admin: { name: 'Administrador', id: 'admin' }
 }
-
 
 export const STATUS_OPTIONS_ARRAY = ["active", "inactive"]
 export const STATUS_OPTIONS = {
-   inactive: { id: 'inactive', name: 'Inativo' },
-   active: { id: 'active', name: 'Ativo' }
+   active: { id: 'active', name: 'Ativo' },
+   inactive: { id: 'inactive', name: 'Inativo' }
 }
 
 /**Common used date formats in dayjs */
@@ -35,8 +35,8 @@ export const DATE_FORMAT = {
    medium: 'DD MMM YY - HH:mm',
    small: 'DD MMM YY',
    input: 'DD/MM/YYYY'
- }
- 
+}
+
 
 
 // @audit apenas para consulta ------------------------------------------------

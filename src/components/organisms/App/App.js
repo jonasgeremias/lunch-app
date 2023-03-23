@@ -5,20 +5,20 @@ import AppRoutes from '../Routes/Routes';
 import { AppProvider } from 'hooks/AppContext';
 import { AuthProvider } from 'hooks/AuthContext';
 import { SnackBarProvider } from 'components/atoms/Snackbar/Snackbar';
-import { CompanieProvider } from 'hooks/CompanieContext';
+import { CompanyProvider } from 'hooks/CompanyContext';
 import { OrgProvider } from 'hooks/OrgContext';
 
 function App() {
    return (
       <SnackBarProvider>
          <OrgProvider>
-            <CompanieProvider>
+            <CompanyProvider>
                <AuthProvider>
                   <AppProvider>
                      <AppRoutes />
                   </AppProvider >
                </AuthProvider>
-            </CompanieProvider>
+            </CompanyProvider>
          </OrgProvider>
       </SnackBarProvider>
    )

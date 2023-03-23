@@ -3,13 +3,13 @@ import { useGlobalStyles } from 'styles';
 import { Box, Button, Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
 import clsx from 'clsx'
 import { useNavigate } from 'react-router-dom';
-import { COMPANIES_PATH, ORIGIN_ROUTES } from 'constants/routes';
+// import { COMPANIES_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import CompanieTab from './CompanieTab/CompanieTab';
 // import Users from '../../Users/Users';
 
 const Detail = ({ add }) => {
    const gClasses = useGlobalStyles()
-   let navigate = useNavigate();
+   // let navigate = useNavigate();
 
    // const [selectedTab, setSelectedTab] = useState(0);
    // const handleTabChange = (event, newValue) => {

@@ -6,7 +6,7 @@ import { useGlobalStyles } from 'styles'
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle'
 import { Button, Paper, Grid, List } from '@mui/material'
 import { useBreakPoint } from 'hooks/useBreakPoint'
-import { COMPANIE_TABLE_COLUMNS, createDataCompanieTable, initialStateTable, initialValuesFilters, validationSchemaFilters } from './getInputs'
+import { COMPANIES_TABLE_COLUMNS, createDataCompaniesTable, initialStateTable, initialValuesFilters, validationSchemaFilters } from './getInputs'
 import { useAuthContext } from 'hooks/AuthContext'
 import { inactiveCompaniesInDB, loadCompaniesInDB } from 'utils/firebase/companies'
 import { DataGrid, GridToolbar, } from '@mui/x-data-grid';
@@ -55,7 +55,7 @@ const Companies = () => {
 
    // Atualiza a tabela em tela
    useEffect(() => {
-      setShowTable(createDataCompanieTable(table.allData))
+      setShowTable(createDataCompaniesTable(table.allData))
    }, [table])
 
    const onClickItem = (item) => {
@@ -187,7 +187,7 @@ const Companies = () => {
                rowReordering
                loading={dataGridLoading}
                rows={showTable}
-               columns={COMPANIE_TABLE_COLUMNS}
+               columns={COMPANIES_TABLE_COLUMNS}
                autoHeight
                onRowDoubleClick={onClickItem}
                checkboxSelection={true}

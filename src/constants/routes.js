@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { Assessment, Home, Restaurant, Business, DateRange,AccountBox } from '@mui/icons-material'
+import { Assessment, Home, Restaurant, Business, DateRange, AccountBox } from '@mui/icons-material'
 
 const ClientHome = lazy(() => import('pages/Client/Home/Home'))
 const ClientRestaurantProfile = lazy(() => import('pages/Client/RestaurantProfile/RestaurantProfile'))
@@ -11,6 +11,8 @@ const OrganizationCompanies = lazy(() => import('pages/Organization/Companies/Co
 const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Companies/Detail/Detail'))
 const OrgWorkingSettings = lazy(() => import('pages/Organization/OrgWorkingSettings/OrgWorkingSettings'))
 const OrganizationUsers = lazy(() => import('pages/Organization/Users/Users'))
+
+const UserDetail = lazy(() => import('pages/Organization/Users/UserDetail/UserDetail'))
 
 export const ORIGIN_ROUTES = 'dashboard'
 export const COMPANIES_PATH = 'companies'
@@ -53,21 +55,35 @@ export const ROUTES = {
             path: COMPANIES_PATH + "/add",
             name: 'Empresas',
             icon: <Business />,
-            element: <OrganizationCompaniesDetail add={true}/>
+            element: <OrganizationCompaniesDetail add={true} />
          },
          {
             path: COMPANIES_PATH + "/:id",
             name: 'Empresas',
             icon: <Business />,
-            element: <OrganizationCompaniesDetail add={false}/>
+            element: <OrganizationCompaniesDetail add={false} />
          }
       ]
    },
    {
-      path: "users",
+      path: USERS_PATH,
       name: 'Usuários',
       icon: <AccountBox />,
-      element: <OrganizationUsers />
+      element: <OrganizationUsers />,
+      sections: [
+         {
+            path: USERS_PATH + "/add",
+            name: 'Usuários',
+            icon: <Business />,
+            element: <UserDetail add={true} />
+         },
+         {
+            path: USERS_PATH + "/:id",
+            name: 'Usuários',
+            icon: <Business />,
+            element: <UserDetail add={false} />
+         }
+      ]
    },
    {
       path: "workdates",
@@ -81,5 +97,5 @@ export const ROUTES = {
       icon: <Assessment />,
       element: <OrganizationHistory />
    }
-]
+   ]
 }
