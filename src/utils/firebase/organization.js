@@ -35,7 +35,7 @@ export async function setOrgData(data, adding, user, org) {
             console.warn('doc', item)
             return { error: false, message: 'Atualizado com sucesso!', data: item }
          }).catch(error => {
-            return { error: true, message: `Erro ao atualizar empresa! (${error.id})`, data: null };
+            return { error: true, message: `Erro ao atualizar organização! (${error.id})`, data: null };
          })
       }
       else {
@@ -43,7 +43,7 @@ export async function setOrgData(data, adding, user, org) {
             console.warn('doc', item)
             return { error: false, message: 'Criado com sucesso!', data: item, newDoc:true }
          }).catch(error => {
-            return { error: true, message: `Erro ao Criar empresa! (${error.id})`, data: null };
+            return { error: true, message: `Erro ao criar organização! (${error.id})`, data: null };
          })
       }
    }).catch((error) => {

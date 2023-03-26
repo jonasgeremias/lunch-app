@@ -46,7 +46,8 @@ export const initialValues = {
       Saturday: false,
       Sunday: false
    },
-   datesExceptions: {}
+   datesExceptions: {},
+   lunchTypes: {}
 };
 
 export const updateInitialValues = (orgData) => {

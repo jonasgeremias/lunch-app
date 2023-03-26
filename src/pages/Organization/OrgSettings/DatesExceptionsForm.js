@@ -92,15 +92,12 @@ const DatesExceptionsForm = ({ list, setList }) => {
 
    return (
       <Paper variant="outlined" className={gClasses.containerPaper}>
-         <Paper elevation={0} variant="outlined" className={clsx(gClasses.container)}>
             <Grid container justifyContent="space-between" className={gClasses.marginVertical8}>
-
                <Grid item className={gClasses.marginVertical8} textAlign="left">
                   <Typography variant="h6" gutterBottom>
                      Adicionar feriado / ou dia específico de trabalho
                   </Typography>
                </Grid>
-
                <Grid item className={gClasses.marginVertical8} textAlign="right">
                   <Button
                      disabled={Boolean(loading)}
@@ -109,7 +106,8 @@ const DatesExceptionsForm = ({ list, setList }) => {
                   >
                      Apagar todos os feriados/dias uteis
                   </Button>
-                  {/* <LoadingButton
+                  {/* @info para buscar feriados do ano 
+                     <LoadingButton
                      disabled={Boolean(loading) || Object.keys(list).length !== 0}
                      color="primary"
                      onClick={(e) => getBrasilHolidays()}
@@ -122,7 +120,7 @@ const DatesExceptionsForm = ({ list, setList }) => {
 
                </Grid>
             </Grid>
-         </Paper>
+
 
          <Paper elevation={0} variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
             <form onSubmit={handleAdd}>
@@ -159,7 +157,6 @@ const DatesExceptionsForm = ({ list, setList }) => {
                      </FormControl>
                   </Grid>
                   <Grid container item xs={12} md={4}>
-
                      <Button variant="contained" fullWidth color="primary" type="submit">{editIndex !== null ? 'Edit' : 'Add'}</Button>
                   </Grid>
                </Grid>
@@ -178,7 +175,7 @@ const DatesExceptionsForm = ({ list, setList }) => {
                      const isOff = item.typeOfDay === 'off';
                      const isOn = item.typeOfDay === 'on';
                      return (
-                        <ListItem key={key}>
+                        <ListItem key={key} className={gClasses.hover}>
                            <Grid container item xs={7}>
 
                               <ListItemText primary={`(${date.toLocaleDateString('pt-BR')}) : ${formattedDate}`} secondary={<Typography variant="subtitle1" fontWeight="bold">{item.description}</Typography>} />
@@ -219,13 +216,7 @@ const DatesExceptionsForm = ({ list, setList }) => {
          />
 
 
-         <ConfirmDeleteDialog
-            variantTitle='h4'
-            visible={Boolean(deleteDialog)}
-            onCancel={() => setDeleteDialog(false)}
-            onConfirm={handleConfirmDeleteHolidays}
-            title='Confirmar exclusão' description='Tem certeza que deseja excluir todos os feriados e dias uteis configurados?'
-         />
+
       </Paper>)
 }
 

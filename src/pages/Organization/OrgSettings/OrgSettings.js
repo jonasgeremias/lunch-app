@@ -18,20 +18,19 @@ import { useBreakPoint } from 'hooks/useBreakPoint';
 import { getOrgData, setOrgData } from 'utils/firebase/organization';
 import ContactForm from './ContactForm';
 import { objectIsEqual } from 'utils/compareDifferentInput';
+import LunchTypesSettings from './LunchTypesSettings';
 
-const OrgWorkingSettings = () => {
+const OrgSettings = () => {
    const gClasses = useGlobalStyles()
-   // let navigate = useNavigate();
-   const { org } = useOrgContext()
+   const { org, setOrg } = useOrgContext()
    const { user } = useAuthContext()
    const { showSnackBar } = useSnackBar()
    const webScreen = useBreakPoint('up', 'md')
    const [item, setItem] = useState(initialValues)
    const [differentData, setDifferentData] = useState(false)
    const [loading, setLoading] = useState(false)
-
    const [tried, setTried] = useState(0)
-
+      
    const formik = useFormik({
       initialValues: initialValues,
       validationSchema: validationSchema,
@@ -49,6 +48,7 @@ const OrgWorkingSettings = () => {
          showSnackBar(message, error ? 'error' : 'success');
          if (!error) {
             setItem(data)
+            setOrg(data) // Atualiza o contexto
          }
       },
    });
@@ -81,6 +81,24 @@ const OrgWorkingSettings = () => {
       formik.setValues({ ...formik.values, schedule: newSchedule })
    }
 
+   const setLunchTypes = (list, deleteList = false) => {
+      console.log('setLunchTypes', list, deleteList)
+      
+      const uniques = Object.values(list).reduce((acc, curr) => {
+         const { name, price} = curr;
+         acc[name] = { name, price};
+         return acc;
+      }, {});
+
+      let newLunchTypes = {}
+      if ('lunchTypes' in formik.values && !deleteList) {
+         newLunchTypes = { ...formik.values.lunchTypes, ...uniques }
+      }
+      else newLunchTypes = { ...uniques }
+
+      formik.setValues({ ...formik.values, lunchTypes: newLunchTypes })
+   }
+   
    const setDatesExceptions = (list, deleteList = false) => {
       console.log('setDatesExceptions', deleteList)
 
@@ -107,7 +125,6 @@ const OrgWorkingSettings = () => {
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
          <Paper elevation={0} variant="outlined" className={clsx(gClasses.containerPaper)}>
             <Grid container justifyContent="space-between" className={gClasses.marginVertical8}>
-
                <Grid item className={gClasses.marginVertical8} textAlign="left">
                   <TabSubtitle
                      colorDescription={differentData ? 'error' : null}
@@ -136,6 +153,7 @@ const OrgWorkingSettings = () => {
 
 
          <ContactForm formik={formik} initialItem={item} />
+         <LunchTypesSettings list={formik.values.lunchTypes} setList={setLunchTypes} />
          <WorkScheduleForm schedule={formik.values.schedule} setSchedule={setSchedule} />
          <DatesExceptionsForm list={formik.values.datesExceptions} setList={setDatesExceptions} />
          
@@ -143,4 +161,4 @@ const OrgWorkingSettings = () => {
    )
 }
 
-export default OrgWorkingSettings;
+export default OrgSettings;

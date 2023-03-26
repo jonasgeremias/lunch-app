@@ -41,8 +41,6 @@ const Companies = () => {
    const [dataGridLoading, setDataGridLoading] = useState(true)
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [deleteDialog, setDeleteDialog] = useState(false)
-   // const [isAddEditing, setIsAddEditing] = useState(false)
-   // const [company, setCompanie] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
    const [selectedRowsData, setSelectedRowsData] = useState([])
@@ -75,40 +73,18 @@ const Companies = () => {
       // console.log('handleEditClick', id)
       // const comp = table.allData.filter(row => row.companyId == id)
       // console.log('comp', comp)
-      // setCompanie(comp[0] || {})
+      // setCompany(comp[0] || {})
       // setIsAddEditing(true)
    }
 
    const handleAdd = e => {
       navigate(`/${ORIGIN_ROUTES}/${COMPANIES_PATH}/${COMPANY_ADD}`);
-      //setCompanie({})
-      //setIsAddEditing(true)
    }
-
-   // const handleCloseAddEdit = () => {
-   //    setCompanie({})
-   //    setIsAddEditing(false)
-   // }
-
+   
    const loadData = async () => {
       setTable(await loadCompaniesInDB(table, userData))
       setDataGridLoading(false)
    }
-
-   // const updateCompanieData = (item) => {
-   //    console.log('updateCompanieData', item)
-   //    const dataset = table.allData;
-   //    const obj = dataset.find(row => row.companyId === item.companyId);
-   //    if (!obj) {
-   //       console.log('Add new company')
-   //       dataset.push(item)
-   //    }
-   //    const temp_table = dataset.map(row => {
-   //       if (row.companyId != item.companyId) return row;
-   //       return item
-   //    })
-   //    setTable({ ...table, allData: temp_table })
-   // }
 
    const onRowsSelectionHandler = (ids) => {
       setSelectedRowsData(ids)
@@ -198,13 +174,6 @@ const Companies = () => {
                onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
             />
          </Paper>
-
-         {/* <AddEditDialog
-            visible={Boolean(isAddEditing)}
-            companyData={company}
-            onClose={handleCloseAddEdit}
-            updateCompanieData={updateCompanieData}
-         /> */}
 
          <ConfirmDeleteDialog
             variantTitle='h4'

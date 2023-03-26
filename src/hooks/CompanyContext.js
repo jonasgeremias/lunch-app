@@ -3,11 +3,11 @@ import { getCompanyData } from 'utils/firebase/companies'
 export const CompanyContext = createContext({});
 
 export const CompanyProvider = ({ children }) => {
-   const [company, setCompanie] = useState(null);
+   const [company, setCompany] = useState(null);
 
    const getCompany = async (id) => {
       const comp = await getCompanyData(id)
-      setCompanie(comp)
+      setCompany(comp)
       return comp;
    };
 

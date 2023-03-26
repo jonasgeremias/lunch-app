@@ -13,7 +13,7 @@ export const OrgProvider = ({ children }) => {
    };
 
    return (
-      <OrgContext.Provider value={{ org, getOrg }}>
+      <OrgContext.Provider value={{ org, getOrg, setOrg}}>
          {children}
       </OrgContext.Provider>
    );

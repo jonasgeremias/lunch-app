@@ -44,7 +44,7 @@ const Users = () => {
    const [dataGridLoading, setDataGridLoading] = useState(true)
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [deleteDialog, setDeleteDialog] = useState(false)
-   const [companies, setCompanies] = useState({})
+   const [companies, setCompanys] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
    const [selectedRowsData, setSelectedRowsData] = useState([])
@@ -90,7 +90,7 @@ const Users = () => {
 
    const loadData = async () => {
       setTable(await loadUsersInDB(table, userData))
-      setCompanies(await loadCompaniesInDB(companies, userData))
+      setCompanys(await loadCompaniesInDB(companies, userData))
       setDataGridLoading(false)
    }
 

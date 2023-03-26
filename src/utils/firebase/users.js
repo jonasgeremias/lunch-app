@@ -89,3 +89,49 @@ export async function inactiveUsersInDB(selectedRowsData, userData) {
    });
 }
 
+
+export async function setUserData(data, adding, user, org) {
+   if (!user?.uid) return { error: true, message: 'Usuário inválido' };
+   if (!org?.orgId) return { error: true, message: 'Organização inválida' };
+   if (!('userType' in data)) return { error: true, message: 'Tipo de usuário inválido' };
+   if (data?.userType == USER_TYPES.client.id) {
+      if (!data?.companyId) return { error: true, message: 'ID inválido' };
+   }
+   
+   const datenow = getTimestamp();
+
+   const item = {
+      ...data,
+      updatedAt: datenow,
+      orgId: org?.orgId
+   }
+
+   if (adding) {
+      item.createdAt = datenow;
+      item.companyCreatedByUserId = user?.uid;
+   }
+   const docRef = Firebase.firestore().collection(USERS_PATH).doc(data.uid)
+   
+   const ret = await docRef.get().then((doc) => {
+      if (doc.exists) {
+         return docRef.update(item).then((doc) => {
+            console.warn('doc', item)
+            return { error: false, message: 'Atualizado com sucesso!', data: item }
+         }).catch(error => {
+            return { error: true, message: `Erro ao atualizar empresa! (${error.id})`, data: null };
+         })
+      }
+      else {
+         return docRef.set(item).then((doc) => {
+            console.warn('doc', item)
+            return { error: false, message: 'Criado com sucesso!', data: item, newDoc:true }
+         }).catch(error => {
+            return { error: true, message: `Erro ao Criar empresa! (${error.id})`, data: null };
+         })
+      }
+   }).catch((error) => {
+      return { error: true, message: `Erro interno, tente novamente! (${error.id})`, data: null };
+   })
+   
+   return ret
+}

@@ -9,7 +9,7 @@ const OrganizationHome = lazy(() => import('pages/Organization/Home/Home'))
 const OrganizationHistory = lazy(() => import('pages/Organization/History/History'))
 const OrganizationCompanies = lazy(() => import('pages/Organization/Companies/Companies'))
 const OrganizationCompaniesDetail = lazy(() => import('pages/Organization/Companies/Detail/Detail'))
-const OrgWorkingSettings = lazy(() => import('pages/Organization/OrgWorkingSettings/OrgWorkingSettings'))
+const OrgSettings = lazy(() => import('pages/Organization/OrgSettings/OrgSettings'))
 const OrganizationUsers = lazy(() => import('pages/Organization/Users/Users'))
 
 const UserDetail = lazy(() => import('pages/Organization/Users/UserDetail/UserDetail'))
@@ -86,10 +86,10 @@ export const ROUTES = {
       ]
    },
    {
-      path: "workdates",
-      name: 'Datas da Org.',
+      path: "org",
+      name: 'Organização',
       icon: <DateRange />,
-      element: <OrgWorkingSettings />
+      element: <OrgSettings />
    },
    {
       path: "history",

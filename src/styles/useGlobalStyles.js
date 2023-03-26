@@ -1,9 +1,11 @@
 import { makeStyles } from '@mui/styles';
-// import { textAlign } from '@mui/system';
-
-// import {DRAWER_WIDTH} from 'constants/general'
 
 export default makeStyles(theme => ({
+   hover:{
+      '&:hover': {
+         backgroundColor:  `${theme.palette.primary.main}10`
+      }
+   },
    breadcrumblink: {
      textDecoration: 'none',
      color: theme.palette.text.primary,

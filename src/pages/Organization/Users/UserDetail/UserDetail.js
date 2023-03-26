@@ -14,7 +14,7 @@ import { initialValues, updateInitialValues, validationSchema } from './getInput
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { useOrgContext } from 'hooks/OrgContext';
-import { AuthContext, useAuthContext } from 'hooks/AuthContext';
+import { useAuthContext } from 'hooks/AuthContext';
 import { useFormik } from 'formik';
 import { LoadingButton } from '@mui/lab';
 
@@ -30,12 +30,12 @@ const UserDetail = ({ add }) => {
    const { showSnackBar } = useSnackBar()
    const [item, setItem] = useState(initialValues)
    const [differentData, setDifferentData] = useState(false)
-   const [companies, setCompanies] = useState({})
+   const [companies, setCompanys] = useState({})
    let navigate = useNavigate();
-   const { userData } = useContext(AuthContext)
+   // const { user, userData } = useContext(AuthContext)
    const [loading, setLoading] = useState(true)
    const { org } = useOrgContext()
-   const { user } = useAuthContext()
+   const { user, userData } = useAuthContext()
 
    const formik = useFormik({
       initialValues: initialValues,
@@ -49,13 +49,14 @@ const UserDetail = ({ add }) => {
          const dataset = { ...item, ...values }
          console.log('onSubmit', dataset)
          showSnackBar('Gravando', 'success')
-         // const { error, message, data, newDoc } = await setUserData(dataset, add, user, org)
-         // setLoading(false)
-         // showSnackBar(message, error ? 'error' : 'success');
-         // if (!error) {
-         //    setItem(data)
-         // }
-         // if (newDoc) navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${dataset.companyId}`, { replace: true });
+         
+         const { error, message, data, newDoc } = await setUserData(dataset, add, user, org)
+         setLoading(false)
+         showSnackBar(message, error ? 'error' : 'success');
+         if (!error) {
+            setItem(data)
+         }
+         if (newDoc) navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${dataset.companyId}`, { replace: true });
          setLoading(false)
       },
    });
@@ -85,16 +86,13 @@ const UserDetail = ({ add }) => {
             navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}`);
          })
 
-         setCompanies(await loadCompaniesInDB(companies, userData))
-
+         setCompanys(await loadCompaniesInDB(companies, userData))
       }
       else {
          const id = Firebase.firestore().collection(USERS_PATH).doc().id;
          setItem({ ...item, uid: id })
-         setCompanies(await loadCompaniesInDB(companies, userData))
-
+         setCompanys(await loadCompaniesInDB(companies, userData))
          console.log('opa novo user', companies, item)
-
       }
       setLoading(false)
    }
@@ -121,11 +119,10 @@ const UserDetail = ({ add }) => {
             </div>
             
             <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-               <UserForm formik={formik} initialItem={item} companies={companies.allData} loading={loading} />
+               <UserForm formik={formik} initialItem={item} companies={companies.allData} loading={loading} add={add}/>
             </Paper >
             
             <Grid container justifyContent="space-between">
-
                <Grid justifyContent="flex-start" className={gClasses.marginVertical8}>
                   <Button onClick={handleClickBack}
                      startIcon={<ArrowBackIosNewIcon />}

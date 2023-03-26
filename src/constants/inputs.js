@@ -1,3 +1,4 @@
+import { InputAdornment } from "@mui/material"
 import { DATE_FORMAT } from "./general"
 
 export const LENGTH = {
@@ -38,12 +39,45 @@ export const DEF_PROPS_LOGIN = {
 
 /**Basic input props */
 export const DEF_PROPS = {
+   quantity: {
+      size: 'small',
+      variant: 'outlined',
+      label: 'Quantidade',
+      fullWidth: true,
+      type: 'number',
+      InputProps: {
+         inputProps: {
+            min: 0,
+            max: 50
+         },
+      }
+   },
+   percent: {
+      size: 'small',
+      variant: 'outlined',
+      label: 'Porcentagem',
+      fullWidth: true,
+      type: 'number',
+      InputProps: {
+         endAdornment: <InputAdornment position="start">%</InputAdornment>,
+         inputProps: {
+            min: 0,
+            max: 100
+         },
+      }
+   },
    price: {
       size: 'small',
       variant: 'outlined',
       fullWidth: true,
       autoComplete: "off",
-      label: 'Preço'
+      label: 'Preço',
+      InputProps: {
+         startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+         inputProps: {
+            pattern: '^\\d{1,5}(,\\d{1,2})?$', // regex pattern to match input format
+         },
+      }
    },
    date: {
       size: "small",
@@ -83,7 +117,7 @@ export const DEF_PROPS = {
       autoComplete: "off",
       fullWidth: true,
       label: 'Código Matrícula',
-      type:'number'
+      type: 'number'
    },
    name: {
       label: 'Nome',
