@@ -20,7 +20,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
    useEffect(() => {
       loadData();
    }, []);
-
+   
    const loadData = async () => {
       const data = await loadUsersInDB(table, userData)
       setTable(data)
@@ -64,12 +64,12 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
    //    },
    // });
 
+
    let user_types = Object.fromEntries(Object.entries(USER_TYPES).filter(([id]) => id !== 'admin'))
-   user_types = Object.values(user_types)
+   user_types = Object.values(user_types?user_types:{})
 
-
-   if (loading) return <ShowFeedback animation='loading' fullScreen />
-   else return (
+   // if (loading) return null
+   return (
       <form>
          <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
             <Typography variant='h6' color='textSecondary' className={gClasses.marginBottom10}>
@@ -106,6 +106,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
 
             <Grid item xs={12} md={6}>
                <TextField {...DEF_PROPS.id}
+                  disabled={true}
                   label='ID do Usuário'
                   name='uid'
                   value={formik.values.uid}
@@ -140,6 +141,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
             <Grid item xs={12}>
                <TextField
                   {...DEF_PROPS.emailEdit}
+                  disabled={!add}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'email')}
                   name="email"
                   value={formik.values.email}
@@ -151,6 +153,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
             <Grid item xs={12}>
                <TextField
                   {...DEF_PROPS.passwordEdit}
+                  disabled={!add}
                   required={Boolean(add)}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'password')}
                   name="password"
@@ -163,6 +166,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
             <Grid item xs={12}>
                <TextField
                   {...DEF_PROPS.passwordEdit}
+                  disabled={!add}
                   required={Boolean(add)}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'password2')}
                   name="password2"
@@ -176,11 +180,13 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                />
             </Grid>
 
-            {formik.values.userType == USER_TYPES.client.id && (
+            {formik.values.userType === USER_TYPES.client.id && (
                <>
                   <Grid item xs={12}>
                      <TextField
                         {...DEF_PROPS.cpf}
+                        disabled={!add}
+                        required={Boolean(add)}
                         inputProps={compareDifferentInput(initialItem, formik.values, 'cpf')}
                         name="cpf"
                         value={formik.values.cpf}
@@ -191,10 +197,11 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                      <Menu {...DEF_PROPS.menu}
+   
                         inputProps={compareDifferentInput(initialItem, formik.values, 'companyId')}
                         value={formik.values.companyId}
                         label='Empresa' name='companyId'
-                        items={Object.values(companies)}
+                        items={Object.values(companies? companies: {})}
                         nameKey='companyName'
                         idKey='companyId'
                         error={formik.touched["companyId"] && Boolean(formik.errors["companyId"])}
@@ -215,7 +222,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                </>
             )}
 
-            {formik.values.userType == USER_TYPES.client.id && (
+            {formik.values.userType === USER_TYPES.client.id && (
                <>
                   <Grid item xs={12} md={6}>
                      <TextField
@@ -243,11 +250,12 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   </Grid>
                   <Grid item xs={12} md={6} >
                      <Menu {...DEF_PROPS.menu}
+   
                         inputProps={compareDifferentInput(initialItem, formik.values, 'lunchTypes')}
                         value={formik.values.lunchTypes}
                         label='Tipo de almoço'
                         name='lunchTypes'
-                        items={Object.values(org.lunchTypes)}
+                        items={Object.values(org?.lunchTypes ? org.lunchTypes: {})}
                         nameKey='name'
                         idKey='name'
                         error={formik.touched["lunchTypes"] && Boolean(formik.errors["lunchTypes"])}

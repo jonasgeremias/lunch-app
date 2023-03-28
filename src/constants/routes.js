@@ -27,12 +27,12 @@ export const ROUTES = {
       icon: <Home />,
       element: <ClientHome />
    },
-   {
-      path: "restaurant",
-      name: 'Restaurante',
-      icon: <Restaurant />,
-      element: <ClientRestaurantProfile />
-   },
+   // {
+   //    path: "restaurant",
+   //    name: 'Restaurante',
+   //    icon: <Restaurant />,
+   //    element: <ClientRestaurantProfile />
+   // },
    {
       path: "history",
       name: 'Histórico',

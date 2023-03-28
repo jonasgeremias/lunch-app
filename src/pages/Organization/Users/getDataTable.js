@@ -14,7 +14,7 @@ export const initialStateTable = {
    // hasNextPage: true,
    // order: 'asc',
    // orderBy: 'createdAt',
-   // filters: []
+   filters: []
 }
 
 

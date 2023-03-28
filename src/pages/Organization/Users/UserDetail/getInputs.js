@@ -1,4 +1,4 @@
-import { USER_TYPES, USER_TYPES_ARRAY } from "constants/general";
+import { STATUS_OPTIONS_ARRAY, USER_TYPES, USER_TYPES_ARRAY } from "constants/general";
 import * as Yup from "yup";
 
 export const updateInitialValues = (data) => {
@@ -22,18 +22,21 @@ export const validationSchema = Yup.object().shape({
    userType: Yup.string().oneOf(USER_TYPES_ARRAY, 'Opção inválida').required(),
    lunchDiscountPercentage: Yup.number(),
    lunchQuantity: Yup.number(),
-   lunchTypes: Yup.string()
+   lunchTypes: Yup.string(),
+   status: Yup.string().oneOf(STATUS_OPTIONS_ARRAY, 'Opção inválida').required()
 });
 
-export const initialValues = {
-   name:'',
-   email:'', 
-   companyId:'', 
-   phone:'', 
-   cpf:'', 
-   code:'', 
-   password:'', 
-   password2:'', 
+export const initialValues = { // @audit remover preenchimento automático
+   uid: '',
+   name:'Jonas',
+   email:'jonas@jonas.com',
+   status: 'active',
+   companyId:'Fvi89mVu8VifSO683bb1', 
+   phone:'123456789', 
+   cpf:'08725968939', 
+   code:'100', 
+   password:'123456', 
+   password2:'123456', 
    userType: USER_TYPES.client.id,
    lunchDiscountPercentage: 100,
    lunchQuantity: 0,

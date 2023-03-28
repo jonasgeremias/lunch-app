@@ -63,7 +63,7 @@ export const checkUserAccount = (user, userData) => {
    if (userData?.userType === USER_TYPES.admin.id) return { error: false, message: `Seja bem vindo Administrador!` }
    if (userData?.status !== 'active') return { error: true, message: `Sua conta está desativada, contate o administrador da empresa.` }
    if (!userData?.userType) return { error: true, message: `Dados do usuário não existem, contate o administrador da empresa.` }
-   if (!userData?.approved) return { error: true, message: `Sua conta ainda não foi aprovada, contate o administrador.` }
+   // if (!userData?.approved) return { error: true, message: `Sua conta ainda não foi aprovada, contate o administrador.` }
    if (user?.displayName) return { error: false, message: `Seja bem vindo ${user?.displayName}!` }
    return { error: false, message: `Seja bem vindo!` }
 }

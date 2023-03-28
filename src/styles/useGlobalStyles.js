@@ -1,6 +1,17 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles(theme => ({
+   card: {
+      textAlign: 'center',
+      transition: "all 0.25s",
+      textDecoration: 'none',
+      padding: theme.spacing(4),
+      borderRadius: '10px !important',
+      "&:hover": {
+        transform: "scale(1.07)",
+         color: theme.palette.primary.main
+      }
+    },
    hover:{
       '&:hover': {
          backgroundColor:  `${theme.palette.primary.main}10`

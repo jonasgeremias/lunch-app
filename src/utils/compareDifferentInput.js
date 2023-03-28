@@ -9,10 +9,20 @@ export const sortObject = obj => {
    return result;
 };
 
-export const objectIsEqual = (sortedObj1, sortedObj2) => {
-   if (!sortedObj1 && !sortedObj2) return true;
-   if (!sortedObj1 || !sortedObj2) return false;
-   return JSON.stringify(sortObject(sortedObj1)) === JSON.stringify(sortObject(sortedObj2));
+export const objectIsEqual = (initialObject, obj2) => {
+   
+   let equal = true
+   for (let key in initialObject) {
+      if (key in obj2) {
+         if (initialObject[key] !== obj2[key]) equal = false;
+      }
+   }
+   
+   return equal;
+   // console.log('equal', equal)
+   // if (!initialObject && !obj2) return true;
+   // if (!initialObject || !obj2) return false;
+   // return JSON.stringify(sortObject(initialObject)) === JSON.stringify(sortObject(obj2));
 }
 
 // Compara se o valor inicial é diferente do atual e retorna um estilo para atualizar a cor do input

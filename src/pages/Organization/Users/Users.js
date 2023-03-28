@@ -6,7 +6,7 @@ import { useGlobalStyles } from 'styles'
 import TabSubtitle from 'components/atoms/TabSubtitle/TabSubtitle'
 import { Button, Paper, Grid, List } from '@mui/material'
 import { useBreakPoint } from 'hooks/useBreakPoint'
-import { USERS_TABLE_COLUMNS, createDataUsersTable, initialStateTable, initialValuesFilters, validationSchemaFilters } from './getDataTable'
+import { USERS_TABLE_COLUMNS, createDataUsersTable, initialStateTable } from './getDataTable'
 import { useAuthContext } from 'hooks/AuthContext'
 
 import { inactiveUsersInDB, loadUsersInDB } from 'utils/firebase/users'
@@ -24,6 +24,11 @@ import ListItemText from '@mui/material/ListItemText';
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
 import { COMPANY_ADD, USERS_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import { loadCompaniesInDB } from 'utils/firebase/companies';
+import { initialValuesFilters, validationSchemaFilters } from './Filters/getInputs';
+
+import Filters from './Filters/Filters';
+
+import { useFormik } from 'formik';
 
 const InactiveItemsList = ({ item }) => {
    return (
@@ -41,26 +46,38 @@ const Users = () => {
    const navigate = useNavigate();
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
-   const [dataGridLoading, setDataGridLoading] = useState(true)
+   const [dataGridLoading, setDataGridLoading] = useState(false)
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [deleteDialog, setDeleteDialog] = useState(false)
-   const [companies, setCompanys] = useState({})
+   const [companies, setCompany] = useState({})
    const [showTable, setShowTable] = useState([])
    const [table, setTable] = useState(initialStateTable)
    const [selectedRowsData, setSelectedRowsData] = useState([])
    const { userData } = useAuthContext();
    const { showSnackBar } = useSnackBar();
-   
+
+   // const userData = useSelector(state => state.app.user)
+   const formikFilters = useFormik({
+      initialValues: initialValuesFilters,
+      validationSchema: validationSchemaFilters,
+      onSubmit: async (values) => {
+         const ret = await loadUsersInDB({...table, filters: values }, userData)
+         // console.log('onSubmit', ret)
+         setTable(ret)
+      },
+   });
+
    // Atualiza a tabela em tela
    useEffect(() => {
-      if (table.error == false, companies.error == false) {
-         setDataGridLoading(false)
+      // console.log('[table, companies]', table, companies)
+      if (table.error === false && companies.error === false) {
+         // setDataGridLoading(false)
          setShowTable(createDataUsersTable(table.allData, companies.allData))
       }
       else {
-         setDataGridLoading(true)
+         // setDataGridLoading(true)
       }
-      
+
    }, [table, companies])
 
    const onClickItem = (item) => {
@@ -83,16 +100,15 @@ const Users = () => {
       navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${COMPANY_ADD}`);
    }
 
-   useEffect(() => {
-      loadData();
-   }, []);
-
-
-   const loadData = async () => {
-      setTable(await loadUsersInDB(table, userData))
-      setCompanys(await loadCompaniesInDB(companies, userData))
-      setDataGridLoading(false)
+   const loadCompany = async () => {
+      console.log('loadCompany')
+      setCompany(await loadCompaniesInDB(companies, userData))
    }
+   
+   useEffect(() => {
+      loadCompany()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
 
    const onRowsSelectionHandler = (ids) => {
       setSelectedRowsData(ids)
@@ -117,7 +133,7 @@ const Users = () => {
          const ret = listItems.find(item => {
             return (row.companyId === item)
          })
-         return (row.companyId != ret)
+         return (row.companyId !== ret)
       })
 
       const update = { ...table, allData: temp_table }
@@ -148,7 +164,7 @@ const Users = () => {
                   <Grid item xs={12} sm={4} md={2}>
                      <Button fullWidth
                         size="large"
-                        disabled={Boolean(selectedRowsData?.length != 1)}
+                        disabled={Boolean(selectedRowsData?.length !== 1)}
                         color='primary'
                         variant="outlined"
                         onClick={handleEditClick}
@@ -165,6 +181,10 @@ const Users = () => {
                         startIcon={<DeleteIcon />}> Apagar </LoadingButton>
                   </Grid>
                </Grid>
+            </Paper>
+
+            <Paper variant="outlined" className={gClasses.containerPaper}>
+               <Filters formikFilters={formikFilters} />
             </Paper>
 
             <DataGrid
@@ -196,7 +216,7 @@ const Users = () => {
                {selectedRowsData?.length > 0 ? <List>
                   {selectedRowsData.map((id) => {
                      console.log()
-                     const item = table.allData.filter(row => row.uid == id)
+                     const item = table.allData.filter(row => row.uid === id)
                      return <InactiveItemsList key={id} item={item[0]} />
                   })}
                </List> : null}
