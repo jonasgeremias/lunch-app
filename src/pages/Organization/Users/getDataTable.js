@@ -47,9 +47,9 @@ export const USERS_TABLE_COLUMNS = [
    { width: 200, sortable: true, editable: false, field: 'name', headerName: 'Nome' },
    { width: 250, sortable: true, editable: false, field: 'email', headerName: 'E-mail' },
    { width: 130, sortable: true, editable: false, field: 'companyName', headerName: 'Empresa' },
-   { width: 100, sortable: false, editable: false, field: 'status', headerName: 'Status' },
-   { width: 130, sortable: false, editable: false, field: 'cpf', headerName: 'CPF' },
-   { width: 130, sortable: false, editable: false, field: 'userType', headerName: 'Tipo login' },
+   { width: 100, sortable: true, editable: false, field: 'status', headerName: 'Status' },
+   { width: 130, sortable: true, editable: false, field: 'cpf', headerName: 'CPF' },
+   { width: 130, sortable: true, editable: false, field: 'userType', headerName: 'Tipo login' },
    { width: 130, sortable: true, editable: false, field: 'createdAt', headerName: 'Criado em' },
    { width: 130, sortable: true, editable: false, field: 'updatedAt', headerName: 'Atualizado em' }
 ]

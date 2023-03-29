@@ -83,7 +83,7 @@ export default makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
-      borderRadius: 10,
+      borderRadius: 5,
       [theme.breakpoints.down('md')]: {
          width: '100%',
          borderRadius: 0,

@@ -69,9 +69,10 @@ const Users = () => {
 
    // Atualiza a tabela em tela
    useEffect(() => {
-      // console.log('[table, companies]', table, companies)
-      if (table.error === false && companies.error === false) {
+      console.log('[table, companies]')
+      if (!table.error && !companies.error) {
          // setDataGridLoading(false)
+         console.log('createDataUsersTable')
          setShowTable(createDataUsersTable(table.allData, companies.allData))
       }
       else {
@@ -129,6 +130,9 @@ const Users = () => {
    }
 
    const updateUsersOnDelete = async (listItems) => {
+      
+      console.log('updateUsersOnDelete', listItems)
+      
       const temp_table = await table.allData.filter(row => {
          const ret = listItems.find(item => {
             return (row.companyId === item)
@@ -183,7 +187,7 @@ const Users = () => {
                </Grid>
             </Paper>
 
-            <Paper variant="outlined" className={gClasses.containerPaper}>
+            <Paper variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
                <Filters formikFilters={formikFilters} />
             </Paper>
 

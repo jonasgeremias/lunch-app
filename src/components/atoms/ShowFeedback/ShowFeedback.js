@@ -33,8 +33,6 @@ const ShowFeedback = ({ title, animation, subtitle, button, fullScreen}) => {
                     <Button variant="outlined" color="primary">{ button.label }</Button>
                 </Link> : null
             }
-            
-        
         </div> 
     )
 }

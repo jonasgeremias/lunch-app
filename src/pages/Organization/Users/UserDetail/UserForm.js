@@ -78,7 +78,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
          </div>
 
          <Grid container spacing={{ xs: 2, md: 3 }} className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-            <Grid item xs={6} >
+            <Grid item xs={12} md={6}>
                <Menu {...DEF_PROPS.menu}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'userType')}
                   value={formik.values.userType}
@@ -91,7 +91,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   onChange={formik.handleChange} />
             </Grid>
 
-            <Grid item xs={6} >
+            <Grid item xs={12} md={6} >
                <Menu {...DEF_PROPS.menu}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'status')}
                   value={formik.values.status}
@@ -115,7 +115,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.name}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'name')}
@@ -127,7 +127,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   helperText={formik.touched.name && formik.errors.name}
                />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.phone}
                   inputProps={compareDifferentInput(initialItem, formik.values, 'phone')}
@@ -138,7 +138,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   helperText={formik.touched.phone && formik.errors.phone}
                />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.emailEdit}
                   disabled={!add}
@@ -150,7 +150,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   helperText={formik.touched.email && formik.errors.email}
                />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.passwordEdit}
                   disabled={!add}
@@ -163,7 +163,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   helperText={formik.touched.password && formik.errors.password}
                />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.passwordEdit}
                   disabled={!add}
@@ -182,7 +182,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
 
             {formik.values.userType === USER_TYPES.client.id && (
                <>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={6}>
                      <TextField
                         {...DEF_PROPS.cpf}
                         disabled={!add}
@@ -208,7 +208,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                         helperText={formik.touched["companyId"] && formik.errors["companyId"]}
                         onChange={formik.handleChange} />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={6}>
                      <TextField
                         {...DEF_PROPS.code}
                         inputProps={compareDifferentInput(initialItem, formik.values, 'code')}
@@ -250,7 +250,6 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                   </Grid>
                   <Grid item xs={12} md={6} >
                      <Menu {...DEF_PROPS.menu}
-   
                         inputProps={compareDifferentInput(initialItem, formik.values, 'lunchTypes')}
                         value={formik.values.lunchTypes}
                         label='Tipo de almoço'

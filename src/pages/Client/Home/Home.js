@@ -2,17 +2,22 @@ import React, { useContext } from 'react'
 import clsx from 'clsx'
 // import ShowFeedback from 'components/atoms/ShowFeedback/ShowFeedback'
 import { useGlobalStyles } from 'styles'
-import { AuthContext } from 'hooks/AuthContext'
-import { LunchSatusCard } from './LunchSatusCard'
+import { useAuthContext } from 'hooks/AuthContext'
+import { LunchStatusCard } from './LunchStatusCard'
+import { useOrgContext } from 'hooks/OrgContext'
+import { useCompanyContext } from 'hooks/CompanyContext'
 
 const ClientHome = () => {
    const gClasses = useGlobalStyles()
-
-   const { userData } = useContext(AuthContext)
+   const { userData } = useAuthContext()
+   const { org } = useOrgContext()
+   const { company } = useCompanyContext()
+   
+   console.log('userData', userData)
    return (
       <>
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>
-         <LunchSatusCard userData={userData}/>
+         <LunchStatusCard userData={userData} org={org} company={company}/>
       </div>
       </>
    )
