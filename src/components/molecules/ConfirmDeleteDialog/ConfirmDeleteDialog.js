@@ -9,7 +9,7 @@ const ConfirmDeleteDialog = ({ variantTitle, children, visible, onCancel, onConf
     >
         {description? <Typography color='textSecondary'>{ description }</Typography>:null}
         {children}
-    </DialogContainer> 
+    </DialogContainer>
 )
 
 export default ConfirmDeleteDialog

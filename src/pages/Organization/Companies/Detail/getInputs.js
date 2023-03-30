@@ -25,9 +25,3 @@ export const initialValues = {
    phone: ''
 };
 
-export const updateInitialValues = (companyData) => {
-   if (!companyData) return initialValues;
-   const initialObject = { ...initialValues, ...companyData }
-   return initialObject
-}
-

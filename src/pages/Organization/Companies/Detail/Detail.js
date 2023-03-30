@@ -17,7 +17,7 @@ import { getCompanyData, setCompanyData } from 'utils/firebase/companies';
 import { useNavigate } from 'react-router-dom';
 import { COMPANIES_PATH, ORIGIN_ROUTES } from 'constants/routes';
 import { Firebase } from 'utils';
-import { initialValues, updateInitialValues, validationSchema } from './getInputs'
+import { initialValues, validationSchema } from './getInputs'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { useOrgContext } from 'hooks/OrgContext';
@@ -26,6 +26,7 @@ import { useFormik } from 'formik';
 import { LoadingButton } from '@mui/lab';
 import ContactForm from './ContactForm';
 import { objectIsEqual } from 'utils/compareDifferentInput';
+import { updateInitialValues } from 'utils/updateInitialValues';
 
 const Detail = ({ add }) => {
    let { id } = useParams();
@@ -46,7 +47,7 @@ const Detail = ({ add }) => {
       validationSchema: validationSchema,
       enableReinitialize: true,
       onReset: () => {
-         formik.setValues(updateInitialValues(item))
+         formik.setValues(updateInitialValues(item, initialValues))
       },
       onSubmit: async (values) => {
          setLoading(true)
@@ -64,7 +65,7 @@ const Detail = ({ add }) => {
    });
 
    useEffect(() => {
-      formik.setValues(updateInitialValues(item))
+      formik.setValues(updateInitialValues(item, initialValues))
    }, [item])
 
    useEffect(() => {
@@ -121,7 +122,7 @@ const Detail = ({ add }) => {
                </Grid>
 
                <Grid justifyContent="flex-end" className={gClasses.marginVertical8}>
-                  <Button onClick={(e) => formik.setValues(updateInitialValues(item))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
+                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
                   <LoadingButton
                      disabled={Boolean(loading)}
                      color="primary"

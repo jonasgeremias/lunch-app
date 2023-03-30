@@ -1,21 +1,29 @@
 import { makeStyles } from '@mui/styles';
 
+
 export default makeStyles(theme => ({
+   cardRoute: {
+         minWidth: '15rem', minHeight: '10rem',
+         display: 'flex',
+         justifyContent: 'center',
+         alignItems: 'center',
+         textAlign: 'center',
+         marginRight: '2rem',
+         marginLeft: '2rem',
+         marginTop: '1rem',
+         marginBottom: '1rem',
+         paddingTop: '1rem',
+         "&:hover": {
+           transform: "scale(1.1)",
+            color: theme.palette.primary.main
+         }
+   },
    card: {
-      textAlign: 'center',
-      transition: "all 0.25s",
-      textDecoration: 'none',
-      padding: theme.spacing(4),
-      borderRadius: '10px !important',
-      "&:hover": {
-        transform: "scale(1.07)",
-         color: theme.palette.primary.main
-      }
-    },
-   hover:{
-      '&:hover': {
-         backgroundColor:  `${theme.palette.primary.main}10`
-      }
+     textAlign: 'center',
+     transition: "all 0.25s",
+     textDecoration: 'none',
+     padding: theme.spacing(3),
+     borderRadius: '10px !important',
    },
    breadcrumblink: {
      textDecoration: 'none',

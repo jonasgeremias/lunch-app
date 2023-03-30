@@ -39,6 +39,10 @@ export const DEF_PROPS_LOGIN = {
 
 /**Basic input props */
 export const DEF_PROPS = {
+   checkbox: {
+      size: 'small',
+      variant: 'outlined'
+   },
    quantity: {
       size: 'small',
       variant: 'outlined',

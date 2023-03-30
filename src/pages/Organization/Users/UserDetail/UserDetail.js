@@ -9,7 +9,7 @@ import { useSnackBar } from 'components/atoms/Snackbar/Snackbar';
 import { getUserData, setUserData } from 'utils/firebase/users';
 import { useNavigate } from 'react-router-dom';
 import { USERS_PATH, ORIGIN_ROUTES } from 'constants/routes';
-import { initialValues, updateInitialValues, validationSchema } from './getInputs'
+import { initialValues, validationSchema } from './getInputs'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useOrgContext } from 'hooks/OrgContext';
 import { useAuthContext } from 'hooks/AuthContext';
@@ -18,6 +18,7 @@ import { LoadingButton } from '@mui/lab';
 import { objectIsEqual } from 'utils/compareDifferentInput';
 import { loadCompaniesInDB } from 'utils/firebase/companies';
 import UserForm from './UserForm';
+import { updateInitialValues } from 'utils/updateInitialValues';
 
 const UserDetail = ({ add }) => {
    let { id } = useParams();
@@ -39,7 +40,7 @@ const UserDetail = ({ add }) => {
       validationSchema: validationSchema,
       enableReinitialize: true,
       onReset: () => {
-         formik.setValues(updateInitialValues(item))
+         formik.setValues(updateInitialValues(item, initialValues))
       },
       onSubmit: async (values) => {
          setLoading(true)
@@ -57,7 +58,7 @@ const UserDetail = ({ add }) => {
    });
 
    useEffect(() => {
-      formik.setValues(updateInitialValues(item))
+      formik.setValues(updateInitialValues(item, initialValues))
    }, [item, companies])
    
    useEffect(() => {
@@ -124,7 +125,7 @@ const UserDetail = ({ add }) => {
                </Grid>
 
                <Grid justifyContent="flex-end" className={gClasses.marginVertical8}>
-                  <Button onClick={(e) => formik.setValues(updateInitialValues(item))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
+                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
                   <LoadingButton
                      disabled={Boolean(loading)}
                      color="primary"

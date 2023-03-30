@@ -101,13 +101,13 @@ const Users = () => {
       navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${COMPANY_ADD}`);
    }
 
-   const loadCompany = async () => {
-      console.log('loadCompany')
+   const loadInitialData = async () => {
       setCompany(await loadCompaniesInDB(companies, userData))
+      setTable(await loadUsersInDB(table, userData))
    }
-   
+      
    useEffect(() => {
-      loadCompany()
+      loadInitialData()
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 

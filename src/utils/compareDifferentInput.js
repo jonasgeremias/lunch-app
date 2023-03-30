@@ -9,8 +9,7 @@ export const sortObject = obj => {
    return result;
 };
 
-export const objectIsEqual = (initialObject, obj2) => {
-   
+export const objectIsEqual = (initialObject, obj2) => { 
    let equal = true
    for (let key in initialObject) {
       if (key in obj2) {

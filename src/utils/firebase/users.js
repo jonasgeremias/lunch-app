@@ -66,8 +66,10 @@ function getFilters(filters, order = 'des', orderBy = 'createdAt',lastDoc, limit
 export async function loadUsersInDB(table, userData, loadPage = null) {
    const { order, orderBy, lastDoc, allData, filters } = table
    
+
    
-   console.log(table)
+   console.log('loadUsersInDB', table)
+   
    // Pegando o ID da organização
    let orgId = null;
    if (userData?.orgId) orgId = userData?.orgId;

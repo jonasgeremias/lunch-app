@@ -256,7 +256,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                         name='lunchTypes'
                         items={Object.values(org?.lunchTypes ? org.lunchTypes: {})}
                         nameKey='name'
-                        idKey='name'
+                        idKey='id'
                         error={formik.touched["lunchTypes"] && Boolean(formik.errors["lunchTypes"])}
                         helperText={formik.touched["lunchTypes"] && formik.errors["lunchTypes"]}
                         onChange={formik.handleChange} />

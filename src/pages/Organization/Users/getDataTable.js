@@ -1,5 +1,6 @@
 import { DATE_FORMAT, STATUS_OPTIONS, USER_TYPES } from 'constants/general'
 import dayjs from "dayjs";
+import { initialValuesFilters } from './Filters/getInputs';
 
 
 /******************************************************************************
@@ -14,7 +15,7 @@ export const initialStateTable = {
    // hasNextPage: true,
    // order: 'asc',
    // orderBy: 'createdAt',
-   filters: []
+   filters: initialValuesFilters
 }
 
 

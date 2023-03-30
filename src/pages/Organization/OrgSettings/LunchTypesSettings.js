@@ -13,7 +13,7 @@ import {
    ListItem,
    ListItemText,
    ListItemSecondaryAction,
-   IconButton, Box, Grid, Paper, CircularProgress
+   IconButton, Box, Grid, Paper, CircularProgress, Checkbox
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,61 +21,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { DEF_PROPS } from 'constants/inputs';
 import { useGlobalStyles } from 'styles';
 import clsx from 'clsx'
-import { LoadingButton } from '@mui/lab';
-import ConfirmDeleteDialog from 'components/molecules/ConfirmDeleteDialog/ConfirmDeleteDialog';
-import { getHolidays } from 'utils/holidays';
+import { compareDifferentInput } from 'utils/compareDifferentInput';
 
-const LunchTypesSettings = ({ list, setList }) => {
-   const [name, setName] = useState('');
-   const [price, setPrice] = useState('');
-   const [editIndex, setEditIndex] = useState(null);
-   const gClasses = useGlobalStyles()
-
-   const handleAdd = (e) => {
-      e.preventDefault();
-      const tempList = []
-      if (list !== null) {
-         if (tempList) {
-            const existingIndex = tempList.findIndex((item) => item.name === name);
-            if ((existingIndex !== -1) && (editIndex == null)) {
-               alert('Date already exists!');
-               setEditIndex(existingIndex);
-               return;
-            }
-         }
-      }
-
-      const newItem = { name, price };
-      if (editIndex !== null) {
-         const newList = [...tempList];
-         newList[editIndex] = newItem;
-         setList(newList);
-         setEditIndex(null);
-
-      } else {
-         setList([...tempList, newItem]);
-      }
-
-      setName('');
-      setPrice('');
-   };
-
-   const handleDelete = (index) => {
-      const newList = Object.fromEntries(
-         Object.entries(list).filter(([key, value]) => key !== index)
-      );
-      
-      setEditIndex(null)
-      setList(newList, true);
-   };
-
-   const handleEdit = (index) => {
-      const itemToEdit = list[index];
-      setName(itemToEdit.name);
-      setPrice(itemToEdit.price);
-      setEditIndex(index);
-   };
-
+const LunchTypesSettings = ({ formik, initialItem }) => {
+   const gClasses = useGlobalStyles();
+   
    const handleChangePrice = (event) => {        
       let inputValue = event.target.value.replace(/\D/g, '');
       
@@ -83,20 +33,66 @@ const LunchTypesSettings = ({ list, setList }) => {
         inputValue = `${inputValue.slice(0, -2)},${inputValue.slice(-2)}`;
       }
       
-      setPrice(inputValue);
-      // console.log(parseFloat(inputValue.replace(',', '.')))
+      event.target.value = inputValue
+      formik.handleChange(event)
     };
-   
-   
+    
+    
    return (
       <Paper variant="outlined" className={gClasses.containerPaper}>
          <Typography variant="h6" gutterBottom>
             Tipos de almoço
          </Typography>
+         
+         <Grid container spacing={{ xs: 2, md: 3 }} className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+            {formik.values.lunchTypes.map((item, index) => (
+               <Grid container spacing={{xs:2, md:3}}  key={item.id} className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
+                  <Grid item xs={6} md={5} >
+                     <TextField
+                        {...DEF_PROPS.name}
+                        inputProps={compareDifferentInput(initialItem.lunchTypes[index], item,'name')}
+                        name={`lunchTypes[${index}].name`}
+                        value={item.name}
+                        disabled={item.id == 'not'}
+                        onChange={formik.handleChange}
+                        error={formik.touched.lunchTypes?.[index]?.name && Boolean(formik.errors.lunchTypes?.[index]?.name)}
+                        helperText={formik.touched.lunchTypes?.[index]?.name && formik.errors.lunchTypes?.[index]?.name}
+                     />
+                  </Grid>
+                  <Grid item xs={6} md={5}>
+                     <TextField
+                        {...DEF_PROPS.price}
+                        disabled={item.id == 'not'}
+                        required={true}
+                        name={`lunchTypes[${index}].price`}
+                        value={item.price}
+                        onChange={formik.handleChange}
+                        error={formik.touched.lunchTypes?.[index]?.price && Boolean(formik.errors.lunchTypes?.[index]?.price)}
+                        helperText={formik.touched.lunchTypes?.[index]?.price && formik.errors.lunchTypes?.[index]?.price}
+                     />
+                  </Grid>
+                  <Grid item xs={6} md={2}>
+                     <FormControlLabel
+                        control={
+                           <Checkbox
+                              disabled={item.id == 'not'}
+                              {...DEF_PROPS.checkbox}
+                              name={`lunchTypes[${index}].enable`}
+                              checked={item.enable}
+                              onChange={handleChangePrice}
+                           />
+                        }
+                        label="Habilitar"
+                     />
+                  </Grid>
+               </Grid >
+            ))}
+         </Grid>
 
-         <Paper elevation={0} variant="outlined" className={clsx(gClasses.padding12, gClasses.marginVertical8)}>
-            <form onSubmit={handleAdd}>
-               <Grid container item spacing={2}>
+
+
+
+         {/* <Grid container item spacing={2}>
                   <Grid container item xs={12} md={4}>
                      <TextField
                         {...DEF_PROPS.name}
@@ -113,49 +109,12 @@ const LunchTypesSettings = ({ list, setList }) => {
                         onChange={handleChangePrice}
                      />
                   </Grid>
+               </Grid> */}
 
-                  <Grid container item xs={12} md={4}>
-                     <Button variant="contained" color="primary" type="submit" disableElevation>
-                        {editIndex !== null ? <EditIcon /> : <AddIcon />}
-                     </Button>
-                  </Grid>
-               </Grid>
-            </form>
-            {<List>
-               {list ?
-                  Object.keys(list).sort((a, b) => {
-                     const dateA = new Date(a);
-                     const dateB = new Date(b);
-                     return dateA - dateB;
-                  }).map((key) => {
-                     const item = list[key]
-                     return (
-                        <ListItem key={key} className={gClasses.hover}>
-                           <Grid container item xs={4}>
-                              <ListItemText primary={<Typography variant="subtitle1" fontWeight="bold">{item.name}</Typography>}/>
-                           </Grid>
-                           <Grid container item xs={4}>
-                              <ListItemText disableTypography primary={<Typography variant="subtitle1" fontWeight="bold">{'R$ ' + item.price}</Typography>} />
-                           </Grid>
-                           <Grid container item xs={4}>
-                              <ListItemSecondaryAction>
-                                 <IconButton edge="end" size='large' aria-label="edit" color="primary" onClick={() => handleEdit(key)}>
-                                    <EditIcon />
-                                 </IconButton>
-                                 <IconButton edge="end" size='large' aria-label="delete" color="error" onClick={() => handleDelete(key)}>
-                                    <DeleteIcon />
-                                 </IconButton>
-                              </ListItemSecondaryAction>
-                           </Grid>
-                        </ListItem>
-                     );
-                  })
-                  : null}
-            </List>
-            }
-         </Paper>
 
-      </Paper>)
+
+
+      </Paper >)
 }
 
 export default LunchTypesSettings

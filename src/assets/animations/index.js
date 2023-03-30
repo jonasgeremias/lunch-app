@@ -10,6 +10,7 @@ const animations = {
     error: require('./error.json'),
     empty: require('./empty.json'),
     keyError: require('./key-error.json'),
+    development: require('./web-development-design.json'),
     lunch: require('./meat-on-plate.json'),
     not_lunch: require('./error-x.json'),
     delivery: require('./delivery-order.json')

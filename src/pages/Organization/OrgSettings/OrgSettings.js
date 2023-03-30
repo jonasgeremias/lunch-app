@@ -5,7 +5,7 @@ import { useGlobalStyles } from 'styles'
 import WorkScheduleForm from './WorkScheduleForm';
 import DatesExceptionsForm from './DatesExceptionsForm';
 import { useFormik } from 'formik';
-import { initialValues, updateInitialValues, validationSchema } from './getInputs';
+import { initialValues, validationSchema } from './getInputs';
 // import { useNavigate } from 'react-router-dom';
 import { useOrgContext } from 'hooks/OrgContext';
 import { useAuthContext } from 'hooks/AuthContext';
@@ -19,6 +19,7 @@ import { getOrgData, setOrgData } from 'utils/firebase/organization';
 import ContactForm from './ContactForm';
 import { objectIsEqual } from 'utils/compareDifferentInput';
 import LunchTypesSettings from './LunchTypesSettings';
+import { updateInitialValues } from 'utils/updateInitialValues';
 
 const OrgSettings = () => {
    const gClasses = useGlobalStyles()
@@ -36,7 +37,7 @@ const OrgSettings = () => {
       validationSchema: validationSchema,
       enableReinitialize: true,
       onReset: () => {
-         formik.setValues(updateInitialValues(item))
+         formik.setValues(updateInitialValues(item, initialValues))
       },
       onSubmit: async (values) => {
          setLoading(true)
@@ -73,7 +74,7 @@ const OrgSettings = () => {
    }, [tried])
 
    useEffect(() => {
-      formik.setValues(updateInitialValues(item))
+      formik.setValues(updateInitialValues(item, initialValues))
    }, [item])
 
    const setSchedule = (field, status) => {
@@ -81,23 +82,20 @@ const OrgSettings = () => {
       formik.setValues({ ...formik.values, schedule: newSchedule })
    }
 
-   const setLunchTypes = (list, deleteList = false) => {
-      console.log('setLunchTypes', list, deleteList)
-      
-      const uniques = Object.values(list).reduce((acc, curr) => {
-         const { name, price} = curr;
-         acc[name] = { name, price};
-         return acc;
-      }, {});
-
-      let newLunchTypes = {}
-      if ('lunchTypes' in formik.values && !deleteList) {
-         newLunchTypes = { ...formik.values.lunchTypes, ...uniques }
-      }
-      else newLunchTypes = { ...uniques }
-
-      formik.setValues({ ...formik.values, lunchTypes: newLunchTypes })
-   }
+   // const setLunchTypes = (list, deleteList = false) => {
+   //    console.log('setLunchTypes', list, deleteList)
+   //    const uniques = Object.values(list).reduce((acc, curr) => {
+   //       const { name, price} = curr;
+   //       acc[name] = { name, price};
+   //       return acc;
+   //    }, {});
+   //    let newLunchTypes = {}
+   //    if ('lunchTypes' in formik.values && !deleteList) {
+   //       newLunchTypes = { ...formik.values.lunchTypes, ...uniques }
+   //    }
+   //    else newLunchTypes = { ...uniques }
+   //    formik.setValues({ ...formik.values, lunchTypes: newLunchTypes })
+   // }
    
    const setDatesExceptions = (list, deleteList = false) => {
       console.log('setDatesExceptions', deleteList)
@@ -135,7 +133,7 @@ const OrgSettings = () => {
                </Grid>
 
                <Grid item className={gClasses.marginVertical8} textAlign="right">
-                  <Button onClick={(e) => formik.setValues(updateInitialValues(item))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
+                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
                   <LoadingButton
                      disabled={Boolean(loading)}
                      color="primary"
@@ -151,9 +149,8 @@ const OrgSettings = () => {
             </Grid>
          </Paper>
 
-
          <ContactForm formik={formik} initialItem={item} />
-         <LunchTypesSettings list={formik.values.lunchTypes} setList={setLunchTypes} />
+         <LunchTypesSettings formik={formik} initialItem={item} />
          <WorkScheduleForm schedule={formik.values.schedule} setSchedule={setSchedule} />
          <DatesExceptionsForm list={formik.values.datesExceptions} setList={setDatesExceptions} />
          

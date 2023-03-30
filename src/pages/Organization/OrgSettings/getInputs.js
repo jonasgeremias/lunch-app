@@ -29,7 +29,17 @@ export const validationSchema = Yup.object().shape({
       }),
    releasingListLunchTime: Yup.string()
       .required('Você precisa colocar a hora corretamente')
-      .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, 'A hora precisa estar no formato HH:MM')
+      .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, 'A hora precisa estar no formato HH:MM'),
+   lunchTypes: Yup.array()
+      .of(
+         Yup.object().shape({
+            id: Yup.string().required('ID necessário'),
+            name: Yup.string().required('Nome é necessário'),
+            price: Yup.string().matches(/^\d+(\,\d{1,2})?$/, 'O preço precisa ter duas casas decimais')
+               .required('Preço é necessário'),
+            enable: Yup.boolean()
+         })
+      )
 });
 
 export const initialValues = {
@@ -47,11 +57,10 @@ export const initialValues = {
       Sunday: false
    },
    datesExceptions: {},
-   lunchTypes: {}
+   lunchTypes: [
+      { id: 'not', price: '10,50', name: 'Não', enable: true },
+      { id: 'lunch', price: '10,50', name: 'Almoço', enable: true },
+      { id: 'delivery', price: '12,50', name: 'marmita', enable: true }
+   ]
 };
 
-export const updateInitialValues = (orgData) => {
-   if (!orgData) return initialValues;
-   const initialObject = { ...initialValues, ...orgData }
-   return initialObject
-}
