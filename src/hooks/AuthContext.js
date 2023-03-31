@@ -9,7 +9,7 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
-   const [userData, setUserData] = useState(null);
+   const [userData, setAuthUserData] = useState(null);
    const { showSnackBar } = useSnackBar();
    const { getOrg } = useOrgContext()
    const { getCompany } = useCompanyContext()
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
          else {
             await signOut()
             setUser(null)
-            setUserData(null)
+            setAuthUserData(null)
          }
       })
       return () => {
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       await getOrg(null)
       await getCompany(null)
       setUser(null)
-      setUserData(null)
+      setAuthUserData(null)
       showSnackBar(message, 'error')
       return;
    }
@@ -72,19 +72,19 @@ export const AuthProvider = ({ children }) => {
       if (snackRet.error) return await exit(snackRet.message)
       
       setUser(user)
-      setUserData(userData)
+      setAuthUserData(userData)
       showSnackBar(snackRet.message, snackRet.error ? 'error' : 'success')
    }
 
    const logOut = async () => {
       const { error, message } = await signOut()
       setUser(null)
-      setUserData(null)
+      setAuthUserData(null)
       showSnackBar(message, error ? 'error' : 'success')
    }
 
    return (
-      <AuthContext.Provider value={{ user, userData, logIn, logOut }}>
+      <AuthContext.Provider value={{ user, userData, setAuthUserData, logIn, logOut }}>
          {children}
       </AuthContext.Provider>
    );

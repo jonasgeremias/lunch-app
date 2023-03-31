@@ -10,6 +10,17 @@ export const initialValuesClientHome = {
 };
 
 export const validationSchemaClientHome = Yup.object({
-  lunchQuantity: Yup.string().required('Informe a quantidade de almoços.'),
+  lunchQuantity: Yup.number().required('Informe a quantidade de almoços.'),
+  lunchTypes: Yup.string().required('Informe a typo de almoço.'),
+});
+
+
+export const initialValuesChangeDate = {
+   lunchQuantity : 0,
+   lunchTypes: 'not'
+};
+
+export const validationSchemaChangeDate = Yup.object({
+  lunchQuantity: Yup.number().required('Informe a quantidade de almoços.'),
   lunchTypes: Yup.string().required('Informe a typo de almoço.'),
 });

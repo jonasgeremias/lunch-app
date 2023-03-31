@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom'
 
 
 const USER_INITIAL_STATE = {
-   email: 'admin@admin.com',
+   email: '',
    email_error: '',
-   password: '123456',
+   password: '',
    password_error: '',
    loading: false,
 }

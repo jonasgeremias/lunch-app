@@ -1,11 +1,6 @@
 import { STATUS_OPTIONS_ARRAY, USER_TYPES, USER_TYPES_ARRAY } from "constants/general";
 import * as Yup from "yup";
 
-export const updateInitialValues = (data) => {
-   if (!data) return initialValues;
-   const initialObject = { ...initialValues, ...data }
-   return initialObject
-}
 
 /******************************************************************************
  * Formulário para o Cliente
