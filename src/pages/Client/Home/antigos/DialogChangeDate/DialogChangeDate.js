@@ -6,17 +6,16 @@ import { useGlobalStyles } from 'styles'
 import { compareDifferentInput } from 'utils/compareDifferentInput'
 import clsx from 'clsx'
 import Menu from 'components/atoms/Menu/Menu'
-import { initialValuesChangeDate, validationSchemaChangeDate } from '../getInputs'
+import { initialValuesChangeDate, validationSchemaChangeDate } from '../ClientUpdateLunchSettings/getInputs'
 import { useFormik } from 'formik'
 import { updateInitialValues } from 'utils/updateInitialValues'
 import { setLunchChangeByClient } from 'utils/firebase/users'
 import { useSnackBar } from 'components/atoms/Snackbar/Snackbar'
 
-
 export default function DialogChangeDate({ lunchChanges, org, userData, loading, onCloseDialog, dialogVisible, onConfirmDialog }) {
    const gClasses = useGlobalStyles()
-   const {showSnackBar} = useSnackBar()
-   
+   const { showSnackBar } = useSnackBar()
+
    // const userData = useSelector(state => state.app.user)
    const formik = useFormik({
       initialValues: initialValuesChangeDate,
@@ -66,8 +65,8 @@ export default function DialogChangeDate({ lunchChanges, org, userData, loading,
                   error={formik.touched["lunchTypes"] && Boolean(formik.errors["lunchTypes"])}
                   helperText={formik.touched["lunchTypes"] && formik.errors["lunchTypes"]}
                   onChange={formik.handleChange} />
-            </Grid>
-            <Grid item xs={12} md={6}>
+               </Grid>
+            {/*<Grid item xs={12} md={6}>
                <TextField
                   {...DEF_PROPS.quantity}
                   disabled={true}
@@ -79,7 +78,7 @@ export default function DialogChangeDate({ lunchChanges, org, userData, loading,
                   error={formik.touched.lunchQuantity && Boolean(formik.errors.lunchQuantity)}
                   helperText={formik.touched.lunchQuantity && formik.errors.lunchQuantity}
                />
-            </Grid>
+            </Grid> */}
          </Grid>
       </DialogContainer>
    )

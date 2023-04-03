@@ -37,70 +37,23 @@ export const DATE_FORMAT = {
    input: 'DD/MM/YYYY'
 }
 
-// // @audit apenas para consulta ------------------------------------------------
-// // @@ Para montar o banco de dados
-// const USER_DATA = {
-//    uid: '',
-//    status: 'active',
-//    userType: 'client',
-//    createdAt: "",
-//    updatedAt: "",
-//    approved: false,
-//    orgId: '',
-//    lunchDefault: 'buffet',
-//    companyId: ''
-// }
 
-// @@ Para montar o banco de dados
-// const REGISTER_USER_DATA = {
-//    uid: '',
-//    email: '',
-//    emailVerified: false,
-//    isAnonymous: false,
-//    phoneNumber: null,
-//    photoURL: null,
-//    metadata: {
-//       createdAt: "1674097887444",
-//       creationTime: "Thu, 19 Jan 2023 03:11:27 GMT",
-//       lastLoginAt: "1674623270442",
-//       lastSignInTime: "Wed, 25 Jan 2023 05:07:50 GMT",
-//    }
-// }
-
-// const RESTAURANT_DATA = {
-//    restaurantId: '',
-//    name: 'Restaurante do João',
-//    phone: '',
-//    email: '',
-//    contactName: '',
-//    linkLogo: 'link',
-//    createdAt: '',
-//    updatedAt: '',
-//    approved: true,
-//    companies: [], // Ids de companias para gerar
-//    orgId: '',
-//    lunchTypes: {
-//       no: { name: 'não', id: 'no', description: 'não pedir almoço', price: 0 },
-//       buffet: { name: 'Buffet', id: 'buffet', description: 'Almoço no buffet da empresa', price: 12.00 },
-//       marmita: { name: 'Marmita', id: 'marmita', description: 'Marmita simples', price: 12.00 },
-//       marmita2: { name: 'Marmita carne e salada', id: 'marmita2', description: 'Marmita de carne e salada', price: 12.00 }
-//    }
-// }
-
-// const COMPANY_DATA = {
-//    companyId: '',
-//    name: 'Restaurante do João',
-//    phone: '',
-//    cnpj: '',
-//    linkLogo: 'link',
-//    createdAt: '',
-//    updatedAt: '',
-//    approved: true,
-//    orgId: ''
-// }
-
-// const ORG_DATA = {
-//    orgId: '',
-//    name: 'Organização 1'
-// }
-
+export const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const GET_DAY_WEEK_PT = {
+   Sunday: "Domingo",
+   Monday: "Segunda",
+   Tuesday: "Terça",
+   Wednesday: "Quarta",
+   Thursday: "Quinta",
+   Friday: "Sexta",
+   Saturday: "Sábado"
+}
+export const GET_DAY_WEEK_PT_ABREVIADO = {
+   Sunday: "Dom",
+   Monday: "Seg",
+   Tuesday: "Ter",
+   Wednesday: "Qua",
+   Thursday: "Qui",
+   Friday: "Sex",
+   Saturday: "Sáb"
+}

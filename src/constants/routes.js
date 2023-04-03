@@ -2,7 +2,7 @@ import { lazy } from 'react'
 import { Assessment, Home, Restaurant, Business, DateRange, AccountBox } from '@mui/icons-material'
 
 const ClientHome = lazy(() => import('pages/Client/Home/Home'))
-const ClientRestaurantProfile = lazy(() => import('pages/Client/RestaurantProfile/RestaurantProfile'))
+// const ClientRestaurantProfile = lazy(() => import('pages/Client/RestaurantProfile/RestaurantProfile'))
 const ClientHistory = lazy(() => import('pages/Client/History/History'))
 
 const OrganizationHome = lazy(() => import('pages/Organization/Home/Home'))
@@ -14,13 +14,41 @@ const OrganizationUsers = lazy(() => import('pages/Organization/Users/Users'))
 
 const UserDetail = lazy(() => import('pages/Organization/Users/UserDetail/UserDetail'))
 
+
+const RestaurantHome = lazy(() => import('pages/Restaurant/Home/Home'))
+const RestaurantHistory = lazy(() => import('pages/Restaurant/History/History'))
+
+
+
 export const ORIGIN_ROUTES = 'dashboard'
 export const COMPANIES_PATH = 'companies'
 export const USERS_PATH = 'users'
+export const CHANGED_LUNCH_PATH = 'changedLunch'
 export const ORGANIZATION_PATH = 'organization'
 export const COMPANY_ADD = 'add'
 
+// export const ORIGIN_ROUTES = 'dashboard'
+// export const COMPANIES_PATH = 'companies'
+// export const USERS_PATH = 'users'
+// export const ORGANIZATION_PATH = 'organization'
+// export const COMPANY_ADD = 'add'
+
 export const ROUTES = {
+
+   restaurant: [
+      {
+         path: "",
+         name: 'Tela Inicial',
+         icon: <Home />,
+         element: <RestaurantHome />
+      },
+      {
+         path: "history",
+         name: 'Histórico',
+         icon: <Assessment />,
+         element: <RestaurantHistory />
+      }
+   ],
    client: [{
       path: "",
       name: 'Tela Inicial',

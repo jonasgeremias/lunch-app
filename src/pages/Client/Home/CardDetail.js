@@ -1,73 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useGlobalStyles } from 'styles'
 import clsx from 'clsx'
-import { LOTTIE_OPTIONS } from 'constants/general'
-import Lottie from "lottie-react";
-import animations from 'assets/animations/index'
+import { DAYS_OF_WEEK, GET_DAY_WEEK_PT } from 'constants/general'
 import { getTimestamp } from 'utils/firebase/firebase'
-
-import EditIcon from '@mui/icons-material/Edit';
 import { getHours, getMinutes } from 'date-fns';
+import EditIcon from '@mui/icons-material/Edit';
+
 import { convertToDateTime } from 'utils/date'
-import DialogChangeDate from './DialogChangeDate/DialogChangeDate'
+// import DialogChangeDate from './DialogChangeDate/DialogChangeDate'
+import { useOrgContext } from 'hooks/OrgContext'
+import { useAuthContext } from 'hooks/AuthContext'
+// import { lunchChangesInitial } from './ClientUpdateLunchSettings/getInputs'
+import { useSnackBar } from 'components/atoms/Snackbar/Snackbar'
+// import { useBreakPoint } from 'hooks/useBreakPoint'
 
-export const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-export const getDayWeek = {
-   Sunday: "Domingo",
-   Monday: "Segunda",
-   Tuesday: "Terça",
-   Wednesday: "Quarta",
-   Thursday: "Quinta",
-   Friday: "Sexta",
-   Saturday: "Sábado"
-}
-
-const lunchChangesInitial = [
-   { day: 30, mes: 3, ano: 2023, datetime: '2023/03/29', lunchQuantity: 1, lunchTypes: "not", restaurantApproved: true },
-   { day: 31, mes: 3, ano: 2023, datetime: '2023/03/31', lunchQuantity: 1, lunchTypes: "lunch", restaurantApproved: false },
-   { day: 1, mes: 4, ano: 2023, datetime: '2023/04/01', lunchQuantity: 1, lunchTypes: "delivery", restaurantApproved: false }
-]
-
-
-
-export const CardDetail = ({ data, formik, setDialogVisible }) => {
-   const { userData, org } = data;
+export const CardDetail = ({ currentTime, lunchChangesToday, openLunchDialog }) => {
+   const { userData, setAuthUserData } = useAuthContext()
+   const { org } = useOrgContext()
+   // const { company } = useCompanyContext()
+   const { showSnackBar } = useSnackBar()
+   // const webScreen = useBreakPoint('up', 'md')
    const gClasses = useGlobalStyles()
-   const [currentTime, setCurrentTime] = useState(getTimestamp().toDate());
    const [statusDate, setStatusDate] = useState();
-   const [lunchChanges, setLunchChanges] = useState([]);
-   const [loadingDialog, setLoadingDialog] = useState(false);
-   const [showTodayDialogVisible, setShowTodayDialogVisible] = useState({ show: false, item: null });
-
+   // const [lunchChanges, setLunchChanges] = useState([]);
+   // const [loadingDialog, setLoadingDialog] = useState(false);
+   // const [showTodayDialogVisible, setShowTodayDialogVisible] = useState({ show: false, item: null });
    // @audit buscar do Foristore
-   const getLunchChanges = async () => {
-      setLunchChanges(lunchChangesInitial)
-      console.log('getLunchChanges', lunchChangesInitial)
-   }
+   // const getLunchChanges = async () => {
+      //    setLunchChanges(lunchChangesInitial)
+      //    console.log('getLunchChanges', lunchChangesInitial)
+      // }
+      
 
    useEffect(() => {
-      const interval = setInterval(() => {
-         const now = getTimestamp().toDate();
-         setCurrentTime(now);
-      }, 1000 * 30);
-      getLunchChanges()
-      return () => clearInterval(interval);
-   }, []);
-
-
-   useEffect(() => {
-      convertDates()
-   }, [currentTime]);
-
-
-   const getLunchToday = (item) => {
-      const date = new Date(item.datetime)
-      console.log('getLunchToday', date, currentTime)
-      return (date.getDate() === currentTime.getDate()
-         && date.getMonth() === currentTime.getMonth()
-         && date.getFullYear() === currentTime.getFullYear())
-   }
+      convertDates(currentTime, org)
+   }, [currentTime, lunchChangesToday]);
 
    const convertDates = () => {
       const totalMinutes = getHours(currentTime) * 60 + getMinutes(currentTime);
@@ -75,27 +43,31 @@ export const CardDetail = ({ data, formik, setDialogVisible }) => {
       const closingMinutes = getHours(closing) * 60 + getMinutes(closing);
       const releasing = convertToDateTime(currentTime, org.releasingListLunchTime)
       const releasingMinutes = getHours(releasing) * 60 + getMinutes(releasing);
-      const dayOfWeek = daysOfWeek[currentTime.getDay()]; // get day of the week name
-      const lunchTodayArray = lunchChanges.filter(getLunchToday)
-      let lunchToday = {}
+      const dayOfWeek = DAYS_OF_WEEK[currentTime.getDay()]; // get day of the week name
 
-      if (lunchTodayArray?.length == 1) lunchToday = lunchTodayArray[0]
+      let lunchToday = {}
+      
+      console.log('lunchChangesToday', lunchChangesToday)
+      
+      //if (lunchTodayArray?.length == 1) lunchToday = lunchTodayArray[0]
+      if (Object.keys(lunchChangesToday).length !== 0) lunchToday = lunchChangesToday;
       else {
          lunchToday = {
             day: currentTime.getDate(),
-            mes: currentTime.getMonth() + 1,
-            ano: currentTime.getFullYear(),
-            datetime: currentTime,
-            lunchQuantity: userData.lunchQuantity,
+            month: currentTime.getMonth() + 1,
+            year: currentTime.getFullYear(),
+            // datetime: currentTime,
+            // lunchQuantity: userData.lunchQuantity,
             lunchTypes: userData.lunchTypes,
             restaurantApproved: false,
-            default: true
+            // default: true
          }
       }
+      console.log('lunchChangesToday', lunchChangesToday)
       let status_date = {
          closing: totalMinutes >= closingMinutes,
          releasing: totalMinutes >= releasingMinutes,
-         dayOfWeek: getDayWeek[`${dayOfWeek}`],
+         dayOfWeek: GET_DAY_WEEK_PT[`${dayOfWeek}`],
          workDay: org.schedule[`${dayOfWeek}`],
          lunchToday: lunchToday
       }
@@ -103,30 +75,41 @@ export const CardDetail = ({ data, formik, setDialogVisible }) => {
       setStatusDate(status_date)
    }
 
-
-   const handleTodayDialogVisible = (item) => {
-      setShowTodayDialogVisible({show: true, item })
+   const handleClickOpenDialog = (e) => {
+      if (!statusDate?.closing) {
+         openLunchDialog(statusDate?.lunchToday, false)
+      }
+      else {
+         showSnackBar('O horário para mudanças no almoço ja fechou', 'warning')
+      }
    }
 
+   const getNowDateString = (time) => {
+      const year = time.getFullYear();
+      const month = time.getMonth() + 1;
+      const day = time.getDate();
+      const hour = time.getHours();
+      const minutes = time.getMinutes();
 
-   let myLunch = org.lunchTypes.filter(item => item.id === userData.lunchTypes)
-   if (myLunch?.length !== 1) myLunch = { id: 'erro', name: 'error' }
-   else myLunch = myLunch[0]
+      return `${day}/${month}/${year} ${hour}:${minutes}`
+   }
 
+   // let myLunch = org.lunchTypes.filter(item => item.id === userData.lunchTypes)
+   // if (myLunch?.length !== 1) myLunch = { id: 'erro', name: 'error' }
+   // else myLunch = myLunch[0]
+   
    let lunchTypesToday = org.lunchTypes.filter(item => item.id === statusDate?.lunchToday?.lunchTypes)
-   if (lunchTypesToday?.length !== 1) lunchTypesToday = { id: 'erro', name: 'error' }
+   if (lunchTypesToday?.length !== 1) lunchTypesToday = { id: 'erro', name: '-' }
    else lunchTypesToday = lunchTypesToday[0]
 
    return (
       <>
-         <Paper variant="outlined" className={gClasses.containerPaper}>
             <div className={clsx(gClasses.flexJustifySpaceBetween)}>
                <Typography variant='h6' color='textSecondary' className={gClasses.marginBottom10}>
-                  Informações sobre Hoje
+                  Informações sobre Hoje - {`${getNowDateString(currentTime)}`}
                </Typography >
             </div>
             <Grid container align='center' spacing={{ xs: 2, md: 3 }} className={clsx(gClasses.padding12, gClasses.marginVertical8, gClasses.textCenter)}>
-
                <Grid item xs={12} align='center'>
                   {
                      statusDate?.closing ? <Typography variant='h5' color='error'>O horário para mudanças no almoço ja fechou.</Typography>
@@ -137,6 +120,7 @@ export const CardDetail = ({ data, formik, setDialogVisible }) => {
                <Grid item xs={12} align='center'>
                   <Typography variant='h6' color='textSecondary'>{`O almoço pode ser alterado até as`}</Typography>
                   <Typography variant='h6' fontWeight='bold' color='textSecondary'>{`${org.closingListLunchTime}`}</Typography>
+
                </Grid>
                <Grid item xs={12} align='center'>
                   <Typography variant='h5' color='textSecondary'> Seu almoço de hoje é:</Typography>
@@ -144,46 +128,15 @@ export const CardDetail = ({ data, formik, setDialogVisible }) => {
                </Grid>
                <Grid item xs={12} align='center'>
                   <Grid item xs={12} md={4} align='center'>
-                     <Button fullWidth edge="end" size='large' aria-label="edit" color="primary" variant='contained' onClick={() => handleTodayDialogVisible(lunchTypesToday)}>
-
+                     <Button
+                       className={gClasses.primaryGradient}
+                        disabled={Boolean(statusDate?.closing)}
+                        fullWidth edge="end" size='large' aria-label="edit" color="primary" variant='contained' onClick={handleClickOpenDialog}>
                         <EditIcon /> Alterar hoje
                      </Button>
                   </Grid>
                </Grid>
             </Grid>
-         </Paper>
-
-         <Paper variant="outlined" className={clsx(gClasses.containerPaper, gClasses.textCenter)}>
-            <div className={clsx(gClasses.flexJustifySpaceBetween, gClasses.flexAlignCenter)}>
-               <Typography variant='h6' color='textSecondary' className={gClasses.marginBottom10}>
-                  Configuração de almoço
-               </Typography >
-            </div>
-
-            <Grid container align='center' spacing={{ xs: 2, md: 3 }} className={clsx(gClasses.padding12, gClasses.marginVertical8, gClasses.textCenter)}>
-               <Grid item xs={12} align='center'>
-                  <Typography variant='body' color='textSecondary'>Seu almoço é sempre:</Typography>
-                  <Typography variant='h5' padding={1} color={myLunch.id == 'not' ? 'error' : 'info'}>{myLunch.name}</Typography>
-               </Grid>
-               <Grid item xs={12} align='center'>
-                  <Grid item xs={12} md={4} align='center'>
-                     <Button fullWidth edge="end" size='large' aria-label="edit" color="primary" variant='contained' onClick={() => setDialogVisible(true)}>
-                        <EditIcon /> Alterar
-                     </Button>
-                  </Grid>
-               </Grid>
-            </Grid>
-         </Paper>
-
-         <DialogChangeDate
-            lunchChanges={statusDate?.lunchToday}
-            org={org}
-            userData={userData}
-            loading={loadingDialog}
-            onCloseDialog={()=> {console.log('Close'); setShowTodayDialogVisible({show: false, item: null })}}
-            dialogVisible={showTodayDialogVisible.show}
-            onConfirmDialog={()=> {setShowTodayDialogVisible({show: false, item: null })}}
-         />
       </>
    )
 }

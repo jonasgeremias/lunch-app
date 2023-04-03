@@ -16,7 +16,7 @@ export const validationSchema = Yup.object().shape({
    // password2: Yup.string().oneOf([Yup.ref('password'), null], 'Senhas diferentes').required('Digite a senha de confirmação'),
    userType: Yup.string().oneOf(USER_TYPES_ARRAY, 'Opção inválida').required(),
    lunchDiscountPercentage: Yup.number(),
-   lunchQuantity: Yup.number(),
+   // lunchQuantity: Yup.number(),
    lunchTypes: Yup.string(),
    status: Yup.string().oneOf(STATUS_OPTIONS_ARRAY, 'Opção inválida').required()
 });
@@ -34,6 +34,6 @@ export const initialValues = {
    password2:'', 
    userType: USER_TYPES.client.id,
    lunchDiscountPercentage: 100,
-   lunchQuantity: 1,
+   // lunchQuantity: 1,
    lunchTypes: 'not',
 };

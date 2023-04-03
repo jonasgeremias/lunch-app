@@ -236,7 +236,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                         helperText={formik.touched.lunchDiscountPercentage && formik.errors.lunchDiscountPercentage}
                      />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  {/* <Grid item xs={12} md={6}>
                      <TextField
                         {...DEF_PROPS.quantity}
                         inputProps={compareDifferentInput(initialItem, formik.values, 'lunchQuantity')}
@@ -247,7 +247,7 @@ const UserForm = ({ add, formik, companies, loading, initialItem }) => {
                         error={formik.touched.lunchQuantity && Boolean(formik.errors.lunchQuantity)}
                         helperText={formik.touched.lunchQuantity && formik.errors.lunchQuantity}
                      />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} md={6} >
                      <Menu {...DEF_PROPS.menu}
                         inputProps={compareDifferentInput(initialItem, formik.values, 'lunchTypes')}

@@ -1,6 +1,6 @@
 import { ROWS_PER_PAGE_TABLE, USER_TYPES } from "constants/general";
-import { USERS_PATH } from "constants/routes";
-import { API_CREATE_USER, API_UPDATE_USER, API_UPDATE_USER_BY_CLIENT } from "./api_routes";
+import { CHANGED_LUNCH_PATH, USERS_PATH } from "constants/routes";
+import { API_CREATE_USER, API_SET_CHANGED_LUNCH_BY_CLIENT, API_UPDATE_LUNCH_SETTINGS_BY_CLIENT, API_UPDATE_USER, API_UPDATE_USER_BY_CLIENT } from "./api_routes";
 import Firebase, { getTimestamp } from "./firebase";
 import dayjs from 'dayjs'
 
@@ -10,13 +10,13 @@ import dayjs from 'dayjs'
 
 function applyFiltersInTable(datafilters, clear = false) {
    let filters = []
-   
+
    if (!(datafilters)) return []
    if (datafilters.length == 0) return []
-   
-   
+
+
    const { startDate, endDate, name, email, userType, status, phone } = datafilters;
-   
+
    if (!clear) {
       const allFilters = [
          // { id: 'createdAt', operation: '>=', value: startDate ? Firebase.firestore.Timestamp.fromDate(new Date(startDate)) : ''},
@@ -30,8 +30,8 @@ function applyFiltersInTable(datafilters, clear = false) {
 
       filters = allFilters.filter(el => Boolean(el.value) && el.value != ' ')
    }
-   
-   
+
+
    console.log('filters', filters)
    return filters
 }
@@ -46,7 +46,7 @@ export async function getUserData(id) {
    })
 }
 
-function getFilters(filters, order = 'des', orderBy = 'createdAt',lastDoc, limit = ROWS_PER_PAGE_TABLE) {
+function getFilters(filters, order = 'des', orderBy = 'createdAt', lastDoc, limit = ROWS_PER_PAGE_TABLE) {
    let query = Firebase.firestore().collection(USERS_PATH)
    console.log('filters', filters)
    if (filters?.length) {
@@ -57,7 +57,7 @@ function getFilters(filters, order = 'des', orderBy = 'createdAt',lastDoc, limit
          }
       })
    }
-   
+
    console.log(query)
    return query
 }
@@ -65,9 +65,9 @@ function getFilters(filters, order = 'des', orderBy = 'createdAt',lastDoc, limit
 
 export async function loadUsersInDB(table, userData, loadPage = null) {
    const { order, orderBy, lastDoc, allData, filters } = table
-   
+
    console.log('loadUsersInDB', table)
-   
+
    // Pegando o ID da organização
    let orgId = null;
    if (userData?.orgId) orgId = userData?.orgId;
@@ -151,12 +151,26 @@ export async function setUserData(data, add, user, org) {
       })
 }
 
-export async function setUserDataByClient(data, user, org) {
+// export async function setUserDataByClient(data, user, org) {
+//    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
+//    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
 
+//    return Firebase.functions().httpsCallable(API_UPDATE_USER_BY_CLIENT)({ data, user, org })
+//       .then(res => {
+//          console.log('httpsCallable', res)
+//          return res.data
+//       })
+//       .catch(error => {
+//          console.log(error)
+//          return { error: true, message: 'erro: ' + JSON.stringify(error) }
+//       })
+// }
+
+export async function updateLunchSettingsByClient(data, user, org) {
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
 
-   return Firebase.functions().httpsCallable(API_UPDATE_USER_BY_CLIENT)({ data, user, org })
+   return Firebase.functions().httpsCallable(API_UPDATE_LUNCH_SETTINGS_BY_CLIENT)({ data, user, org })
       .then(res => {
          console.log('httpsCallable', res)
          return res.data
@@ -171,7 +185,7 @@ export async function setLunchChangeByClient(data, user, org) {
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
 
-   return Firebase.functions().httpsCallable(API_UPDATE_USER_BY_CLIENT)({ data, user, org })
+   return Firebase.functions().httpsCallable(API_SET_CHANGED_LUNCH_BY_CLIENT)({ data, user, org })
       .then(res => {
          console.log('httpsCallable', res)
          return res.data
@@ -182,3 +196,29 @@ export async function setLunchChangeByClient(data, user, org) {
       })
 }
 
+export async function getThisMonthChangedLunchesInDB(userData, month) {
+   
+   console.log('getThisMonthChangedLunchesInDB', userData, month)
+   if (!userData?.uid) return [];
+
+   let docRef = Firebase.firestore().collection(USERS_PATH).doc(userData.uid).collection(CHANGED_LUNCH_PATH)
+   docRef = docRef.where('uid', '==', userData.uid).where('month', '==', month)
+
+   // Buscando do servidor
+   return await docRef.get().then(snap => {
+      const data = {
+         error: false,
+         data: [...snap.docs.map(doc => doc.data())]
+      }
+      
+      console.log(data)
+      return data
+   })
+      .catch(error => {
+         console.log(error)
+         return {
+            error: true,
+            data: []
+         }
+      })
+}

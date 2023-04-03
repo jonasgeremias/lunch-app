@@ -27,14 +27,15 @@ const FIREBASE_SETTINGS = {
    storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
    appId: process.env.REACT_APP_FIREBASE_APPID,
-   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
+   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 };
 
 firebaseApp.initializeApp(FIREBASE_SETTINGS)
-// firebaseApp.analytics()
+firebaseApp.analytics()
 
 // @pending remover 
-firebaseApp.functions().useEmulator("localhost", 5001);
+firebaseApp.functions()
+//.useEmulator("localhost", 5001);
 
 const firebase = {
    auth: firebaseApp.auth,
