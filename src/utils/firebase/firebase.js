@@ -31,11 +31,10 @@ const FIREBASE_SETTINGS = {
 };
 
 firebaseApp.initializeApp(FIREBASE_SETTINGS)
-firebaseApp.analytics()
+// firebaseApp.analytics()
 
 // @pending remover 
-firebaseApp.functions()
-//.useEmulator("localhost", 5001);
+firebaseApp.functions().useEmulator("localhost", 5001);
 
 const firebase = {
    auth: firebaseApp.auth,

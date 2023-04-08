@@ -181,10 +181,13 @@ export async function updateLunchSettingsByClient(data, user, org) {
       })
 }
 
+// @ok
 export async function setLunchChangeByClient(data, user, org) {
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
-
+   
+   console.log('setLunchChangeByClient', data, user, org)
+   
    return Firebase.functions().httpsCallable(API_SET_CHANGED_LUNCH_BY_CLIENT)({ data, user, org })
       .then(res => {
          console.log('httpsCallable', res)
@@ -196,29 +199,38 @@ export async function setLunchChangeByClient(data, user, org) {
       })
 }
 
-export async function getThisMonthChangedLunchesInDB(userData, month) {
-   
-   console.log('getThisMonthChangedLunchesInDB', userData, month)
+// @ok
+export async function getChangedLunchesInDbByDate(userData, date) {
    if (!userData?.uid) return [];
-
+   
+   const month = date?.getMonth() + 1
+   const year = date?.getFullYear();
+   
    let docRef = Firebase.firestore().collection(USERS_PATH).doc(userData.uid).collection(CHANGED_LUNCH_PATH)
-   docRef = docRef.where('uid', '==', userData.uid).where('month', '==', month)
+   docRef = docRef.where('uid', '==', userData.uid).where('year', '==', year).where('month', '==', month).limit(1)
 
    // Buscando do servidor
    return await docRef.get().then(snap => {
-      const data = {
+      let doc = {
          error: false,
-         data: [...snap.docs.map(doc => doc.data())]
+         year: year,
+         month: month,
+         data: {}
       }
-      
-      console.log(data)
-      return data
+
+      if (!snap.empty) {
+         doc.data = snap.docs[0].data() // [...snap.docs.map(doc => doc.data())]
+      }
+      return doc
+
    })
       .catch(error => {
          console.log(error)
          return {
             error: true,
-            data: []
+            year: year,
+            month: month,
+            data: {}
          }
       })
 }

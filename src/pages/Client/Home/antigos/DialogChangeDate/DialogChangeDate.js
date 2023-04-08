@@ -21,7 +21,7 @@ export default function DialogChangeDate({ lunchChanges, org, userData, loading,
       initialValues: initialValuesChangeDate,
       validationSchema: validationSchemaChangeDate,
       onSubmit: async (values) => {
-         const dataset = { uid: userData.uid, ...values }
+         const dataset = { uid: userData.uid, changedLunchItem: values }
          console.log('send', dataset)
          const { error, message, data } = await setLunchChangeByClient(dataset, userData, org)
          if (!error) {

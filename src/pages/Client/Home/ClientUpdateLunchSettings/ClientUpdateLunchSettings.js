@@ -5,7 +5,7 @@ import DialogContainer from 'components/molecules/DialogContainer/DialogContaine
 import { DEF_PROPS } from 'constants/inputs'
 import { useFormik } from 'formik'
 import { useAuthContext } from 'hooks/AuthContext'
-import { useCompanyContext } from 'hooks/CompanyContext'
+// import { useCompanyContext } from 'hooks/CompanyContext'
 import { useOrgContext } from 'hooks/OrgContext'
 import { useGlobalStyles } from 'styles'
 import { compareDifferentInput } from 'utils/compareDifferentInput'
@@ -19,7 +19,7 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
    const gClasses = useGlobalStyles()
    const { userData, setAuthUserData } = useAuthContext()
    const { org } = useOrgContext()
-   const { company } = useCompanyContext()
+   // const { company } = useCompanyContext()
    const [loading, setLoading] = useState(false);
    const {showSnackBar} = useSnackBar()
    
@@ -38,11 +38,11 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
             }
             showSnackBar(message, error ? 'error' : 'success');
          } else {
-            const dataset = { ...updateLunch.item, ...values }
-            console.log('onSubmit', dataset)
+            const {year, month, day} = updateLunch.item;
+            const dataset = {year, month, changedLunchItem: { year, month, day, lunchTypes : values.lunchTypes }}
             const { error, message, data } = await setLunchChangeByClient(dataset, userData, org)
             if (!error) {
-               updateListChangedLunches(data)
+               updateListChangedLunches({error: false, year, month, data})
             }
             showSnackBar(message, error ? 'error' : 'success');
          }
@@ -63,7 +63,6 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
          }
          else formik.setValues(initialValuesClientHome)
          
-         
          // formik.setValues(updateInitialValues(userData, initialValuesClientHome))
       }
    }, [updateLunch])
@@ -81,6 +80,12 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
       }
       else return ''
    }
+   
+   
+   let options = Object.values(org?.lunchTypes ? org.lunchTypes : {})
+   console.log('updateLunch?.settings', options)
+   
+   if (!updateLunch?.settings) options.push({enable: true, name: 'Pela Configuração', id: 'default'})
    
    return (
       <DialogContainer
@@ -100,7 +105,7 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
                   value={formik.values.lunchTypes}
                   label='Tipo de almoço é sempre:'
                   name='lunchTypes'
-                  items={Object.values(org?.lunchTypes ? org.lunchTypes : {})}
+                  items={options}
                   nameKey='name'
                   idKey='id'
                   error={formik.touched["lunchTypes"] && Boolean(formik.errors["lunchTypes"])}

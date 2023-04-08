@@ -9,10 +9,23 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import clsx from 'clsx';
 import { useGlobalStyles } from 'styles';
-import { DAYS_OF_WEEK, GET_DAY_WEEK_PT_ABREVIADO } from 'constants/general';
+import { DAYS_OF_WEEK, GET_DAY_WEEK_PT_ABREVIADO, MONTHS } from 'constants/general';
 import { GET_DAY_WEEK_PT } from 'constants/general';
 import { useBreakPoint } from 'hooks/useBreakPoint';
-import { getLunchToday } from 'utils/date';
+import { getLunchToday, testDateBeforeCurrent } from 'utils/date';
+import { useOrgContext } from 'hooks/OrgContext';
+
+import colors from 'styles/colors';
+import { useAuthContext } from 'hooks/AuthContext';
+import { Tooltip } from '@mui/material';
+
+// calendar: {
+//    today: {text: '#4A4A4A', background: '#54871E'},
+//    notDay: {text: '#4A4A4A', background: '#54871E'},
+//    notWorkDay: {text: '#4A4A4A', background: '#9C1128'},
+//    lunchNot: {text: '#4A4A4A', background: '#CF9911'},
+//    lunchOption: {text: '#4A4A4A', background: '#0288D1'}
+//  }
 
 const useStyles = makeStyles((theme) => ({
    header: {
@@ -20,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'space-between',
       margin: theme.spacing(1),
+      fontWeight: 'bold'
    },
    paper: {
       padding: theme.spacing(1),
@@ -27,17 +41,8 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.text.secondary,
    },
    notDay: {
-      height: 80,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: 'pointer',
-      transition: 'background-color 0.3s ease',
-      backgroundColor: theme.palette.action.hover,
-      '&:hover': {
-         backgroundColor: theme.palette.action.hover,
-      },
+      backgroundColor: colors.calendar.notDay.background,
+      color: colors.calendar.notDay.text,
    },
    day: {
       height: 80,
@@ -45,37 +50,60 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      '&:hover': {
+         filter: 'brightness(0.8)',
+         transition: 'background-color 0.3s ease',
+      },
+   },
+   workDay: {
       cursor: 'pointer',
       transition: 'background-color 0.3s ease',
-      '&:hover': {
-         backgroundColor: theme.palette.action.hover,
-      },
+      fontWeight: 'bold'
+   },
+   notWorkDay: {
+      backgroundColor: colors.calendar.notWorkDay.background,
+      color: colors.calendar.notWorkDay.text,
       fontWeight: 'bold'
    },
    today: {
-      backgroundColor: theme.palette.action.active,
-      '&:hover': {
-         backgroundColor: theme.palette.action.hover,
-      }
+      border: '3px solid ' + colors.calendar.today.background,
+   },
+   not: {
+      backgroundColor: colors.calendar.lunchNot.background,
+      color: colors.calendar.lunchNot.text,
+   },
+   lunch: {
+      backgroundColor: colors.calendar.lunchOption.background,
+      color: colors.calendar.lunchOption.text,
+   },
+   delivery: {
+      backgroundColor: colors.calendar.deliveryOption.background,
+      color: colors.calendar.deliveryOption.text,
    }
 }
 ));
 
-export default function CalendarStatus({ currentTime, changedLunchList, openLunchDialog, handleDayClick }) {
+
+export default function CalendarStatus({ currentTime, changedLunch, openLunchDialog }) {
    const gClasses = useGlobalStyles()
-   const [currentDate, setCurrentDate] = useState(currentTime);
    const classes = useStyles();
-   const daysInMonth = [];
    const webScreen = useBreakPoint('up', 'sm')
-   const startOfMonthDate = startOfMonth(currentDate);
-   const endOfMonthDate = endOfMonth(currentDate);
+
+   const { org } = useOrgContext()
+   const { userData } = useAuthContext()
+   const [currentDate, setCurrentDate] = useState(currentTime);
+   const [referenceDate, setReferenceDate] = useState(currentTime);
+
+   // @pending
+   const startOfMonthDate = startOfMonth(referenceDate);
+   const endOfMonthDate = endOfMonth(referenceDate);
    const startOfFirstWeek = startOfWeek(startOfMonthDate);
    const endOfLastWeek = endOfWeek(endOfMonthDate);
-   
+   const daysInMonth = [];
+
    // useEffect(() => {
-   //    setCurrentDate(currentTime)
-   // }, [changedLunchList])
-   
+   //    // console.log('changedLunch', changedLunch);
+   // }, [changedLunch])
 
    let day = startOfFirstWeek;
    while (day <= endOfLastWeek) {
@@ -86,13 +114,60 @@ export default function CalendarStatus({ currentTime, changedLunchList, openLunc
    }
 
    const handlePrevMonth = () => {
-      setCurrentDate(subDays(startOfMonth(currentDate), 1));
+      setReferenceDate(subDays(startOfMonth(referenceDate), 1));
    };
 
    const handleNextMonth = () => {
-      setCurrentDate(addDays(endOfMonth(currentDate), 1));
+      setReferenceDate(addDays(endOfMonth(referenceDate), 1));
    };
 
+   const isWorkDay = (date, org) => {
+      const arrayDatesExceptions = Object.values(org?.datesExceptions)
+      // Aqui tem um map para ver cada exceção
+      if (arrayDatesExceptions?.length > 0) {
+         for (let id in arrayDatesExceptions) {
+            const item = arrayDatesExceptions[id]
+            const dateObject = new Date(item.date.replace('-', '/'));
+            // Se encontrou uma exceção
+            if (getLunchToday(date, dateObject)) {
+               if (item.typeOfDay == 'off') return false;
+               else return true;
+            }
+         }
+      }
+      // aqui precisa analisar os dias da semana caso nao tenha uma exceção
+      return org?.schedule[`${date.dayWeek}`];
+   }
+
+   // @audit parei aqui, bug de não salvar a lista, e não está buscando o valor da exceção (changedLunch)
+   const handleDayClick = (day) => {
+      
+      
+      const lunch = {
+         day: day.getDate(),
+         month: day.getMonth() + 1,
+         year: day.getFullYear(),
+         lunchTypes: userData.lunchTypes,
+         restaurantApproved: false,
+         dayWeek: DAYS_OF_WEEK[day.getDay()]
+      }
+            
+      const sameMonth = isSameMonth(day, referenceDate)
+      const workDay = sameMonth ? isWorkDay(lunch, org) : false;
+      const dayBeforeCurrentDate = testDateBeforeCurrent(day, referenceDate)
+      
+      
+      
+      
+      
+      if (sameMonth && workDay && !dayBeforeCurrentDate)
+         openLunchDialog( lunch, false)
+      
+      
+      console.log('day', sameMonth, workDay,dayBeforeCurrentDate)
+   }
+   
+   
    return (
       <>
          <Paper variant="outlined" className={clsx(gClasses.containerPaper, gClasses.textCenter)}>
@@ -101,7 +176,7 @@ export default function CalendarStatus({ currentTime, changedLunchList, openLunc
                   <ChevronLeftIcon />
                </IconButton>
                <Typography variant="h5" component="h2">
-                  {format(currentDate, 'MMMM yyyy')}
+                  {MONTHS[`${referenceDate.getMonth() + 1}`] + `, ${referenceDate.getFullYear()}`}
                </Typography>
                <IconButton onClick={handleNextMonth}>
                   <ChevronRightIcon />
@@ -115,33 +190,65 @@ export default function CalendarStatus({ currentTime, changedLunchList, openLunc
                         :
                         <div className={classes.paper}>{GET_DAY_WEEK_PT_ABREVIADO[`${dayOfWeek}`]}</div>
                      }
-
-
                   </Grid>
                ))}
                {daysInMonth.map((day) => {
                   const date = {
                      day: day.getDate(),
-                     month: currentDate.getMonth()+1,
-                     year: currentDate.getFullYear()
+                     month: day.getMonth() + 1,
+                     year: day.getFullYear(),
+                     dayWeek: DAYS_OF_WEEK[day.getDay()]
                   }
 
+                  // Verificando se teve mudança no almoço.
                   let item = null;
-                  if (changedLunchList?.data?.length > 0) item = changedLunchList.data.filter((item) => (item.day === date.day
+                  if (changedLunch?.data?.changedLunchList?.length > 0) item = changedLunch.data.changedLunchList.filter((item) => (item.day === date.day
                      && item.month === date.month && item.year === date.year))
-                  
-                  if (item != null) {
-                     // @pending ver isso, mas vai ter que baixar as exceções da org comparar
+
+
+                  let myLunch = userData.lunchTypes;
+                  // @pending ver isso, mas vai ter que baixar as exceções da org comparar
+                  if (item?.length > 0) {
+                     if (item[0]?.lunchTypes != 'default')
+                        myLunch = item[0]?.lunchTypes
                   }
+
+                  const notDay = !isSameMonth(day, referenceDate)
+
+                  // Se não é um dia do mês nem verifica se é util
+                  const workDay = !notDay ? isWorkDay(date, org) : false;
+                  const dayBeforeCurrentDate = !testDateBeforeCurrent(day, referenceDate)
+                  const today = isSameDay(day, currentDate);
+
+
+                  let myClass = `${classes.paper} ${classes.day} `;
+                  if (notDay) myClass += `${classes.notDay} `;
+                  else myClass += `${workDay ? classes.workDay : classes.notWorkDay} `;
+                  if (today) myClass += `${classes.today} `;
+
+                  if (workDay)
+                     myClass += `${classes[`${myLunch}`]} `;
+
+                  let lunchTypesToday = org.lunchTypes.filter(item => item.id === myLunch)
+                  if (lunchTypesToday?.length !== 1) lunchTypesToday = { id: 'erro', name: '-' }
+                  else lunchTypesToday = lunchTypesToday[0]
 
                   return (
                      <Grid item xs={1.7} key={day}>
-                        <div
-                           className={`${classes.paper} ${isSameMonth(day, currentDate) ? classes.day : classes.notDay} ${isSameDay(day, currentDate) ? classes.today : ''}`}
-                           onClick={() => console.log(day)}
-                        >
-                           {format(day, 'd')}
-                        </div>
+                        {workDay ?
+                           <Tooltip placement="top" title={lunchTypesToday.name}>
+                              <div
+                                 className={myClass}
+                                 onClick={() => handleDayClick(day)}
+                              >
+                                 {format(day, 'd')}
+                              </div>
+                           </Tooltip> : <div
+                              className={myClass}
+                           >
+                              {format(day, 'd')}
+                           </div>
+                        }
 
                      </Grid>
                   )
