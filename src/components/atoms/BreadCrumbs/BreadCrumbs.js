@@ -34,7 +34,7 @@ const BreadCrumbs = ({ routes }) => {
    const webScreen = useBreakPoint('up', 'sm')
    
    return (
-      <Breadcrumbs maxItems={webScreen ? 4: 2} aria-label="breadcrumb">
+      <Breadcrumbs maxItems={webScreen ? 3: 2} aria-label="breadcrumb">
          {
             pathNames.map((path) => {
                const match = matchPath({ path: path.path }, location.pathname)

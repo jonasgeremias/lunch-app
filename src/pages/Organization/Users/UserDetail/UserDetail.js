@@ -14,11 +14,13 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useOrgContext } from 'hooks/OrgContext';
 import { useAuthContext } from 'hooks/AuthContext';
 import { useFormik } from 'formik';
-import { LoadingButton } from '@mui/lab';
+// import { LoadingButton } from '@mui/lab';
 import { objectIsEqual } from 'utils/compareDifferentInput';
 import { loadCompaniesInDB } from 'utils/firebase/companies';
 import UserForm from './UserForm';
 import { updateInitialValues } from 'utils/updateInitialValues';
+import SaveIcon from '@mui/icons-material/Save';
+import FAB from 'components/atoms/FAB/FAB';
 
 const UserDetail = ({ add }) => {
    let { id } = useParams();
@@ -116,7 +118,7 @@ const UserDetail = ({ add }) => {
             </Paper >
             
             <Grid container justifyContent="space-between">
-               <Grid justifyContent="flex-start" className={gClasses.marginVertical8}>
+               <Grid className={gClasses.marginVertical8}>
                   <Button onClick={handleClickBack}
                      startIcon={<ArrowBackIosNewIcon />}
                      variant="outlined"
@@ -124,7 +126,7 @@ const UserDetail = ({ add }) => {
                   </Button>
                </Grid>
 
-               <Grid justifyContent="flex-end" className={gClasses.marginVertical8}>
+               {/* <Grid className={gClasses.marginVertical8}>
                   <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
                   <LoadingButton
                      disabled={Boolean(loading)}
@@ -136,8 +138,14 @@ const UserDetail = ({ add }) => {
                   >
                      Salvar
                   </LoadingButton>
-               </Grid>
+               </Grid> */}
             </Grid>
+            
+            <FAB
+                  disabled={Boolean(loading)}
+                  onClick={(e) => formik.submitForm()}
+                  icon={<SaveIcon />}
+               />
          </Paper>
 
       </Paper>

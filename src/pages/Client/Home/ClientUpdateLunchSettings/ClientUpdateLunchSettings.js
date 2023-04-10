@@ -53,9 +53,7 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
    });
    
    useEffect(() => {
-      if (updateLunch?.open) {
-         console.log('useEffect updateLunch', updateLunch)
-         
+      if (updateLunch?.open) {         
          if (updateLunch?.settings) {
             formik.setValues({lunchTypes: userData.lunchTypes})
          } else if (updateLunch?.item !== null) {
@@ -81,10 +79,7 @@ export default function ClientUpdateLunchSettings({ updateLunch, closeUpdateLunc
       else return ''
    }
    
-   
-   let options = Object.values(org?.lunchTypes ? org.lunchTypes : {})
-   console.log('updateLunch?.settings', options)
-   
+   let options = Object.values(org?.lunchTypes ? org.lunchTypes : {})  
    if (!updateLunch?.settings) options.push({enable: true, name: 'Pela Configuração', id: 'default'})
    
    return (

@@ -27,6 +27,8 @@ import { LoadingButton } from '@mui/lab';
 import ContactForm from './ContactForm';
 import { objectIsEqual } from 'utils/compareDifferentInput';
 import { updateInitialValues } from 'utils/updateInitialValues';
+import SaveIcon from '@mui/icons-material/Save';
+import FAB from 'components/atoms/FAB/FAB';
 
 const Detail = ({ add }) => {
    let { id } = useParams();
@@ -113,7 +115,7 @@ const Detail = ({ add }) => {
             </Paper >
             <Grid container justifyContent="space-between">
 
-               <Grid justifyContent="flex-start" className={gClasses.marginVertical8}>
+               <Grid className={gClasses.marginVertical8}>
                   <Button onClick={handleClickBack}
                      startIcon={<ArrowBackIosNewIcon />}
                      variant="outlined"
@@ -121,19 +123,26 @@ const Detail = ({ add }) => {
                   </Button>
                </Grid>
 
-               <Grid justifyContent="flex-end" className={gClasses.marginVertical8}>
-                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
-                  <LoadingButton
+               <Grid className={gClasses.marginVertical8}>
+                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="error" variant='outlined' disabled={Boolean(loading)}>Restaurar dados</Button>
+                  {/* <LoadingButton
                      disabled={Boolean(loading)}
                      color="primary"
                      onClick={(e) => formik.submitForm()}
                      variant='contained'
                      loading={loading}
-                     startIcon={loading ? <CircularProgress color='inherit' size={20} /> : null}
+                     // startIcon={loading ? <CircularProgress color='inherit' size={20} /> : null}
+                     startIcon={<SaveIcon/>}
                   >
                      Salvar
-                  </LoadingButton>
+                  </LoadingButton> */}
                </Grid>
+
+               <FAB
+                  disabled={Boolean(loading)}
+                  onClick={(e) => formik.submitForm()}
+                  icon={<SaveIcon />}
+               />
             </Grid>
          </Paper>
       </>

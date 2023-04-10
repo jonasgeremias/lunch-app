@@ -20,6 +20,8 @@ import ContactForm from './ContactForm';
 import { objectIsEqual } from 'utils/compareDifferentInput';
 import LunchTypesSettings from './LunchTypesSettings';
 import { updateInitialValues } from 'utils/updateInitialValues';
+import FAB from 'components/atoms/FAB/FAB';
+import SaveIcon from '@mui/icons-material/Save';
 
 const OrgSettings = () => {
    const gClasses = useGlobalStyles()
@@ -29,7 +31,7 @@ const OrgSettings = () => {
    const webScreen = useBreakPoint('up', 'md')
    const [item, setItem] = useState(initialValues)
    const [differentData, setDifferentData] = useState(false)
-   const [loading, setLoading] = useState(false)
+   const [loading, setLoading] = useState(true)
    const [tried, setTried] = useState(0)
       
    const formik = useFormik({
@@ -132,19 +134,19 @@ const OrgSettings = () => {
                   </TabSubtitle >
                </Grid>
 
-               <Grid item className={gClasses.marginVertical8} textAlign="right">
-                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="inherit" disabled={Boolean(loading)}>Restaurar dados</Button>
+               <Grid container className={gClasses.marginVertical8} justifyContent='space-between'>
+                  <Button onClick={(e) => formik.setValues(updateInitialValues(item, initialValues))} color="error" variant='outlined' disabled={Boolean(loading)}>Restaurar dados</Button>
                   <LoadingButton
+                     startIcon={<SaveIcon/>}
                      disabled={Boolean(loading)}
                      color="primary"
                      onClick={(e) => formik.submitForm()}
                      variant='contained'
                      loading={loading}
-                     startIcon={loading ? <CircularProgress color='inherit' size={20} /> : null}
+                     // startIcon={loading ? <CircularProgress color='inherit' size={20} /> : null}
                   >
                      Salvar
                   </LoadingButton>
-
                </Grid>
             </Grid>
          </Paper>
@@ -154,8 +156,16 @@ const OrgSettings = () => {
          <WorkScheduleForm schedule={formik.values.schedule} setSchedule={setSchedule} />
          <DatesExceptionsForm list={formik.values.datesExceptions} setList={setDatesExceptions} />
          
+         <FAB 
+            disabled={Boolean(loading)}
+            onClick={(e) => formik.submitForm()}
+            icon={<SaveIcon/>}
+         />
       </div>
    )
 }
+
+
+
 
 export default OrgSettings;

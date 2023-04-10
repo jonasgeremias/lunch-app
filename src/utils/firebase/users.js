@@ -200,12 +200,9 @@ export async function setLunchChangeByClient(data, user, org) {
 }
 
 // @ok
-export async function getChangedLunchesInDbByDate(userData, date) {
+export async function getChangedLunchesInDbByDate(userData, month, year) {
    if (!userData?.uid) return [];
-   
-   const month = date?.getMonth() + 1
-   const year = date?.getFullYear();
-   
+
    let docRef = Firebase.firestore().collection(USERS_PATH).doc(userData.uid).collection(CHANGED_LUNCH_PATH)
    docRef = docRef.where('uid', '==', userData.uid).where('year', '==', year).where('month', '==', month).limit(1)
 

@@ -6,11 +6,11 @@ import clsx from 'clsx'
 /**
  * A FAB button with + icon
  */
-const FAB = ({ onClick }) => {
+const FAB = ({ onClick, disabled=false ,icon=null}) => {
    const gClasses = useGlobalStyles()
    return (
-      <Fab color="primary" className={gClasses.FAB} size='large' onClick={onClick}>
-         <AddRoundedIcon />
+      <Fab color="primary" disabled={disabled} className={gClasses.FAB} size='large' onClick={onClick}>
+         {icon != null? icon: <AddRoundedIcon />}
       </Fab>
    )
 }

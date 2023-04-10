@@ -52,17 +52,16 @@ export default function RestaurantHome() {
 
    const loadInitialData = async () => {
       setCompany(await loadCompaniesInDB(companies, userData))
-      // setTable(await loadUsersInDB(table, userData)) @audit buscar os lunches 
    }
 
    useEffect(() => {
       loadInitialData()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
+   
    const onClickItem = (item) => {
-      // navigate(`/${ORIGIN_ROUTES}/${USERS_PATH}/${item.id}`);
       console.log('clickItem', item)
    }
+   
    // console.log('lunchChangesToday', lunchChangesToday)
    return (
       <div className={clsx(gClasses.containerBackground, gClasses.listArea)}>

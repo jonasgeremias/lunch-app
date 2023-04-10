@@ -169,7 +169,9 @@ const DatesExceptionsForm = ({ list, setList }) => {
                      return dateA - dateB;
                   }).map((key) => {
                      const item = list[key]
-                     const date = new Date(item.date);
+                     
+                     const date = new Date(item.date.replace('-', '/'));
+                     console.log('map', item, date)
                      const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
                      const formattedDate = date.toLocaleDateString(undefined, options);
                      const isOff = item.typeOfDay === 'off';

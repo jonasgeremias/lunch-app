@@ -11,7 +11,7 @@ import ClientUpdateLunchSettings from './ClientUpdateLunchSettings/ClientUpdateL
 import LunchSettings from './LunchSettings';
 import { getTimestamp } from 'utils/firebase/firebase';
 import { getChangedLunchesInDbByDate } from 'utils/firebase/users';
-import { getLunchToday, testDateBeforeCurrent } from 'utils/date';
+import { isLunchEquals, testDateBeforeCurrent } from 'utils/date';
 
 const initialLunchDialog = {
    open: false,
@@ -25,6 +25,7 @@ export default function ClientHome() {
    const [updateLunchDialog, setUpdateLunchDialog] = useState(initialLunchDialog)
    const [changedLunch, setChangedLunch] = useState([]);
    const [lunchChangesToday, setLunchChangesToday] = useState({});
+   const [loadingMonth, setLoadingMonth] = useState(true);
    const { userData } = useAuthContext();
 
    // Atualiza a data e hora atual
@@ -34,52 +35,30 @@ export default function ClientHome() {
          const now = getTimestamp().toDate();
          setCurrentTime(now);
       }, 1000 * 30);
-      getChangedLunchesByDate(currentTime)
+      
+      const month = currentTime?.getMonth() + 1
+      const year = currentTime?.getFullYear();
+      getChangedLunchesByDate(month, year)
+      
       return () => clearInterval(interval);
    }, []);
 
-   // @ok
+
    const updateListChangedLunches = (updatedData) => {
-      // const index = changedLunch.data.changedLunchList.findIndex(obj => getLunchToday(obj, currentTime)); // Find the index of the object element with the same ID
-      // // Return a new array with the updated object element
-      // const updateChangedLunchesList = changedLunch.data.changedLunchList.map((obj, i) => {
-      //    if (i === index) {
-      //       return item.changedLunchesList; // Update the object element at the index with the updated values
-      //    }
-      //    return obj; // Return all other object elements as they are
-      // });
-      // if (updateChangedLunchesList?.length == 0) updateChangedLunchesList.push(item.changedLunchesList)
-      // const updatedData = {
-      //    ...changedLunch,
-      //    data : {
-      //       ...changedLunch.data,
-      //       changedLunchList: updateChangedLunchesList
-      //    },
-      // }
       setChangedLunch(updatedData)
    }
 
-   // @ok o filter está pegando o objeto correto
    useEffect(() => {
       if (changedLunch?.data?.changedLunchList?.length > 0) {
-         const filter = changedLunch.data.changedLunchList.filter((item) => getLunchToday(item, currentTime))
+         const filter = changedLunch.data.changedLunchList.filter((item) => isLunchEquals(item, currentTime))
          if (filter?.length > 0) setLunchChangesToday(filter[0])
       }
    }, [changedLunch])
 
-   // @ok
    const closeUpdateLunchDialog = (e) => {
       setUpdateLunchDialog(initialLunchDialog)
    }
-
-
-   // @pending
-   // const handleDayClick = (date) => {
-   //    const dayBeforeCurrentDate = !testDateBeforeCurrent(day, referenceDate)
-      
-   //    if (console.log())
-   // }
-
+   
    const openLunchDialog = (item, settings) => {
       if (settings) {
          setUpdateLunchDialog({ open: true, item: null, settings: true })
@@ -87,8 +66,10 @@ export default function ClientHome() {
       else setUpdateLunchDialog({ open: true, item: item, settings: false })
    }
 
-   const getChangedLunchesByDate = async (date) => {
-      setChangedLunch(await getChangedLunchesInDbByDate(userData, date))
+   const getChangedLunchesByDate = async (month, year) => {
+      setLoadingMonth(true)
+      setChangedLunch(await getChangedLunchesInDbByDate(userData, month, year))
+      setLoadingMonth(false)
    }
 
    return (
@@ -105,9 +86,10 @@ export default function ClientHome() {
             <LunchSettings openLunchDialog={openLunchDialog} />
 
             <CalendarStatus
+               loadingMonth={loadingMonth}
                changedLunch={changedLunch}
                openLunchDialog={openLunchDialog}
-               // handleDayClick={handleDayClick}
+               getChangedLunchesByDate={getChangedLunchesByDate}
                currentTime={currentTime}
             />
 

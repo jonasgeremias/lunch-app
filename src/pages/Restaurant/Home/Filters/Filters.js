@@ -13,8 +13,8 @@ const Filters = ({ formikFilters }) => {
    const gClasses = useGlobalStyles()
    const webScreen = useBreakPoint('up', 'md')
    const { lunchDate, lunchType } = formikFilters.values;
-   const {org} = useOrgContext()
-   
+   const { org } = useOrgContext()
+
    return (
       <form onSubmit={formikFilters.handleSubmit} className={gClasses.marginVertical16}>
          <div className={clsx(gClasses.flexJustifySpaceBetween)}>
@@ -25,39 +25,41 @@ const Filters = ({ formikFilters }) => {
          </div>
          <Paper elevation={0} variant="outlined" className={clsx(gClasses.container)}>
             <Grid container spacing={1}>
-               <Grid item container xs={12} sm={6} md={3}>
+               <Grid item xs={12} sm={6} md={3}>
                   <TextField
                      {...DEF_PROPS.date}
-                     fullWidth
                      required
                      name='lunchDate'
                      value={lunchDate}
                      onChange={formikFilters.handleChange}
                   />
                </Grid>
-               <Grid item xs={12} >
-               <Menu {...DEF_PROPS.menu}
-                  value={formikFilters.values.lunchTypes}
-                  fullWidth
-                  label='Tipo de almoço é sempre:'
-                  name='lunchTypes'
-                  items={Object.values(org?.lunchTypes ? org.lunchTypes : {})}
-                  nameKey='name'
-                  idKey='id'
-                  error={formikFilters.touched["lunchTypes"] && Boolean(formikFilters.errors["lunchTypes"])}
-                  helperText={formikFilters.touched["lunchTypes"] && formikFilters.errors["lunchTypes"]}
-                  onChange={formikFilters.handleChange} />
+               <Grid item xs={12} sm={6} md={3} >
+                  <Menu {...DEF_PROPS.menu}
+                     value={formikFilters.values.lunchTypes}
+                     includeEmpty
+                     fullWidth
+                     label='Tipo de almoço é sempre:'
+                     name='lunchTypes'
+                     items={Object.values(org?.lunchTypes ? org.lunchTypes : {})}
+                     nameKey='name'
+                     idKey='id'
+                     error={formikFilters.touched["lunchTypes"] && Boolean(formikFilters.errors["lunchTypes"])}
+                     helperText={formikFilters.touched["lunchTypes"] && formikFilters.errors["lunchTypes"]}
+                     onChange={formikFilters.handleChange} />
+               </Grid>
+               <Grid item xs={12} sm={6}  justifyContent="space-between">
+                  {/* <div className={clsx(gClasses.fullWidth, gClasses.flexJustifyEnd, gClasses.marginTop16)}> */}
+                     <Button onClick={formikFilters.handleReset} variant='outlined' className={gClasses.marginRight10}>
+                        Limpar
+                     </Button>
+                     <Button variant='contained' color='primary' type="submit">
+                        Aplicar filtros
+                     </Button>
+                  {/* </div> */}
+               </Grid>
             </Grid>
-            </Grid>
-            <div className={clsx(gClasses.fullWidth, gClasses.flexJustifyEnd, gClasses.marginTop16)}>
-               <div className={gClasses.flex1} />
-               <Button onClick={formikFilters.handleReset} variant='outlined' className={gClasses.marginRight10}>
-                  Limpar
-               </Button>
-               <Button variant='contained' color='primary' type="submit">
-                  Aplicar filtros
-               </Button>
-            </div>
+
          </Paper>
       </form>
    )

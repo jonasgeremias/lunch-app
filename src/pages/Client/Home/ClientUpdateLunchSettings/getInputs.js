@@ -29,11 +29,11 @@ export const validationSchemaClientHome = Yup.object({
 
 
 // Lunch
-export const lunchChangesInitial = [
-   { day: 30, month: 3, year: 2023, datetime: '2023/03/29', lunchTypes: "not", restaurantApproved: true },
-   { day: 31, month: 3, year: 2023, datetime: '2023/03/31',  lunchTypes: "lunch", restaurantApproved: false },
-   { day: 1, month: 4, year: 2023, datetime: '2023/04/01', lunchTypes: "delivery", restaurantApproved: false }
-]
+// export const lunchChangesInitial = [
+//    { day: 30, month: 3, year: 2023, datetime: '2023/03/29', lunchTypes: "not", restaurantApproved: true },
+//    { day: 31, month: 3, year: 2023, datetime: '2023/03/31',  lunchTypes: "lunch", restaurantApproved: false },
+//    { day: 1, month: 4, year: 2023, datetime: '2023/04/01', lunchTypes: "delivery", restaurantApproved: false }
+// ]
 
 // export const convertDates = (datetime, org, userData) => {
 //    const totalMinutes = getHours(datetime) * 60 + getMinutes(datetime);
@@ -42,7 +42,7 @@ export const lunchChangesInitial = [
 //    const releasing = convertToDateTime(datetime, org.releasingListLunchTime)
 //    const releasingMinutes = getHours(releasing) * 60 + getMinutes(releasing);
 //    const dayOfWeek = daysOfWeek[datetime.getDay()]; // get day of the week name
-//    const lunchTodayArray = lunchChanges.filter(getLunchToday)
+//    const lunchTodayArray = lunchChanges.filter(isLunchEquals)
 //    let lunchToday = {}
 
 //    if (lunchTodayArray?.length == 1) lunchToday = lunchTodayArray[0]

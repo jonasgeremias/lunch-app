@@ -19,6 +19,8 @@ import { useAuthContext } from 'hooks/AuthContext';
 import { ExitToAppRounded } from '@mui/icons-material'
 
 import BreadCrumbs from 'components/atoms/BreadCrumbs/BreadCrumbs';
+import { Avatar, Box, Tooltip, Typography } from '@mui/material';
+import { useBreakPoint } from 'hooks/useBreakPoint';
 
 const ElevationScroll = ({ children, darkTheme }) => {
    const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 })
@@ -74,8 +76,9 @@ export default function Appbar({ routes, children }) {
    const theme = useTheme();
    const [open, setOpen] = useState(false);
    const [timeoutCLose, setTimeoutClose] = useState(false);
-   const { logOut } = useAuthContext();
-
+   const { userData, logOut } = useAuthContext();
+   const webScreen = useBreakPoint('up', 'sm')
+   
    const handleClickLogout = () => {
       logOut()
    }
@@ -117,6 +120,16 @@ export default function Appbar({ routes, children }) {
                   <BreadCrumbs routes={routes} />
 
                   <div style={{ flexGrow: 1 }} />
+
+                  <Box sx={{ flexGrow: 0 }}>
+                     <Tooltip title={userData.name}>
+                        <Avatar>
+                           {userData.name[0]}
+                        </Avatar>
+                     </Tooltip>
+                  </Box>
+
+
                   <IconButton onClick={handleClickLogout}>
                      <ExitToAppRounded color='action' />
                   </IconButton>
