@@ -34,7 +34,8 @@ firebaseApp.initializeApp(FIREBASE_SETTINGS)
 // firebaseApp.analytics()
 
 // @pending remover 
-firebaseApp.functions().useEmulator("192.168.1.102", 5001);
+firebaseApp.functions()
+//.useEmulator("192.168.1.102", 5001);
 
 const firebase = {
    auth: firebaseApp.auth,

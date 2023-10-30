@@ -64,7 +64,7 @@ function getFilters(filters, order = 'des', orderBy = 'createdAt', lastDoc, limi
 
 
 export async function loadUsersInDB(table, userData, loadPage = null) {
-   const { order, orderBy, lastDoc, allData, filters } = table
+   const { /*order, orderBy, lastDoc,*/ allData, filters } = table
 
    console.log('loadUsersInDB', table)
 
@@ -185,9 +185,9 @@ export async function updateLunchSettingsByClient(data, user, org) {
 export async function setLunchChangeByClient(data, user, org) {
    if (!user?.uid) return { error: true, message: 'Usuário inválido' };
    if (!org?.orgId) return { error: true, message: 'Organização inválida' };
-   
+
    console.log('setLunchChangeByClient', data, user, org)
-   
+
    return Firebase.functions().httpsCallable(API_SET_CHANGED_LUNCH_BY_CLIENT)({ data, user, org })
       .then(res => {
          console.log('httpsCallable', res)

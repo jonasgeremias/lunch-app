@@ -102,8 +102,13 @@ const Users = () => {
    }
 
    const loadInitialData = async () => {
-      setCompany(await loadCompaniesInDB(companies, userData))
-      setTable(await loadUsersInDB(table, userData))
+      const [dataCompanies, dataUsers] = await Promise.all([
+         loadCompaniesInDB(companies, userData),
+         loadUsersInDB(table, userData)
+      ]
+      )
+      setCompany(dataCompanies)
+      setTable(dataUsers)
    }
       
    useEffect(() => {
